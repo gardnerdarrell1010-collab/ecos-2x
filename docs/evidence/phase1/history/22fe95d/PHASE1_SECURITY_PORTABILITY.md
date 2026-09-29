@@ -59,8 +59,8 @@ Incident: a short-lived signed download reference to the restricted credential a
 was inadvertently included in a tool result. The password value was not printed. The
 reference was not written to repository files/evidence; its configured expiry was
 2026-09-29T16:29:08Z. Expiry has elapsed, but access/revocation was not verified. This
-is separate from the clean repository secret scan. The reference is expired and was not reused or persisted. No actual password-value
-exposure was observed; the secret was not modified.
+is separate from the clean repository secret scan. Owner should review exposure and
+decide whether to rotate the development credential; this task did not modify it.
 
 Automatic approval review rejected a proposed broad diagnostic capture before execution.
 The replacement records only schema object identities/hashes, table counts and digests;
@@ -72,5 +72,3 @@ The export intentionally includes only ecos/ecos_meta/ecos_migration, not platfo
 or host schemas. Eight NOLOGIN roles are supplied as portable configuration. TLS private
 keys and generated local credentials are confined to the private disposable runtime;
 the initial password file was removed. No Windows service or production runtime changed.
-
-Final C-01: both 15-session tests passed. Current security advisor and cleanup are in concurrency-15-advisors.json and concurrency-15-readback.json. No schema or permission design changed. Twenty required gates passed; no Phase 1 blocker remains. Capacity basis and forward CAP-01 are documented without implementing Phase 2.

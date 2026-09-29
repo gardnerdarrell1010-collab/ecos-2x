@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
-  "verified_at": "2026-09-29T17:08:04.309902+00:00",
+  "verified_at": "2026-09-29T16:51:18.234226+00:00",
   "baseline_commit": "375f3f61374aeaa52d28dc79fb80d14362c1e8f8",
-  "resulting_commit": null,
+  "resulting_commit": "22102337fa676a8ce357d4d6ea1bfabe975468ce",
   "resulting_commit_scope": "Completion implementation commit; subsequent evidence-only commit and final remote HEAD appear in handoff.",
   "branch": "codex/phase-1-postgres-foundation",
   "supabase_project": {
@@ -49,10 +49,6 @@
       "independent_race_checks": 4,
       "concurrency_test_a_attempts": 2,
       "concurrency_test_b": 0
-    },
-    "final_concurrency": {
-      "test_a_sessions": 15,
-      "test_b_sessions": 15
     }
   },
   "tests_passed": {
@@ -97,17 +93,6 @@
       "rebuild_sql_checks": 31,
       "restore_sql_checks": 31,
       "independent_race_checks": 4
-    },
-    "final_concurrency": {
-      "test_a": true,
-      "test_b": true,
-      "completed_occurrences": 16
-    },
-    "final_regression": {
-      "offline_passed": 51,
-      "offline_failed": 0,
-      "historical_placeholders_skipped": 26,
-      "prior_expensive_acceptance_retained": true
     }
   },
   "tests_failed": 0,
@@ -120,7 +105,9 @@
   ],
   "tests_pending_deferred": {
     "offline_integration_placeholders_not_executed_by_default": 26,
-    "phase1": {},
+    "phase1": {
+      "C-01": "Twenty sessions required under owner-approved correction. Fifteen independent backend sessions reached the start barrier; five failed while connecting. No claim operations ran; Test B not run. Required simultaneous session capacity unavailable in this attempt; no pool settings changed."
+    },
     "later": [
       {
         "id": "PORT-01",
@@ -173,7 +160,6 @@
     ]
   },
   "database_gates_passed": [
-    "C-01",
     "C-02",
     "C-03",
     "C-04",
@@ -194,7 +180,7 @@
     "MIG-01",
     "REST-01"
   ],
-  "phase1_acceptance_passed": true,
+  "phase1_acceptance_passed": false,
   "security_advisor_findings": {
     "lints": []
   },
@@ -224,7 +210,9 @@
   "production_data_migrated": false,
   "ecos_1x_writes": false,
   "production_authority_switched": false,
-  "unresolved_blockers": [],
+  "unresolved_blockers": [
+    "Twenty sessions required under owner-approved correction. Fifteen independent backend sessions reached the start barrier; five failed while connecting. No claim operations ran; Test B not run. Required simultaneous session capacity unavailable in this attempt; no pool settings changed."
+  ],
   "maturity": {
     "database_implementation": "BUILT",
     "specific_observed_database_paths": "END-TO-END VERIFIED",
@@ -266,13 +254,13 @@
     "scripts/check.py": "2bd81c110a0ebed6033a0c2a3f6a5ccdb6b2de9a569cea805ff5d10e07cc216f",
     "scripts/migrations.py": "4a322e9602c1f425dc3c0784f3516e89938c6d150ae51139902e5d69600c3c7e",
     "scripts/phase1_contention.py": "92dc7f38d0def43255fc654367a084b0982aad8f8cc734b04d6ede189c7227d4",
-    "scripts/phase1_evidence_check.py": "131e56d13e34872dbff659fa47fcc9ecc8afdef7e8f1dbd027a0db2bec2eb982",
+    "scripts/phase1_evidence_check.py": "645f34b2b18b20a83fc7938e25eaa17359e695f90591fad984630d1c6231ddef",
     "scripts/supabase_migration_payload.py": "2f4502c4680f7c2b467b9c8d782e594e227d8e5995ca3a0b8582b6aa3764527d",
     "scripts/__init__.py": "881c97d48076a86026b6a76e7b56efc6ebab3ea596d06efecf152f284d2d098a",
     "contracts/integrity/integrity_finding.schema.json": "d4e0b05d78ce7156cfda1d5035f937291985e5200234ebdc80d1fc6aacff3ebc",
-    "scripts/phase1_live_completion.py": "577001fb37988bd4d9d61d6de0f2ec579636ae77404338d0fc4e9f998cdf5855",
+    "scripts/phase1_live_completion.py": "06a44b9f2df8dd62908b70d5bbc0cef598b13315a499117184c19c99b4169b44",
     "scripts/phase1_recovery_completion.py": "c768afc512f065315ac3cca9900b5ee5085b3f434cf9d78e2d7bcd6816936ccc",
-    "contracts/acceptance/phase1-concurrency.json": "646e7be834d5d758f3b10e2c5f182fc5d042e2e3e6442f80997ecf06901667e4",
+    "contracts/acceptance/phase1-concurrency.json": "9c482f391e43255826f680abc2decc2654e29f286e0d15e319129b048f599e34",
     "requirements-phase1.lock": "b2b09bcad3824b5d1453eea5daa6547f250720379f270b3e457f2c5ebc8470df",
     "docs/evidence/phase1/completion-advisors.json": "4f592f250eae75ad6732afe09921f3eb728d33df25fefc31c0902baa75310f75",
     "docs/evidence/phase1/completion-attempt-001.json": "48178c104734d09555a288bfe51810be155e5d0a7ba11b4c467c33561d6b1abe",
@@ -286,15 +274,7 @@
     "docs/evidence/phase1/completion-recovery-attempt-003.json": "a119767bd34849142f502983bafd0a2c8c5de5ec0b457295f53428a9adeefcdf",
     "docs/evidence/phase1/completion-recovery-attempt-004.json": "eb1b2d78a432124c8f474f73cf54f3455eaa2c946e412a4385571c854d85814d",
     "docs/evidence/phase1/completion-recovery-attempt-005.json": "2e602ac5a6ec919f16d1d753071185cf84923180bf1d096b127ce84c055117b9",
-    "docs/evidence/phase1/completion-recovery.json": "2fc9b1e1c85346549eb840a40fa63006fecbb39bbf7bea08ace50f08c61b41ce",
-    "docs/evidence/phase1/concurrency-15-advisors.json": "b074fd38a15bdd1cc048cfa0c253d2dcbb07259bf40ea871fc382e1899fe41fc",
-    "docs/evidence/phase1/concurrency-15-offline.json": "3bb6558ccb6eb136cece4353dad37e8e4d7149f8d22e9cc12d1f72e43160a2bd",
-    "docs/evidence/phase1/concurrency-15-readback.json": "c25aec302b62edc77e056fd236f9ba1c6e79e431e08391166efb6c142f2645f0",
-    "docs/evidence/phase1/concurrency-15-secret-scan.json": "d35749ad64ef2129bf7dec503f3e7d589e30c84c41c1db020ebadd2df96ddb26",
-    "docs/evidence/phase1/concurrency-15.json": "e2e8885aa7f73c9b4d5b3881c05037a3da4b46596b0df583016a3dc86e0854fd",
-    "docs/architecture/CAPACITY_QUOTA_BANDWIDTH_GOVERNANCE.md": "6a405d65b323a0b56ea06db5033d07bc5974b22695f9ba2c3dffe53d662189f1",
-    "docs/PHASE2_PLANNING.md": "3d6a08bfaed04fc73822105cfacc189ce987b8326ffa23abcdff7a15e631acfe",
-    "docs/decisions/2026-09-29-phase1-capacity-basis.md": "d68b013303e1b6634bf8dc4993bf02be1259fba6f14fbd0473ab7c4ea912ae79"
+    "docs/evidence/phase1/completion-recovery.json": "2fc9b1e1c85346549eb840a40fa63006fecbb39bbf7bea08ace50f08c61b41ce"
   },
   "retained_synthetic_fixture": {
     "business_id": "SYNTHETIC-PHASE1-DURABILITY-20260929",
@@ -383,9 +363,9 @@
     },
     "membership_count_explanation": "The first count included three platform-managed admin-only grants from supabase_admin with SET=false and INHERIT=false. Final temporary executable membership count is zero; no platform grant was changed."
   },
-  "phase1_evidence_check_exit_code": 0,
-  "client_harness_validation": "15 independent PostgreSQL sessions passed each real concurrency test; same-work 1 winner/14 losers, different-work 15 distinct winners before any commit.",
-  "prior_head": "22fe95da6d973320ae9c295217f1186b35fe07b8",
+  "phase1_evidence_check_exit_code": 2,
+  "client_harness_validation": "Psycopg 3.2.10 installed; SSL Session Pooler connected. Four independent races passed. Twenty-session contention blocked at connection/barrier prerequisite.",
+  "prior_head": "29998d90806efd7f91d98ce1d0c7c8c9a4deb421",
   "completion_attempt_failures": [
     "Two contention attempts could not establish 20 sessions; no claims issued.",
     "Recovery attempt 1: Windows child output pipe timeout; disposable server explicitly stopped.",
@@ -394,14 +374,12 @@
     "Recovery attempt 5: unscoped health assertion counted other restored fixtures; scoped assertion corrected. Final recovery attempt 6 passed."
   ],
   "completion_evidence": {
-    "concurrency": "docs/evidence/phase1/concurrency-15.json",
+    "concurrency": "docs/evidence/phase1/completion-concurrency.json",
     "races": "docs/evidence/phase1/completion-races.json",
     "recovery": "docs/evidence/phase1/completion-recovery.json",
     "final-readback": "docs/evidence/phase1/completion-final-readback.json",
-    "offline": "docs/evidence/phase1/concurrency-15-offline.json",
-    "advisors": "docs/evidence/phase1/concurrency-15-advisors.json",
-    "concurrency-readback": "docs/evidence/phase1/concurrency-15-readback.json",
-    "secret-scan": "docs/evidence/phase1/concurrency-15-secret-scan.json"
+    "offline": "docs/evidence/phase1/completion-offline.json",
+    "advisors": "docs/evidence/phase1/completion-advisors.json"
   },
   "connection": {
     "mode": "Supabase Shared Pooler Session Mode",
@@ -419,7 +397,7 @@
     "reference_configured_expiry_utc": "2026-09-29T16:29:08Z",
     "access_or_revocation_verified": false,
     "reference_saved_in_repository": false,
-    "owner_action": "The prior signed reference is expired. It was not reused or persisted. No actual password exposure was observed; no credential modification was performed."
+    "owner_action": "Review exposure and decide whether to rotate the development credential. No credential modification performed."
   },
   "completion_final_readback": {
     "observed_at": "2026-09-29T16:49:06.873366+00:00",
@@ -479,11 +457,5 @@
   "git": {
     "completion_implementation_commit": "22102337fa676a8ce357d4d6ea1bfabe975468ce",
     "completion_prior_head": "29998d90806efd7f91d98ce1d0c7c8c9a4deb421"
-  },
-  "capacity_basis": {
-    "designed_maximum_executors": 10,
-    "stress_sessions": 15,
-    "margin_percent": 50,
-    "forward_requirement": "docs/architecture/CAPACITY_QUOTA_BANDWIDTH_GOVERNANCE.md"
   }
 }

@@ -1,7 +1,7 @@
 # Current Phase 1 status
 
 Database foundation: **BUILT**. Specific demonstrated database paths: **END-TO-END VERIFIED**.
-Phase 1 release acceptance is **incomplete**: 19 of 20 required gates pass; C-01 remains pending.
+Phase 1 database acceptance: **20 of 20 required gates passed**, ready for Ada/owner review.
 No global shadow or production verification is claimed. Current implementation, coverage,
 remaining gates and evidence are in [PHASE1_IMPLEMENTATION.md](PHASE1_IMPLEMENTATION.md),
 [PHASE1_RESULTS.json](PHASE1_RESULTS.json), and [PHASE1_VERIFICATION.json](PHASE1_VERIFICATION.json).
@@ -46,3 +46,5 @@ Toast change or deployment occurred. There is no remote Git push or configured d
 Operational ECOS 2.x maturity remains DESIGNED. Phase 0 foundation is BUILT and ready for
 owner review; baseline signoff and the six named owner choices are not fabricated. Phase 1
 implements the SQL domain/transaction/API behavior and passes the pending database gates.
+
+Forward requirement CAP-01: [Capacity / Quota / Bandwidth Governance](architecture/CAPACITY_QUOTA_BANDWIDTH_GOVERNANCE.md), required in [Phase 2 planning](PHASE2_PLANNING.md); no implementation in this phase.

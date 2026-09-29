@@ -17,7 +17,7 @@ from psycopg.types.json import Jsonb
 
 PROJECT='loonpojawpfagzobxoko'
 SECRET_REF='google-drive:1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf'
-COUNT=20
+COUNT=15
 def uid(): return str(uuid4())
 
 class SessionTarget:

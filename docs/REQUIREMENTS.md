@@ -1,7 +1,7 @@
 # Current Phase 1 status
 
 Database foundation: **BUILT**. Specific demonstrated database paths: **END-TO-END VERIFIED**.
-Phase 1 release acceptance is **incomplete**: 19 of 20 required gates pass; C-01 remains pending.
+Phase 1 database acceptance: **20 of 20 required gates passed**, ready for Ada/owner review.
 No global shadow or production verification is claimed. Current implementation, coverage,
 remaining gates and evidence are in [PHASE1_IMPLEMENTATION.md](PHASE1_IMPLEMENTATION.md),
 [PHASE1_RESULTS.json](PHASE1_RESULTS.json), and [PHASE1_VERIFICATION.json](PHASE1_VERIFICATION.json).
@@ -53,3 +53,5 @@ The worker registry preserves detailed per-worker acceptance including 2,587 fea
 Phase 0 owner review can now inspect concrete contracts. It is not signed automatically.
 Region/tier, RPO/RTO/retention, Gmail send authority, watchdog recipients and cutover policy
 are explicitly unresolved; none was used to authorize new effects.
+
+Forward requirement CAP-01: [Capacity / Quota / Bandwidth Governance](architecture/CAPACITY_QUOTA_BANDWIDTH_GOVERNANCE.md), required in [Phase 2 planning](PHASE2_PLANNING.md); no implementation in this phase.

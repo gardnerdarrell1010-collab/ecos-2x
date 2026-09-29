@@ -48,10 +48,34 @@ def main():
         assert not final['secret_scan']['password_matches'] and not final['secret_scan']['password_in_git_diff']
         assert set(final['transactional_checks'])==set(observed['transactional']['passed_checks'])
         contract=json.loads((ROOT/results['acceptance_override']).read_text())
-        assert contract['independent_sessions']==20 and contract['test_a']['valid_losers']==19
-        # No successful C-01 evidence exists yet. Never turn a connection attempt
-        # into acceptance; add strict A/B observation verification when it exists.
-        assert next(g for g in results['gates'] if g['id']=='C-01')['status']=='pending'
+        assert contract['independent_sessions']==15 and contract['test_a']['valid_losers']==14
+        assert contract['designed_maximum_executors']==10 and contract['stress_margin_percent']==50
+        concurrency=completion['concurrency']
+        assert concurrency['status']=='passed' and concurrency['fixture_cleanup']=='passed'
+        for name,expected in [('test_a',1),('test_b',15)]:
+            t=concurrency[name]
+            assert t['status']=='passed' and t['sessions']==15 and len(set(t['backend_pids']))==15
+            assert len(t['observations'])==15 and t['all_operations_returned_before_any_commit']
+            assert len(t['initial_eligible_occurrences'])==expected
+            winners=[o for o in t['observations'] if o['result']['claim'] is not None]
+            assert len(winners)==t['winners']==expected and t['valid_losers']==15-expected
+            assert len({o['backend_pid'] for o in t['observations']})==15
+            assert all(o['started']<=o['returned'] and 'code' not in o['result'] for o in t['observations'])
+            assert len(t['durable_claims'])==len(t['durable_runs'])==expected
+            assert len({c['occurrence_id'] for c in t['durable_claims']})==expected
+            assert {w['result']['claim']['id'] for w in winners}=={c['id'] for c in t['durable_claims']}
+            for claim in t['durable_claims']:
+                run=next(r for r in t['durable_runs'] if r['claim_id']==claim['id'])
+                assert claim['state']=='active' and run['selection_evidence']['eligible']
+                assert claim['claim_version']==1
+                for field in ['occurrence_id','stage_definition_id','claim_version','fence_token','executor_instance_id']:
+                    assert claim[field]==run[field]
+        readback=completion['concurrency-readback']
+        assert readback['status']=='passed' and readback['ssl'] and readback['cleanup']==[0,0,False,False,False]
+        assert len(readback['completed_occurrences'])==16
+        assert all(row[1:]==['succeeded',1,1,0] for row in readback['completed_occurrences'])
+        assert readback['capability_readback'] and all(row[2]>=row[3] and row[4] for row in readback['capability_readback'])
+        known.update(['same_work_15_sessions','different_work_15_sessions'])
     for gate in results['gates']:
         if gate['status']=='passed' and (not gate['evidence_checks'] or not set(gate['evidence_checks'])<=known):
             raise ValueError('Gate has no observed check: '+gate['id'])

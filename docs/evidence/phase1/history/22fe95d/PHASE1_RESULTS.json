@@ -1,18 +1,15 @@
 {
   "schema_version": "1.0.0",
   "manifest": "docs/PHASE1_MANIFEST.json",
-  "observed_at": "2026-09-29T17:08:04.309902+00:00",
+  "observed_at": "2026-09-29T16:51:18.234226+00:00",
   "gates": [
     {
       "id": "C-01",
       "required_phase": 1,
-      "assertion": "15 independent simultaneous sessions: same-work mutual exclusion and different-work parallelism, 50% headroom above 10 designed executors",
-      "status": "passed",
-      "evidence_checks": [
-        "same_work_15_sessions",
-        "different_work_15_sessions"
-      ],
-      "reason": "Real independent sessions: Test A one winner/14 losers/one claim-run; Test B 15 distinct claims returned before any commit; fence, readiness, capability and final completion readback passed.",
+      "assertion": "20 independent simultaneous sessions: one winner for same work; 20 distinct parallel claims for independent work",
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "Twenty sessions required under owner-approved correction. Fifteen independent backend sessions reached the start barrier; five failed while connecting. No claim operations ran; Test B not run. Required simultaneous session capacity unavailable in this attempt; no pool settings changed.",
       "acceptance_override": "contracts/acceptance/phase1-concurrency.json"
     },
     {
@@ -269,9 +266,9 @@
       "reason": "Deferred by committed Phase 1 manifest to Phase 4"
     }
   ],
-  "phase1_passed": 20,
-  "phase1_pending": 0,
+  "phase1_passed": 19,
+  "phase1_pending": 1,
   "later_deferred": 6,
-  "release_gate": "PASSED",
+  "release_gate": "BLOCKED",
   "acceptance_override": "contracts/acceptance/phase1-concurrency.json"
 }

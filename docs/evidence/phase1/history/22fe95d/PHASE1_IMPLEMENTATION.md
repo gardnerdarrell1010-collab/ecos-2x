@@ -2,8 +2,8 @@
 
 The database foundation is BUILT on ECOS 2.x Development (`loonpojawpfagzobxoko`),
 PostgreSQL 17.6, DEVELOPMENT / SHADOW ONLY. ECOS 1.x remains production authority.
-Phase 1 database acceptance is complete: 20 required catalog gates passed; 6
-belong to later phases. Ada/owner acceptance and merge review remain required. See [results](PHASE1_RESULTS.json) and [verification](PHASE1_VERIFICATION.json).
+Phase 1 acceptance is incomplete: 19 catalog gates passed, 1 remains pending and 6
+belong to later phases. See [results](PHASE1_RESULTS.json) and [verification](PHASE1_VERIFICATION.json).
 The original Phase 0 verification, baseline snapshots, catalog and manifest are preserved.
 
 The canonical migration head is `000018_replay_authorization_scope.sql`: 74 tables,
@@ -73,12 +73,10 @@ Remote development, clean rebuild and restored database each passed 31 SQL check
 Four independent race checks passed. Offline: 51 passed, 26 historical placeholders
 skipped, zero failures. Historical evidence is retained in evidence/phase1/history/29998d9.
 
-C-01 passed under the [current capacity basis](decisions/2026-09-29-phase1-capacity-basis.md):
-10 designed simultaneous executors and 15 independent DB sessions, a 50% stress margin.
-Test A: 1 winner, 14 valid losers, one live claim/run. Test B: 15 distinct valid claims,
-all claim calls returned before any commit. Both used genuine independent backend PIDs
-and barriers. All 16 occurrences subsequently completed with one immutable result each;
-fences, capability, readiness and cleanup reconciled. No pool or compute changes.
+C-01 alone is pending under the formal owner-approved 20-session correction in
+[the decision](decisions/2026-09-29-phase1-concurrency.md). Test A reached 15 backend
+sessions; five connections failed before the start barrier. No claims ran and no
+winner/loser result is inferred. Test B was not run. No capacity setting was changed.
 
 The connection is Supabase Shared Pooler Session Mode with SSL. The canonical secret
 reference is Google Drive file ID `1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf`; its value is
@@ -93,10 +91,10 @@ synthetic development data only and are not a second authoritative database.
 
 Run `python scripts/check.py` for offline checks and
 `python scripts/phase1_evidence_check.py --require-complete` for evidence integrity
-and release acceptance (exit 0 with all required gates passed). Current live entrypoint:
+and release acceptance (exit 2 while C-01 is pending). Current live entrypoint:
 `python scripts/phase1_live_completion.py --gates concurrency --secret-materialization
 <verified-governed-artifact-path> --report <report-path>`. No password belongs in arguments.
-The harness fixes 15 sessions, verifies independent backend PIDs and uses common start
+The harness fixes 20 sessions, verifies independent backend PIDs and uses common start
 and precommit barriers. It retains immutable synthetic evidence and removes fixture access.
 
 `scripts/phase1_recovery_completion.py --help` describes explicit client/runtime paths.
@@ -105,11 +103,8 @@ into a new private disposable runtime directory. Supply a fresh directory for ea
 Schema hashing normalizes line endings; row hashing fixes UTC and C sort collation.
 The corrected health/result assertions are scoped to their own synthetic fixtures.
 
-All 20 required gates pass; no Phase 1 blocker remains. Ready for Ada/owner acceptance
-and merge review; no automatic merge or Phase 2 implementation. The six later gates
-remain deferred. Global maturity remains DESIGNED; foundation BUILT and demonstrated
-database paths END-TO-END VERIFIED. No global SHADOW/PRODUCTION VERIFIED claim.
-
-CAP-01 is a required forward capability documented in
-[Capacity / Quota / Bandwidth Governance](architecture/CAPACITY_QUOTA_BANDWIDTH_GOVERNANCE.md)
-and [Phase 2 planning](PHASE2_PLANNING.md), without adding a Phase 1 telemetry project.
+Owner resolution of the 20-session capacity prerequisite is required. Do not lower the
+sample or change pool/compute/network settings implicitly. Complete C-01 before Phase 1
+acceptance or merge. No merge was performed and Phase 2 was not started. The six later
+gates remain deferred by the original manifest. Global maturity remains DESIGNED;
+foundation BUILT and demonstrated database paths END-TO-END VERIFIED.
