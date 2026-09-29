@@ -3,7 +3,7 @@
   "accepted_migrations_1_to_18": "byte-identical",
   "candidate_head": 20,
   "tested_ledger_matches_files": true,
-  "files_scanned": 295,
+  "files_scanned": 299,
   "secret_pattern_findings": [],
   "canonical_secret_retrieved": false,
   "exact_secret_comparison": "not needed; no persistent credentials retrieved",

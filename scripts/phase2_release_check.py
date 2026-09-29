@@ -9,7 +9,7 @@ def main():
     for m in items[:18]:
         baseline=subprocess.check_output(git+['show','c5731953a29256c013597cb04b938dff41f56de0:db/migrations/'+m['name']])
         assert hashlib.sha256(baseline).hexdigest()==m['sha256'],m['name']
-    test=json.loads((ROOT/'docs/evidence/phase2/clean-candidate-008.json').read_text())
+    test=json.loads((ROOT/'docs/evidence/phase2/clean-candidate-009.json').read_text())
     assert test['status']=='passed'
     assert test['catalog']['ledger']==[{k:v for k,v in m.items() if k!='sql'} for m in items]
     assert all(x['status']=='passed' for x in test['concurrency'].values())

@@ -88,6 +88,29 @@ def additional(target,Fixture):
             comparisons.append({'sample':sample['sample'],'source_values_sha256':sample['source_values_sha256'],'one_x_time_gate':expected,'two_x_time_gate':time_allowed,'classification':'EQUIVALENT','scope':'time admission only'})
         measurements['shadow_comparison']={'scope':inputs['scope'],'comparisons':comparisons,'global_shadow_verified':False}
         checks.append('bounded_readonly_1x_time_gate_shadow_equivalence')
+        from phase2_executor_client import GovernedClient
+        def connected_executor():
+            db=target.connect();db.execute('set role executor');db.commit();return db
+        client=GovernedClient(connected_executor)
+        try:
+            for _ in range(2):
+                response=client.operate('executor.heartbeat',f.request({'observed_at':datetime.now(timezone.utc).isoformat(),'evidence_hash':'a'*64,'reported_running':0,'load_basis_points':0}))
+                assert 'code' not in response,response
+            assert client.metrics['connections_opened']==1
+            measurements['client']=client.metrics.copy()
+        finally:client.close()
+        import psycopg
+        delays=[];attempts=[]
+        def saturated():
+            attempts.append(1);raise psycopg.OperationalError('synthetic connection pressure')
+        client=GovernedClient(saturated,sleep=delays.append)
+        try:
+            try:client.operate('executor.heartbeat',f.request({}));raise AssertionError('Pressure must fail closed')
+            except psycopg.OperationalError:pass
+            assert len(attempts)==3 and delays==[0.25,1.0]
+            measurements['connection_pressure']={'attempts':len(attempts),'backoff_seconds':delays,'bounded':True}
+        finally:client.close()
+        checks.append('client_reuses_connection_measures_bytes_latency_bounded_pressure_backoff')
         measurements['health']=admin('select ecos.control_plane_health()')[0][0]
         measurements['package_bytes']=admin('select min(payload_bytes),max(payload_bytes),count(*) from ecos.package_measurement where principal_id=%s',(f.p,))[0]
         for view in ('v_executor_status','v_resource_pressure','v_current_claims','v_ready_work','v_blocked_work','v_recent_failures','v_dead_letters','v_work_aging'):

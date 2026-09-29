@@ -1,0 +1,1903 @@
+{
+  "applied": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"success\":true}"
+      }
+    ],
+    "isError": false
+  },
+  "catalog": {
+    "views": [
+      [
+        "ecos",
+        "v_blocked_work",
+        "ccd022ecf5a9faedc45a301a1f427bd0"
+      ],
+      [
+        "ecos",
+        "v_current_claims",
+        "69aa49c3c1b9989f5910273bd8a3933b"
+      ],
+      [
+        "ecos",
+        "v_dead_letters",
+        "5ef680c0e310bac3b2d727a9b3b93dc1"
+      ],
+      [
+        "ecos",
+        "v_executor_status",
+        "3b640755a63a6b077122802bb3354193"
+      ],
+      [
+        "ecos",
+        "v_memory_heads",
+        "12b357721fea1fbd615aff5adf0d43b4"
+      ],
+      [
+        "ecos",
+        "v_node_health",
+        "3f14cf8a242838f228b33e4bbe37aa69"
+      ],
+      [
+        "ecos",
+        "v_outbox_health",
+        "5f0ce021ccfbbc925d085ab94c9c610a"
+      ],
+      [
+        "ecos",
+        "v_provider_reconciliation",
+        "50c1099325cf2dd1b23c388d463a8d3d"
+      ],
+      [
+        "ecos",
+        "v_ready_work",
+        "f2830aa3ef4a7636e3485948df766a6d"
+      ],
+      [
+        "ecos",
+        "v_recent_failures",
+        "84355241cff10e2148c42a2c89f9900e"
+      ],
+      [
+        "ecos",
+        "v_resource_pressure",
+        "54e7ca70a7bb73872ccf75f30738c815"
+      ],
+      [
+        "ecos",
+        "v_system_status_header",
+        "4579f3f058f956a7be0f3836f663525d"
+      ],
+      [
+        "ecos",
+        "v_work_aging",
+        "9fc0617f6a66dccba76e5dc3b900c365"
+      ],
+      [
+        "ecos",
+        "v_work_health",
+        "bbb92f7f0d61c1340c9d6e22b23c0782"
+      ],
+      [
+        "ecos",
+        "v_work_readiness",
+        "9c9a409252e0372cfaf77295b31d3035"
+      ]
+    ],
+    "ledger": [
+      {
+        "name": "000001_foundation.sql",
+        "sha256": "e708bca782117bf21f06bc98d6f28d0f9817a19e15386d4d220ff9ce1dbfa2b7",
+        "version": 1
+      },
+      {
+        "name": "000002_typed_foundation.sql",
+        "sha256": "72885367066299ed28af5e0094be155832fe6652c3fed70b1cfd22e6aaf65bbd",
+        "version": 2
+      },
+      {
+        "name": "000003_contract_guards.sql",
+        "sha256": "63d3a45b059752e93cd483642666195483c0dfc37c911e23f71547e87f4c6b67",
+        "version": 3
+      },
+      {
+        "name": "000004_governed_operations.sql",
+        "sha256": "b2e4190ec076070ddbd7a5bbd697c448b3780b92f3e810f1d87766a04adfa4bf",
+        "version": 4
+      },
+      {
+        "name": "000005_operation_boundary.sql",
+        "sha256": "027e644b6e6e10f5a252f515cdd91b930791b697c19cd29d088784edcaf965b6",
+        "version": 5
+      },
+      {
+        "name": "000006_governance_support.sql",
+        "sha256": "e867e5aafd638782a51864c68447ae4c86db6c1ebb7478cc906baf22bd4c9c1c",
+        "version": 6
+      },
+      {
+        "name": "000007_operation_diagnostics.sql",
+        "sha256": "9e6766d480a2543714b5395449b3fc234a4ab9d7bc51819a490db6a807815f08",
+        "version": 7
+      },
+      {
+        "name": "000008_event_payload_type.sql",
+        "sha256": "24589ea21ea367d565d4a80a0d4fd4468d18bb39ec31227c947f3d0bebd8d64b",
+        "version": 8
+      },
+      {
+        "name": "000009_sqlstate_diagnostics.sql",
+        "sha256": "57e381878181ed6ac5ae8889a6785e263584315aeabfbe1a89d68f10d028568d",
+        "version": 9
+      },
+      {
+        "name": "000010_fence_gate_expression.sql",
+        "sha256": "4fc84100d3d01ac388a746d0bf5f516fe7661eb8113770b406cbbaeca9e1b383",
+        "version": 10
+      },
+      {
+        "name": "000011_proposal_version_union.sql",
+        "sha256": "e30265c1aed60cd0564098fc63cd8b22c9a18129b68a8d84ebb6623e3178756b",
+        "version": 11
+      },
+      {
+        "name": "000012_bootstrap_binding_union.sql",
+        "sha256": "c37242db003d72b02ad7bcb839bb94025aabb03b6cba86b0c20c26ef21c0ae47",
+        "version": 12
+      },
+      {
+        "name": "000013_scope_and_gate_hardening.sql",
+        "sha256": "abc983766a825d3b9069168032adb445e312617d7f6ea7f7e3b4370b12bbc04d",
+        "version": 13
+      },
+      {
+        "name": "000014_outbox_scope.sql",
+        "sha256": "a4f01bd97911319a4476f284509996b3596fcae9eac7bd85cf0d65052eb5c0f5",
+        "version": 14
+      },
+      {
+        "name": "000015_bootstrap_findings_and_vocabulary.sql",
+        "sha256": "fc37ee462cc6a0fad16291d797990702fbeb8ec67ab89ae8280ab2e93df36945",
+        "version": 15
+      },
+      {
+        "name": "000016_scope_and_heartbeat_freshness.sql",
+        "sha256": "1a4a6668e3b9caa14072a950f0f4c3e85fcac5f23e08db6dd985f3066e3dc4a3",
+        "version": 16
+      },
+      {
+        "name": "000017_reconciled_outbox_ack_recovery.sql",
+        "sha256": "c0f48e9bf31a4da70aa385976245f06c39caf5c5ac4c29ee829e31cdf910484d",
+        "version": 17
+      },
+      {
+        "name": "000018_replay_authorization_scope.sql",
+        "sha256": "a2b56a7ff378784e652154f664e54cbe286709051359ae8ac90a9ffd5dfa3e70",
+        "version": 18
+      },
+      {
+        "name": "000019_control_plane_contracts.sql",
+        "sha256": "ff8e1f72b794cc24c483a4d6bded2d0559b8cb9af3f8dcfeef1234ee5fcd8a17",
+        "version": 19
+      },
+      {
+        "name": "000020_execution_control_plane.sql",
+        "sha256": "9c9388d3ef089cc133d258410ea968089b3deb78aca237fd1ed1a4cef81e1a5e",
+        "version": 20
+      }
+    ],
+    "functions": [
+      [
+        "ecos",
+        "ack_outbox",
+        "item uuid, token uuid",
+        "e8a50ab04d9625471fa2593d56fc4b8d"
+      ],
+      [
+        "ecos",
+        "begin_synthetic_attempt",
+        "command uuid, request_hash_ text",
+        "7e3c7e89cfe0dfa1b0033f3b3fbdd520"
+      ],
+      [
+        "ecos",
+        "bootstrap_package",
+        "",
+        "e9afa3982775dec2a92db2830cc5b3e8"
+      ],
+      [
+        "ecos",
+        "claim_outbox",
+        "lease_seconds integer",
+        "5c3c3c39569c273a3fd221b765b27307"
+      ],
+      [
+        "ecos",
+        "control_plane_health",
+        "",
+        "cdf3f13a25e2f04f2f4b7bf30c4bac31"
+      ],
+      [
+        "ecos",
+        "health_summary",
+        "",
+        "d82287221c132836f15761719ffd1247"
+      ],
+      [
+        "ecos",
+        "operate",
+        "operation text, request jsonb",
+        "63437b32c1318d3b80c8afd08e3d3f2c"
+      ],
+      [
+        "ecos",
+        "read_record",
+        "kind text, entity uuid",
+        "95663952c855e3fa3f4e97c1fb7266fb"
+      ],
+      [
+        "ecos",
+        "record_heartbeat",
+        "observed timestamp with time zone, evidence_hash text",
+        "7acd499667a892fea502cdb29dcf2493"
+      ],
+      [
+        "ecos_meta",
+        "apply_operation",
+        "op text, ctx jsonb, args jsonb",
+        "14e946cd2a70d77b064e249ab6894940"
+      ],
+      [
+        "ecos_meta",
+        "apply_operation_phase1",
+        "op text, ctx jsonb, args jsonb",
+        "f86ad2b5ff3f3408c958fb1dab1b4ca8"
+      ],
+      [
+        "ecos_meta",
+        "assert_contract",
+        "name text, v jsonb",
+        "e54416e367a5ad6a75588d1252bd5fe5"
+      ],
+      [
+        "ecos_meta",
+        "assignment_guard",
+        "",
+        "7e22a86481a119f6d06fcf4ed6cce6c5"
+      ],
+      [
+        "ecos_meta",
+        "canonical_json",
+        "v jsonb",
+        "466170385d7dbf4534781838d767ab0c"
+      ],
+      [
+        "ecos_meta",
+        "check_fence",
+        "ctx jsonb, f jsonb",
+        "fccbd8edaac0b20a47600277c7beb00b"
+      ],
+      [
+        "ecos_meta",
+        "claim_work",
+        "ctx jsonb, args jsonb",
+        "6b0acd0c58dfddd20e80e4e71431c123"
+      ],
+      [
+        "ecos_meta",
+        "commit_proposal",
+        "ctx jsonb, p jsonb",
+        "a3aac772e83dd740a1e8b436016f0587"
+      ],
+      [
+        "ecos_meta",
+        "content_hash",
+        "v jsonb",
+        "cad2929d7b834db9a2d825834a0e1540"
+      ],
+      [
+        "ecos_meta",
+        "current_principal",
+        "",
+        "e5eec16b354c91051db5a24091412d33"
+      ],
+      [
+        "ecos_meta",
+        "delivery_attempt_guard",
+        "",
+        "b8b17576442bb8cc86db5cf8e29c5094"
+      ],
+      [
+        "ecos_meta",
+        "domain_effect",
+        "op text, ctx jsonb, args jsonb, entity uuid, version_ bigint",
+        "fdda75d4c6b39954842f6fc393b58ab7"
+      ],
+      [
+        "ecos_meta",
+        "execution_event",
+        "run_id uuid, state_ text, reason text, hash_ text",
+        "69bd5cd78b569293a95364981f276640"
+      ],
+      [
+        "ecos_meta",
+        "execution_reference_guard",
+        "",
+        "931ace7a8c67401cb3951d91ca75e09f"
+      ],
+      [
+        "ecos_meta",
+        "fence",
+        "r jsonb",
+        "aafc2f6c0387d611e7713ea8a6e6fd21"
+      ],
+      [
+        "ecos_meta",
+        "forbid_evidence_change",
+        "",
+        "229c74582724e723758d6f168a815b8a"
+      ],
+      [
+        "ecos_meta",
+        "gate_configuration_lock",
+        "",
+        "e1022a74bf05dd517edeb318f9eadd3e"
+      ],
+      [
+        "ecos_meta",
+        "graph_guard",
+        "",
+        "53833432e73fa887d4cd8ada3b92cdd9"
+      ],
+      [
+        "ecos_meta",
+        "guard_entity",
+        "",
+        "e769a4d92192b7c216d82fc9b58dd29b"
+      ],
+      [
+        "ecos_meta",
+        "insert_wire",
+        "kind text, v jsonb",
+        "f5c50697c0f1f8cd67d357d5e206d781"
+      ],
+      [
+        "ecos_meta",
+        "local_occurrence",
+        "local_time timestamp without time zone, zone text, gap_policy text, fold_policy text",
+        "227d05e2b306281d6a3674d486d07fb1"
+      ],
+      [
+        "ecos_meta",
+        "materialize_occurrence",
+        "schedule uuid, expected bigint, stage uuid, logical_time timestamp without time zone",
+        "3f169403226258748fbe71ac696307bb"
+      ],
+      [
+        "ecos_meta",
+        "memory_version_guard",
+        "",
+        "014691f28505be3fc786c1be2fdbef2c"
+      ],
+      [
+        "ecos_meta",
+        "notify_transition",
+        "task_id_ uuid, eid uuid, ctx jsonb",
+        "7f37ec97941dc2026c9dfff4fe9d8f6c"
+      ],
+      [
+        "ecos_meta",
+        "operation_authorized",
+        "op text, role_ name",
+        "506bbf170bac0f995a54037cb17a0f43"
+      ],
+      [
+        "ecos_meta",
+        "operation_role_guard",
+        "",
+        "a271ed244de9cde96dfb36344bf6c031"
+      ],
+      [
+        "ecos_meta",
+        "presence_heartbeat",
+        "ctx jsonb, args jsonb",
+        "6a60bc9d648386590acb43da36be9e94"
+      ],
+      [
+        "ecos_meta",
+        "reconcile_schedule",
+        "",
+        "23081a8e894b6568156df66a67fd4b9a"
+      ],
+      [
+        "ecos_meta",
+        "record_reservations",
+        "",
+        "abbc406816477650c960e7e348d837f6"
+      ],
+      [
+        "ecos_meta",
+        "record_value",
+        "kind text, entity uuid, lock_ boolean",
+        "b4b6c37d612661398f4f34e42b4a62bb"
+      ],
+      [
+        "ecos_meta",
+        "recover_occurrence",
+        "oid uuid",
+        "2694d00521124612092fcfe4ab988cc0"
+      ],
+      [
+        "ecos_meta",
+        "release_dependents",
+        "",
+        "d40158ae2da69c2a39b1c1c1ac6f3156"
+      ],
+      [
+        "ecos_meta",
+        "repair_expired_claim",
+        "oid uuid, correlation uuid",
+        "7d5a4201062691eb0d5e01ff6667e321"
+      ],
+      [
+        "ecos_meta",
+        "require_access",
+        "principal uuid, kind text, entity uuid",
+        "c5a78a879bc1ab4b1fa6b86c18147bc3"
+      ],
+      [
+        "ecos_meta",
+        "require_operation_scope",
+        "op text, args jsonb, principal uuid",
+        "b84030d5b4fc08193d0dca07d57369e5"
+      ],
+      [
+        "ecos_meta",
+        "require_operation_scope_phase1",
+        "op text, args jsonb, principal uuid",
+        "46e2e3fa4224722f820f45d0ca57250c"
+      ],
+      [
+        "ecos_meta",
+        "require_package_scope",
+        "principal uuid, package_ jsonb",
+        "3eb4b96b7d5cc340634135e6c2bd3b77"
+      ],
+      [
+        "ecos_meta",
+        "reserve_resources",
+        "",
+        "ea90c3e481a3f358b1a3b840f83d7b07"
+      ],
+      [
+        "ecos_meta",
+        "resource_pressure",
+        "provider_ text, metric_ text, at_ timestamp with time zone",
+        "3637b9cae5d232bde9fcafb5033ec7d7"
+      ],
+      [
+        "ecos_meta",
+        "run_wire",
+        "r jsonb",
+        "e2989ce3b73696f1c18235bc57b10009"
+      ],
+      [
+        "ecos_meta",
+        "schedule_guard",
+        "",
+        "f7b50440676c8a05964ba527d2f486c8"
+      ],
+      [
+        "ecos_meta",
+        "selection",
+        "oid uuid, instance uuid, at_ timestamp with time zone",
+        "cc229dcb95868c68087c6b3c8fb004dc"
+      ],
+      [
+        "ecos_meta",
+        "selection_phase1",
+        "oid uuid, instance uuid, at_ timestamp with time zone",
+        "1faec1ced12d43bf4cf03711ee6c7555"
+      ],
+      [
+        "ecos_meta",
+        "valid_json",
+        "s jsonb, v jsonb, depth integer",
+        "53a8362898a802c98090b498256fb23d"
+      ],
+      [
+        "ecos_meta",
+        "verify_evidence",
+        "principal uuid, ev jsonb",
+        "695fd1de2990adfde96bd09caf4ca340"
+      ],
+      [
+        "ecos_meta",
+        "verify_sources",
+        "principal uuid, refs jsonb",
+        "214d1251f8b2a8b9a80d3f86f68f9302"
+      ],
+      [
+        "ecos_meta",
+        "wake_work",
+        "oid uuid, corr uuid, source_ text",
+        "c6771e071e98d5ae1289af0faf9f8c58"
+      ],
+      [
+        "ecos_meta",
+        "watchdog",
+        "correlation uuid",
+        "5ebe48b17d8e73a3666f84242f95c71c"
+      ],
+      [
+        "ecos_meta",
+        "work_package",
+        "ctx jsonb, f jsonb",
+        "a10295dcf7cf29748d65c7e961106e76"
+      ],
+      [
+        "ecos_migration",
+        "quarantine_row",
+        "batch uuid, locator text, raw jsonb",
+        "5d6ded71ba491f9e61119e29bc776629"
+      ]
+    ],
+    "relations": [
+      [
+        "ecos",
+        "approval_decision",
+        "r"
+      ],
+      [
+        "ecos",
+        "approval_request",
+        "r"
+      ],
+      [
+        "ecos",
+        "artifact",
+        "r"
+      ],
+      [
+        "ecos",
+        "backup_record",
+        "r"
+      ],
+      [
+        "ecos",
+        "capability",
+        "r"
+      ],
+      [
+        "ecos",
+        "command_occurrence",
+        "r"
+      ],
+      [
+        "ecos",
+        "communication",
+        "r"
+      ],
+      [
+        "ecos",
+        "communication_processing",
+        "r"
+      ],
+      [
+        "ecos",
+        "control_plane_event",
+        "r"
+      ],
+      [
+        "ecos",
+        "dead_letter_item",
+        "r"
+      ],
+      [
+        "ecos",
+        "delivery",
+        "r"
+      ],
+      [
+        "ecos",
+        "delivery_attempt",
+        "r"
+      ],
+      [
+        "ecos",
+        "domain_event",
+        "r"
+      ],
+      [
+        "ecos",
+        "emergency_intent",
+        "r"
+      ],
+      [
+        "ecos",
+        "execution_event",
+        "r"
+      ],
+      [
+        "ecos",
+        "execution_run",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor_capability",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor_instance",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor_presence",
+        "r"
+      ],
+      [
+        "ecos",
+        "export_package",
+        "r"
+      ],
+      [
+        "ecos",
+        "fact",
+        "r"
+      ],
+      [
+        "ecos",
+        "heartbeat",
+        "r"
+      ],
+      [
+        "ecos",
+        "heartbeat_load",
+        "r"
+      ],
+      [
+        "ecos",
+        "integrity_finding",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_compaction_run",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_record",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_reference",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_scope",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_version",
+        "r"
+      ],
+      [
+        "ecos",
+        "notification",
+        "r"
+      ],
+      [
+        "ecos",
+        "outbox_item",
+        "r"
+      ],
+      [
+        "ecos",
+        "package_measurement",
+        "r"
+      ],
+      [
+        "ecos",
+        "party",
+        "r"
+      ],
+      [
+        "ecos",
+        "project",
+        "r"
+      ],
+      [
+        "ecos",
+        "proposal_submission",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_attempt",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_command",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_receipt",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_result",
+        "r"
+      ],
+      [
+        "ecos",
+        "repair_action",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_budget",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_health",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_metric",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_provider",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_reservation",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_usage_window",
+        "r"
+      ],
+      [
+        "ecos",
+        "restore_test",
+        "r"
+      ],
+      [
+        "ecos",
+        "retry_policy",
+        "r"
+      ],
+      [
+        "ecos",
+        "schedule_occurrence",
+        "r"
+      ],
+      [
+        "ecos",
+        "semantic_proposal",
+        "r"
+      ],
+      [
+        "ecos",
+        "stage_capability_requirement",
+        "r"
+      ],
+      [
+        "ecos",
+        "stage_resource_requirement",
+        "r"
+      ],
+      [
+        "ecos",
+        "stage_result",
+        "r"
+      ],
+      [
+        "ecos",
+        "task",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_assignment",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_dependency",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_evidence",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_schedule",
+        "r"
+      ],
+      [
+        "ecos",
+        "v_blocked_work",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_current_claims",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_dead_letters",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_executor_status",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_memory_heads",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_node_health",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_outbox_health",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_provider_reconciliation",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_ready_work",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_recent_failures",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_resource_pressure",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_system_status_header",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_work_aging",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_work_health",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_work_readiness",
+        "v"
+      ],
+      [
+        "ecos",
+        "work_approval",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_claim",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_context",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_definition",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_dependency",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_occurrence",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_priority",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_stage_definition",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_wakeup",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "contract_schema",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "control",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "database_identity",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "entity_contract",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "executor_policy",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "notification_policy",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "object_grant",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "operation_audit",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "operation_contract",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "operation_receipt",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "outbox_lease",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "principal_binding",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "principal_clearance",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "principal_operation",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "proposal_item_result",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "schema_migration",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "transition_policy",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "legacy_identity",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "quarantine_item",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "raw_migration_batch",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "raw_source_row",
+        "r"
+      ]
+    ]
+  },
+  "phase1": [
+    {
+      "passed_checks": [
+        "task_transition_audit_outbox",
+        "idempotency_and_failure_atomicity",
+        "executor_direct_mutation_denied",
+        "evidence_and_fact_operations",
+        "atomic_notification_delivery_command",
+        "outbox_lease_recovery",
+        "unknown_outcome_reconciliation_and_duplicate_result",
+        "capability_pair_filter",
+        "claim_renewal",
+        "expired_claim_fencing_repair",
+        "immutable_completion_and_dependency_release",
+        "proposal_commit_hash_and_restart",
+        "memory_activation_supersession",
+        "bootstrap_database_package",
+        "stale_heartbeat_emergency_intent",
+        "typed_quarantine_four_defects",
+        "principal_and_role_replay_denial",
+        "proposal_stale_sibling_and_dependent_isolation",
+        "memory_cas_and_immutability",
+        "approval_expiry_revocation_maintenance_gates",
+        "dependency_cycle_rejected",
+        "dst_gap_and_fold_policies",
+        "claim_run_rollback_and_stage_preservation",
+        "all_ten_operations_principal_authorization",
+        "memory_read_role_and_sensitivity_scope",
+        "out_of_order_provider_result_preserves_success",
+        "recurrence_identity_and_schedule_update",
+        "delayed_heartbeat_cannot_revive_executor",
+        "five_stage_single_task_crash_recovery_preserves_hashes",
+        "revoked_scope_blocks_idempotent_replay",
+        "proposal_conflicting_invalid_ambiguous_isolation"
+      ]
+    }
+  ],
+  "smoke": [
+    {
+      "passed_checks": [
+        "register",
+        "next_package_claim",
+        "renew",
+        "complete_readback"
+      ]
+    }
+  ],
+  "security": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"result\":{\"lints\":[]}}"
+      }
+    ],
+    "isError": false
+  },
+  "readback": [
+    {
+      "identity": {
+        "singleton": true,
+        "architecture_version": "2.x",
+        "schema_version": "1.0.0",
+        "environment": "development",
+        "authority": "non_production",
+        "provider_effects_enabled": false
+      },
+      "migration_head": 20,
+      "principal_bindings": 0,
+      "active_claims": 0,
+      "presence_rows": 0,
+      "maintenance": false,
+      "executor_set": false,
+      "operations_api_set": false,
+      "health": {
+        "as_of": "2026-09-29T18:43:43.791802+00:00",
+        "authority": "PRE_CUTOVER_NON_AUTHORITATIVE",
+        "claim_oldest": null,
+        "active_claims": 0,
+        "outbox_oldest": null,
+        "query_latency": null,
+        "outbox_backlog": 0,
+        "max_connections": 60,
+        "stale_executors": 4,
+        "active_executors": 0,
+        "pool_utilization": null,
+        "visible_lock_waits": 0,
+        "unavailable_metrics": [
+          "pool_utilization",
+          "query_latency",
+          "host_cpu",
+          "host_bandwidth"
+        ],
+        "visible_connections": 8
+      }
+    }
+  ],
+  "existing_data_comparison": {
+    "tables_checked": 71,
+    "changed_tables": [],
+    "status": "passed",
+    "excluded_expected_changes": [
+      "ecos_meta.schema_migration",
+      "ecos_meta.contract_schema",
+      "ecos_meta.operation_contract"
+    ],
+    "note": "Existing persistent table contents unchanged; synthetic hosted tests rolled back."
+  },
+  "existing_data_before": [
+    {
+      "object": "ecos.approval_decision",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.approval_request",
+      "rows": 2,
+      "digest": "fed420d5749dd5f059560103962d1245"
+    },
+    {
+      "object": "ecos.artifact",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.backup_record",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.capability",
+      "rows": 18,
+      "digest": "249970df339fc4a449400594aedc0a1d"
+    },
+    {
+      "object": "ecos.command_occurrence",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.communication",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.communication_processing",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.dead_letter_item",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.delivery",
+      "rows": 1,
+      "digest": "03e804c764180bb7bbe9ee7db1ef9946"
+    },
+    {
+      "object": "ecos.delivery_attempt",
+      "rows": 1,
+      "digest": "2bf586c794669b6f756a911b90857a90"
+    },
+    {
+      "object": "ecos.domain_event",
+      "rows": 1,
+      "digest": "8f6a2deb7e39a10d6064312c4be04e3d"
+    },
+    {
+      "object": "ecos.emergency_intent",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.execution_event",
+      "rows": 33,
+      "digest": "c152b0ad70883b77d6d824766ca12d4a"
+    },
+    {
+      "object": "ecos.execution_run",
+      "rows": 17,
+      "digest": "8a93c5fb5950c3cc04a3515301a06432"
+    },
+    {
+      "object": "ecos.executor",
+      "rows": 4,
+      "digest": "00ddde1119f410cb6f4e4d5b96e18650"
+    },
+    {
+      "object": "ecos.executor_capability",
+      "rows": 4,
+      "digest": "b5d53252e6db5e9bca38f1497d3e600f"
+    },
+    {
+      "object": "ecos.executor_instance",
+      "rows": 4,
+      "digest": "e1f3f985eb2ee2b347d35a9db107a252"
+    },
+    {
+      "object": "ecos.export_package",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.fact",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.heartbeat",
+      "rows": 50,
+      "digest": "15a799e1b11b0edb121bc3e884524ef6"
+    },
+    {
+      "object": "ecos.integrity_finding",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_compaction_run",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_record",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_reference",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_scope",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_version",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.notification",
+      "rows": 1,
+      "digest": "f3e31e93cd456bf71d9b315ff95da19d"
+    },
+    {
+      "object": "ecos.outbox_item",
+      "rows": 2,
+      "digest": "1ff05dc1c14ab29ef85807469a76f9a4"
+    },
+    {
+      "object": "ecos.party",
+      "rows": 1,
+      "digest": "98ad50ca78d8dece046ae56eb1cbdd19"
+    },
+    {
+      "object": "ecos.project",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.provider_attempt",
+      "rows": 1,
+      "digest": "d3960d3e85c8e4cee6c2f44d89bfc19b"
+    },
+    {
+      "object": "ecos.provider_command",
+      "rows": 1,
+      "digest": "983a7c28ea419e2d3ff091d73874bc2f"
+    },
+    {
+      "object": "ecos.provider_receipt",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.provider_result",
+      "rows": 1,
+      "digest": "1327064309f393f8ef8dbf5b184a0c77"
+    },
+    {
+      "object": "ecos.repair_action",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.restore_test",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.retry_policy",
+      "rows": 4,
+      "digest": "e7838d7b13d93f6bb5746f25034f51d7"
+    },
+    {
+      "object": "ecos.schedule_occurrence",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.semantic_proposal",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.stage_capability_requirement",
+      "rows": 4,
+      "digest": "f3536bba63d18c2269df10893db2da60"
+    },
+    {
+      "object": "ecos.stage_result",
+      "rows": 16,
+      "digest": "04d73c8c3f966fbfbe13ff91ad26adca"
+    },
+    {
+      "object": "ecos.task",
+      "rows": 7,
+      "digest": "9972988bb78766c7ad9cf3ddcea344bc"
+    },
+    {
+      "object": "ecos.task_assignment",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.task_dependency",
+      "rows": 1,
+      "digest": "3e2a0d3673c9dde9a3e095c37f3fa14f"
+    },
+    {
+      "object": "ecos.task_evidence",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.task_schedule",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.work_approval",
+      "rows": 2,
+      "digest": "578398aa0813e06e16dd29f3dbba30d1"
+    },
+    {
+      "object": "ecos.work_claim",
+      "rows": 17,
+      "digest": "373009930461e3c8fea909fb199ecb74"
+    },
+    {
+      "object": "ecos.work_definition",
+      "rows": 4,
+      "digest": "81684ad26a4484548be520d124c5d830"
+    },
+    {
+      "object": "ecos.work_dependency",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.work_occurrence",
+      "rows": 21,
+      "digest": "cc800ff9859db9be0b55df0408f386fc"
+    },
+    {
+      "object": "ecos.work_priority",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.work_stage_definition",
+      "rows": 4,
+      "digest": "e3450ba94941909f18cd0e034d2fd1c1"
+    },
+    {
+      "object": "ecos_meta.control",
+      "rows": 1,
+      "digest": "bc6197199829b07ce152a3e7e28f1d85"
+    },
+    {
+      "object": "ecos_meta.database_identity",
+      "rows": 1,
+      "digest": "056e71b7f0fd3816e406bf929dbee11d"
+    },
+    {
+      "object": "ecos_meta.entity_contract",
+      "rows": 45,
+      "digest": "206eec6f885a6175b2c7d1d340260398"
+    },
+    {
+      "object": "ecos_meta.notification_policy",
+      "rows": 1,
+      "digest": "cac6055c602640db2d205ec6f9cd1870"
+    },
+    {
+      "object": "ecos_meta.object_grant",
+      "rows": 24,
+      "digest": "9cc936e1dd4226e3e124460907f192ee"
+    },
+    {
+      "object": "ecos_meta.operation_audit",
+      "rows": 50,
+      "digest": "7fe822e85dee37455fc5729ef2106011"
+    },
+    {
+      "object": "ecos_meta.operation_receipt",
+      "rows": 50,
+      "digest": "544982b7e9194264c7fc945c550da5d3"
+    },
+    {
+      "object": "ecos_meta.outbox_lease",
+      "rows": 2,
+      "digest": "3c3939e44a78fa2411abb3d5f312e03b"
+    },
+    {
+      "object": "ecos_meta.principal_binding",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_meta.principal_clearance",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_meta.principal_operation",
+      "rows": 42,
+      "digest": "c05b4fbea3b8f9b36efbb59e9cdec59a"
+    },
+    {
+      "object": "ecos_meta.proposal_item_result",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_meta.transition_policy",
+      "rows": 7,
+      "digest": "90ef902039a76016548f00c47c6e53e0"
+    },
+    {
+      "object": "ecos_migration.legacy_identity",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_migration.quarantine_item",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_migration.raw_migration_batch",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_migration.raw_source_row",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    }
+  ],
+  "existing_data_after": [
+    {
+      "object": "ecos.approval_decision",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.approval_request",
+      "rows": 2,
+      "digest": "fed420d5749dd5f059560103962d1245"
+    },
+    {
+      "object": "ecos.artifact",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.backup_record",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.capability",
+      "rows": 18,
+      "digest": "249970df339fc4a449400594aedc0a1d"
+    },
+    {
+      "object": "ecos.command_occurrence",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.communication",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.communication_processing",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.dead_letter_item",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.delivery",
+      "rows": 1,
+      "digest": "03e804c764180bb7bbe9ee7db1ef9946"
+    },
+    {
+      "object": "ecos.delivery_attempt",
+      "rows": 1,
+      "digest": "2bf586c794669b6f756a911b90857a90"
+    },
+    {
+      "object": "ecos.domain_event",
+      "rows": 1,
+      "digest": "8f6a2deb7e39a10d6064312c4be04e3d"
+    },
+    {
+      "object": "ecos.emergency_intent",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.execution_event",
+      "rows": 33,
+      "digest": "c152b0ad70883b77d6d824766ca12d4a"
+    },
+    {
+      "object": "ecos.execution_run",
+      "rows": 17,
+      "digest": "8a93c5fb5950c3cc04a3515301a06432"
+    },
+    {
+      "object": "ecos.executor",
+      "rows": 4,
+      "digest": "00ddde1119f410cb6f4e4d5b96e18650"
+    },
+    {
+      "object": "ecos.executor_capability",
+      "rows": 4,
+      "digest": "b5d53252e6db5e9bca38f1497d3e600f"
+    },
+    {
+      "object": "ecos.executor_instance",
+      "rows": 4,
+      "digest": "e1f3f985eb2ee2b347d35a9db107a252"
+    },
+    {
+      "object": "ecos.export_package",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.fact",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.heartbeat",
+      "rows": 50,
+      "digest": "15a799e1b11b0edb121bc3e884524ef6"
+    },
+    {
+      "object": "ecos.integrity_finding",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_compaction_run",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_record",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_reference",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_scope",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.memory_version",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.notification",
+      "rows": 1,
+      "digest": "f3e31e93cd456bf71d9b315ff95da19d"
+    },
+    {
+      "object": "ecos.outbox_item",
+      "rows": 2,
+      "digest": "1ff05dc1c14ab29ef85807469a76f9a4"
+    },
+    {
+      "object": "ecos.party",
+      "rows": 1,
+      "digest": "98ad50ca78d8dece046ae56eb1cbdd19"
+    },
+    {
+      "object": "ecos.project",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.provider_attempt",
+      "rows": 1,
+      "digest": "d3960d3e85c8e4cee6c2f44d89bfc19b"
+    },
+    {
+      "object": "ecos.provider_command",
+      "rows": 1,
+      "digest": "983a7c28ea419e2d3ff091d73874bc2f"
+    },
+    {
+      "object": "ecos.provider_receipt",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.provider_result",
+      "rows": 1,
+      "digest": "1327064309f393f8ef8dbf5b184a0c77"
+    },
+    {
+      "object": "ecos.repair_action",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.restore_test",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.retry_policy",
+      "rows": 4,
+      "digest": "e7838d7b13d93f6bb5746f25034f51d7"
+    },
+    {
+      "object": "ecos.schedule_occurrence",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.semantic_proposal",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.stage_capability_requirement",
+      "rows": 4,
+      "digest": "f3536bba63d18c2269df10893db2da60"
+    },
+    {
+      "object": "ecos.stage_result",
+      "rows": 16,
+      "digest": "04d73c8c3f966fbfbe13ff91ad26adca"
+    },
+    {
+      "object": "ecos.task",
+      "rows": 7,
+      "digest": "9972988bb78766c7ad9cf3ddcea344bc"
+    },
+    {
+      "object": "ecos.task_assignment",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.task_dependency",
+      "rows": 1,
+      "digest": "3e2a0d3673c9dde9a3e095c37f3fa14f"
+    },
+    {
+      "object": "ecos.task_evidence",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.task_schedule",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.work_approval",
+      "rows": 2,
+      "digest": "578398aa0813e06e16dd29f3dbba30d1"
+    },
+    {
+      "object": "ecos.work_claim",
+      "rows": 17,
+      "digest": "373009930461e3c8fea909fb199ecb74"
+    },
+    {
+      "object": "ecos.work_definition",
+      "rows": 4,
+      "digest": "81684ad26a4484548be520d124c5d830"
+    },
+    {
+      "object": "ecos.work_dependency",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.work_occurrence",
+      "rows": 21,
+      "digest": "cc800ff9859db9be0b55df0408f386fc"
+    },
+    {
+      "object": "ecos.work_priority",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos.work_stage_definition",
+      "rows": 4,
+      "digest": "e3450ba94941909f18cd0e034d2fd1c1"
+    },
+    {
+      "object": "ecos_meta.control",
+      "rows": 1,
+      "digest": "bc6197199829b07ce152a3e7e28f1d85"
+    },
+    {
+      "object": "ecos_meta.database_identity",
+      "rows": 1,
+      "digest": "056e71b7f0fd3816e406bf929dbee11d"
+    },
+    {
+      "object": "ecos_meta.entity_contract",
+      "rows": 45,
+      "digest": "206eec6f885a6175b2c7d1d340260398"
+    },
+    {
+      "object": "ecos_meta.notification_policy",
+      "rows": 1,
+      "digest": "cac6055c602640db2d205ec6f9cd1870"
+    },
+    {
+      "object": "ecos_meta.object_grant",
+      "rows": 24,
+      "digest": "9cc936e1dd4226e3e124460907f192ee"
+    },
+    {
+      "object": "ecos_meta.operation_audit",
+      "rows": 50,
+      "digest": "7fe822e85dee37455fc5729ef2106011"
+    },
+    {
+      "object": "ecos_meta.operation_receipt",
+      "rows": 50,
+      "digest": "544982b7e9194264c7fc945c550da5d3"
+    },
+    {
+      "object": "ecos_meta.outbox_lease",
+      "rows": 2,
+      "digest": "3c3939e44a78fa2411abb3d5f312e03b"
+    },
+    {
+      "object": "ecos_meta.principal_binding",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_meta.principal_clearance",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_meta.principal_operation",
+      "rows": 42,
+      "digest": "c05b4fbea3b8f9b36efbb59e9cdec59a"
+    },
+    {
+      "object": "ecos_meta.proposal_item_result",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_meta.transition_policy",
+      "rows": 7,
+      "digest": "90ef902039a76016548f00c47c6e53e0"
+    },
+    {
+      "object": "ecos_migration.legacy_identity",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_migration.quarantine_item",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_migration.raw_migration_batch",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "object": "ecos_migration.raw_source_row",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    }
+  ],
+  "release_commit": "ea174f08fa1a78b8cd0e4eee31970e5c00f66591",
+  "target": "loonpojawpfagzobxoko",
+  "catalog_comparison": {
+    "status": "passed",
+    "differences": {},
+    "counts": {
+      "views": 15,
+      "ledger": 20,
+      "functions": 59,
+      "relations": 104
+    }
+  }
+}

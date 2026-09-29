@@ -1,29 +1,60 @@
 {
   "schema_version": "1.0.0",
-  "verified_at": "2026-09-29T18:14:02.902865+00:00",
-  "phase2_status": "STOPPED_REGRESSION",
+  "verified_at": "2026-09-29T18:48:57.913397+00:00",
+  "phase2_status": "IMPLEMENTED_AND_VERIFIED_PRE_CUTOVER",
   "baseline_commit": "c5731953a29256c013597cb04b938dff41f56de0",
+  "starting_head": "8ee884bba1dfb25449626156a4dfd811acf3aa49",
   "branch": "codex/phase-2-control-plane",
-  "resulting_head": "2ffb3f8eb74cd5df75ac6cd83ecabb7ff7d9f432",
-  "resulting_head_scope": "Bounded implementation repair commit. The subsequent evidence commit is reported as NewHEAD in the handoff.",
-  "persistent_migration_head": 18,
-  "migrations_created": [
-    "000019_control_plane_contracts.sql",
-    "000020_execution_control_plane.sql",
-    "000021_resource_reservation_expression.sql"
-  ],
-  "migrations_applied_persistent": [],
-  "migrations_applied_disposable": [
+  "persistent_release_commit": "ea174f08fa1a78b8cd0e4eee31970e5c00f66591",
+  "resulting_head_scope": "Final evidence commit and remote equality are recorded in the final Git handoff.",
+  "canonical_migration_head": 20,
+  "canonical_phase2_migrations": [
     19,
-    20,
-    21
+    20
   ],
-  "disposable_rebuild": "passed",
-  "disposable_repeat_chain": "passed",
-  "disposable_postgresql": "17.11",
-  "candidate_phase1_regression": {
-    "status": "31 transactional checks passed",
-    "checks": [
+  "accepted_migrations_1_to_18": "unchanged",
+  "migration21_disposition": "Unreleased repair consolidated into 20 under explicit owner instruction; original 21 remains in Git history at 2ffb3f8eb74cd5df75ac6cd83ecabb7ff7d9f432.",
+  "migrations_applied_persistent": [
+    19,
+    20
+  ],
+  "persistent_migration_head": 20,
+  "persistent_target": "loonpojawpfagzobxoko",
+  "phase1_regression": {
+    "disposable": [
+      "task_transition_audit_outbox",
+      "idempotency_and_failure_atomicity",
+      "executor_direct_mutation_denied",
+      "evidence_and_fact_operations",
+      "atomic_notification_delivery_command",
+      "outbox_lease_recovery",
+      "unknown_outcome_reconciliation_and_duplicate_result",
+      "capability_pair_filter",
+      "claim_renewal",
+      "expired_claim_fencing_repair",
+      "immutable_completion_and_dependency_release",
+      "proposal_commit_hash_and_restart",
+      "memory_activation_supersession",
+      "bootstrap_database_package",
+      "stale_heartbeat_emergency_intent",
+      "typed_quarantine_four_defects",
+      "principal_and_role_replay_denial",
+      "proposal_stale_sibling_and_dependent_isolation",
+      "memory_cas_and_immutability",
+      "approval_expiry_revocation_maintenance_gates",
+      "dependency_cycle_rejected",
+      "dst_gap_and_fold_policies",
+      "claim_run_rollback_and_stage_preservation",
+      "all_ten_operations_principal_authorization",
+      "memory_read_role_and_sensitivity_scope",
+      "out_of_order_provider_result_preserves_success",
+      "recurrence_identity_and_schedule_update",
+      "delayed_heartbeat_cannot_revive_executor",
+      "five_stage_single_task_crash_recovery_preserves_hashes",
+      "revoked_scope_blocks_idempotent_replay",
+      "proposal_conflicting_invalid_ambiguous_isolation"
+    ],
+    "hosted": [
       "task_transition_audit_outbox",
       "idempotency_and_failure_atomicity",
       "executor_direct_mutation_denied",
@@ -57,146 +88,251 @@
       "proposal_conflicting_invalid_ambiguous_isolation"
     ],
     "offline_passed": 51,
-    "offline_historical_integration_placeholders_skipped": 26,
-    "accepted_phase1_evidence_validator": "passed",
-    "new_15_session_races": "not reached after Phase 2 stop",
-    "complete_acceptance": "incomplete; do not equate 31-check suite with all acceptance gates"
+    "historical_offline_integration_placeholders_skipped": 26,
+    "accepted_evidence_validation": "passed; sources and checksums unchanged"
   },
   "phase2_integration": {
-    "status": "failed at first compatible work.next",
-    "passed": 4,
-    "failed": 1,
-    "checks_passed": [
+    "status": "passed",
+    "checks": [
       "executor_registration_with_attested_capabilities",
       "heartbeat_freshness_and_running_count",
       "delayed_heartbeat_rejected",
-      "incompatible_capability_no_claim"
+      "incompatible_capability_no_claim",
+      "capability_compatible_atomic_claim",
+      "narrow_work_package_bounded_context",
+      "database_deterministic_slice_complete",
+      "work_package_payload_bytes_recorded",
+      "resource_block_isolates_dependent_work_unrelated_continues",
+      "release_preserves_occurrence",
+      "defer_backoff_enforced",
+      "failure_dead_letter_audit",
+      "resource_pressure_transitions_unknown_not_zero",
+      "completion_transaction_durable_dependent_wakeup",
+      "lost_transient_wakeup_recovered",
+      "executor_loss_expired_fence_repair_readback",
+      "deterministic_stale_detection",
+      "semantic_submission_immutable_no_business_mutation",
+      "semantic_to_deterministic_commit_hybrid_handoff",
+      "synthetic_notification_delivery_provider_outbox",
+      "synthetic_provider_duplicate_idempotency",
+      "synthetic_adapter_ack_after_durable_result",
+      "graceful_stop_no_active_claims",
+      "stopped_instance_cannot_restart_same_identity",
+      "operation_audit_durable",
+      "INTERACTIVE_ADA_governed_claim_renew_complete",
+      "RESIDENT_DETERMINISTIC_PROVIDER_governed_claim_renew_complete",
+      "ONLINE_SEMANTIC_governed_claim_renew_complete",
+      "DATABASE_DETERMINISTIC_governed_claim_renew_complete",
+      "resource_budget_two_session_single_reservation",
+      "completion_and_release_free_effective_reservations",
+      "work_next_idempotent_single_claim",
+      "work_next_cached_package_revocation_enforced",
+      "unknown_resource_blocks_and_dead_letter_authorization",
+      "private_helpers_direct_tables_spoofed_principal_role_denied",
+      "bounded_readonly_1x_time_gate_shadow_equivalence",
+      "client_reuses_connection_measures_bytes_latency_bounded_pressure_backoff",
+      "all_phase2_observability_views_queryable"
     ],
-    "failed_check": "capability_compatible_atomic_claim",
-    "expected": "CLAIMED response with matching occurrence, durable claim/run and bounded work_package",
-    "observed": "internal_error [42702]",
-    "raw_error": "column reference \"r\" is ambiguous",
-    "source": "ecos_meta.work_package(jsonb,jsonb), retry_policy to_jsonb(r)",
-    "deferred": "all subsequent Phase 2 checks and concurrency"
+    "passed": 38,
+    "failed": 0,
+    "scope": "Real PostgreSQL operations with synthetic business/semantic/provider fixtures; all four surface identities tested; actual launcher/production worker rollout not performed."
   },
-  "concurrency": "not reached; no new 15-session acceptance",
-  "mechanisms": {
-    "executor_registry": "FOCUSED_SYNTHETIC_CHECK_PASSED; complete acceptance deferred",
-    "heartbeat_stale_detection": "fresh heartbeat and delayed rejection passed; stale sweep deferred",
-    "capability_routing": "incompatible pair rejected; compatible work.next fails package assembly",
-    "resource_governance": "DRAFT_UNVERIFIED",
-    "work_package": "FAILED_42702",
-    "event_dependency_release": "Phase 1 dependency suite passed; Phase 2 wakeup acceptance deferred",
-    "recovery_sweep": "DRAFT_UNVERIFIED",
-    "vertical_slices": "DRAFT_TESTS_NOT_REACHED",
-    "shadow_comparison": "NOT_EXECUTED"
+  "concurrency": {
+    "same_work": {
+      "status": "passed",
+      "sessions": 15,
+      "winners": 1,
+      "valid_losers": 14,
+      "all_operations_returned_before_any_commit": true
+    },
+    "different_work": {
+      "status": "passed",
+      "sessions": 15,
+      "winners": 15,
+      "valid_losers": 0,
+      "all_operations_returned_before_any_commit": true
+    }
   },
-  "security_advisor": {
-    "persistent_findings": 0,
-    "candidate_verified": false,
-    "note": "Fresh hosted advisor at unchanged migration 18; candidate full security acceptance deferred"
+  "resource_contention": "2 independent sessions, budget 1, exactly 1 reservation; release and completion free effective budget",
+  "shadow_comparison": {
+    "scope": "Two sampled time-admission predicates only, not full queue eligibility or global shadow parity",
+    "comparisons": [
+      {
+        "sample": "A025_time_gate",
+        "source_values_sha256": "74f926cc47ab82f68f2c3fd81efea1a9294a617d6429212eae67e970a7724d70",
+        "one_x_time_gate": true,
+        "two_x_time_gate": true,
+        "classification": "EQUIVALENT",
+        "scope": "time admission only"
+      },
+      {
+        "sample": "A027_time_gate",
+        "source_values_sha256": "2c307488bc25bb3259c439485b636aa63ca48e0f94793d3cd7f9331fb8411a09",
+        "one_x_time_gate": false,
+        "two_x_time_gate": false,
+        "classification": "EQUIVALENT",
+        "scope": "time admission only"
+      }
+    ],
+    "global_shadow_verified": false
   },
-  "secret_scan": {
+  "bandwidth": {
+    "package_bytes": [
+      2714,
+      2749,
+      7
+    ],
+    "client": {
+      "calls": 2,
+      "connections_opened": 1,
+      "reconnects": 0,
+      "response_bytes": 430,
+      "query_ms": 47.0000000204891
+    },
+    "connection_pressure": {
+      "attempts": 3,
+      "backoff_seconds": [
+        0.25,
+        1.0
+      ],
+      "bounded": true
+    },
+    "unavailable_provider_measurements": "UNKNOWN; no fabricated quota/usage/cost figures"
+  },
+  "persistent_readback": {
+    "identity": {
+      "singleton": true,
+      "architecture_version": "2.x",
+      "schema_version": "1.0.0",
+      "environment": "development",
+      "authority": "non_production",
+      "provider_effects_enabled": false
+    },
+    "migration_head": 20,
+    "principal_bindings": 0,
+    "active_claims": 0,
+    "presence_rows": 0,
+    "maintenance": false,
+    "executor_set": false,
+    "operations_api_set": false,
+    "health": {
+      "as_of": "2026-09-29T18:43:43.791802+00:00",
+      "authority": "PRE_CUTOVER_NON_AUTHORITATIVE",
+      "claim_oldest": null,
+      "active_claims": 0,
+      "outbox_oldest": null,
+      "query_latency": null,
+      "outbox_backlog": 0,
+      "max_connections": 60,
+      "stale_executors": 4,
+      "active_executors": 0,
+      "pool_utilization": null,
+      "visible_lock_waits": 0,
+      "unavailable_metrics": [
+        "pool_utilization",
+        "query_latency",
+        "host_cpu",
+        "host_bandwidth"
+      ],
+      "visible_connections": 8
+    }
+  },
+  "persistent_smoke": [
+    "register",
+    "next_package_claim",
+    "renew",
+    "complete_readback"
+  ],
+  "catalog_comparison": {
     "status": "passed",
-    "files_checked": 280,
-    "findings": [],
-    "scope": "tracked and nonignored untracked files; credential patterns; no persistent secret retrieved",
-    "exact_secret_comparison": "not performed; canonical secret not retrieved"
+    "differences": {},
+    "counts": {
+      "views": 15,
+      "ledger": 20,
+      "functions": 59,
+      "relations": 104
+    }
   },
+  "persistent_existing_data_comparison": {
+    "tables_checked": 71,
+    "changed_tables": [],
+    "status": "passed",
+    "excluded_expected_changes": [
+      "ecos_meta.schema_migration",
+      "ecos_meta.contract_schema",
+      "ecos_meta.operation_contract"
+    ],
+    "note": "Existing persistent table contents unchanged; synthetic hosted tests rolled back."
+  },
+  "security": {
+    "hosted_advisor_findings": 0,
+    "private_helpers_public_execute": 0,
+    "executor_direct_table_access": "denied",
+    "spoofed_principal": "denied",
+    "wrong_role": "denied",
+    "revoked_package_scope_replay": "denied",
+    "temporary_bindings_after_hosted_tests": 0,
+    "temporary_executor_role_set_after_tests": false
+  },
+  "secret_scan": "docs/evidence/phase2/clean-release-check.json",
   "portability": {
-    "standard_postgresql_rebuild": "passed on 17.11",
-    "repeat_migration": "passed",
-    "new_supabase_core_dependency": false,
-    "runtime_correctness": "not verified"
+    "postgresql": "17.11 clean rebuild, migration replay and guarded transport passed; hosted PostgreSQL 17 accepted",
+    "core_new_supabase_dependencies": false,
+    "host_adapter": "Connected apply_migration/execute_sql/advisors; canonical SQL remains portable",
+    "catalog_match": true
   },
+  "authority_state": [
+    "PRE_CUTOVER",
+    "NON_AUTHORITATIVE"
+  ],
   "provider_side_effects": false,
   "ecos_1x_writes": false,
   "authority_switch": false,
-  "maturity": {
-    "overall": "PRE_CUTOVER / NON_AUTHORITATIVE",
-    "global_shadow_verified": false,
-    "production_verified": false,
-    "candidate_accepted": false
-  },
-  "stop_condition": "Owner instruction: if any Phase 1 regression or material Phase 2 defect remains, STOP and diagnose without stacking repairs.",
-  "blockers": [
-    "Migration 20 work_package has PL/pgSQL r variable / SQL alias ambiguity (42702), preventing compatible work.next. New repair requires owner authorization."
+  "global_shadow_verified": false,
+  "production_verified": false,
+  "remaining_material_blockers": [],
+  "acceptance_limits": [
+    "Shadow proof covers two sampled time-admission predicates, not full queue or migration parity.",
+    "Live Online/Interactive/Resident launcher deployment and independent replacement-AI acceptance are not claimed.",
+    "Independent external watchdog delivery/outage acceptance remains an inherited pending gate; no external alerts or DB outage were induced.",
+    "No 1.x worker retirement, business migration, production authority switch, Phase 3 start or merge is authorized by these results."
   ],
-  "deferred": [
-    "Phase 2 integration checks and 15-session regressions",
-    "Candidate security and operation-boundary review",
-    "Resource-window and capacity enforcement acceptance",
-    "Semantic and deterministic-provider vertical-slice acceptance",
-    "Read-only representative 1.x shadow comparison",
-    "PORT-01 replacement-AI acceptance",
-    "SURFACE-01 live Online/Interactive/Resident operation proof",
-    "INTEGRITY-01 accepted recovery proof",
-    "WATCH-01 independent alert and DB-host outage proof",
-    "Persistent migration and hosted Phase 1/Phase 2 acceptance"
+  "historical_failures": [
+    {
+      "commit": "fb32cfacd86ed1a5773556369242f479b741c33c",
+      "error": "42725",
+      "cause": "reserve_resources JSONB precedence",
+      "evidence": "attempt-002.json"
+    },
+    {
+      "commit": "8ee884bba1dfb25449626156a4dfd811acf3aa49",
+      "error": "42702",
+      "cause": "work_package unused r conflicts with retry-policy alias",
+      "evidence": "repair-021-diagnosis.json"
+    },
+    {
+      "evidence": "clean-candidate-001.json",
+      "cause": "new test expiry timestamp and terminal cleanup fixture bugs"
+    },
+    {
+      "evidence": "clean-candidate-003.json",
+      "cause": "new lifecycle reason contract mismatch"
+    },
+    {
+      "evidence": "clean-candidate-004.json",
+      "cause": "new work.next replay omitted revoked object/package scope"
+    },
+    {
+      "evidence": "clean-candidate-006.json",
+      "cause": "new smoke fixture omitted explicit capability columns"
+    }
   ],
-  "disposable_cleanup": {
-    "historical": "Original attempt evidence preserved unchanged",
-    "repair_attempt_001": "new disposable server stopped in finally",
-    "repair_attempt_002": "new diagnostic disposable server stopped in finally"
-  },
-  "push_status": "Exact origin approved and pre-repair remote 519f4a7 verified; new commits pending push at document generation. Final handoff records verified remote state.",
-  "pre_repair_head": "519f4a7a5a918950bcd74da984d76e8b2fb7f5fe",
-  "historical_stop_preserved_at": "519f4a7a5a918950bcd74da984d76e8b2fb7f5fe",
-  "original_regression": {
-    "classification": "PHASE2_IMPLEMENTATION_DEFECT",
-    "sqlstate": "42725",
-    "introducing_commit": "fb32cfacd86ed1a5773556369242f479b741c33c",
-    "migration": 20,
-    "repair_migration": 21,
-    "status": "corrected; all 31 Phase 1 SQL checks pass",
-    "before_evidence": "docs/evidence/phase2/attempt-002.json",
-    "after_evidence": "docs/evidence/phase2/repair-021-attempt-001.json"
-  },
-  "new_regression": {
-    "classification": "PHASE2_IMPLEMENTATION_DEFECT",
-    "sqlstate": "42702",
-    "introducing_commit": "fb32cfacd86ed1a5773556369242f479b741c33c",
-    "migration": 20,
-    "root_cause": "Unused PL/pgSQL r jsonb variable conflicts with retry_policy table alias r in to_jsonb(r).",
-    "phase1_baseline": "not present; work_package is introduced by migration 20",
-    "smallest_repair": "Future append-only migration replacing only work_package with the unused r jsonb declaration removed; no repair applied in this run.",
-    "requires_owner_authorization": true,
-    "phase1_contract_or_architecture_change": false,
-    "data_integrity": "Failure rolls back claim, run, attempt count, reservations and package; measured claim/run/package counts zero, occurrence ready attempt_count 0 record_version 1.",
-    "security_portability": "Availability defect on standard PostgreSQL; no observed authorization bypass or persistent corruption. Do not change global plpgsql.variable_conflict to mask it."
-  },
-  "repair_evidence": [
-    "docs/evidence/phase2/repair-021-attempt-001.json",
-    "docs/evidence/phase2/repair-021-attempt-002.json",
-    "docs/evidence/phase2/repair-021-diagnosis.json",
-    "docs/evidence/phase2/repair-021-bounded-diff.json",
-    "docs/evidence/phase2/repair-021-persistent-readback.json",
-    "docs/evidence/phase2/repair-021-security-advisor.json",
-    "docs/evidence/phase2/repair-021-offline-checks.json"
+  "evidence": [
+    "docs/evidence/phase2/clean-candidate-008.json",
+    "docs/evidence/phase2/clean-candidate-009.json",
+    "docs/evidence/phase2/clean-offline.json",
+    "docs/evidence/phase2/persistent-phase2-application.json",
+    "docs/evidence/phase2/clean-release-check.json"
   ],
-  "required_specific_proofs": {
-    "capability_pair_filter": "PASS Phase 1",
-    "valid_claim": "PASS Phase 1 work.claim; FAIL Phase 2 work.next",
-    "capability_rejection": "PASS both Phase 1 and early Phase 2",
-    "attempt_limit_removal": "PASS empty/only attempt_limit/mixed reason cases",
-    "claim_fencing": "PASS Phase 1",
-    "resource_reservation": "DEFERRED at new stop",
-    "renewal": "PASS Phase 1",
-    "expiry_recovery": "PASS Phase 1; new recovery.sweep deferred",
-    "completion": "PASS Phase 1; Phase 2 slice deferred",
-    "resource_release": "DEFERRED",
-    "no_duplicate_claim": "Failed work.next left zero claims; new 15-session contention not reached"
-  },
-  "schema_object_drift": {
-    "status": "passed",
-    "migrations_1_through_20_byte_unchanged": true,
-    "migration21_only_function_change": "reserve_resources JSONB extraction parentheses",
-    "migration21_sha256": "3d3a5a48224c111af93be6fcbad12b25ef6cb14fba27e5a9f5ecfa9f3a3a9761",
-    "migration21_statement_scope": [
-      "SET LOCAL ROLE ecos_owner",
-      "CREATE OR REPLACE FUNCTION ecos_meta.reserve_resources()",
-      "RESET ROLE"
-    ],
-    "schema_object_drift": "Static migration scope verified; full candidate runtime catalog/security acceptance deferred after new stop"
-  }
+  "phase3_recommendation": "Do not begin Phase 3 in this task. Owner review of this bounded handoff and inherited pending operational gates is required before later work."
 }

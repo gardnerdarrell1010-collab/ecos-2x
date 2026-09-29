@@ -1,33 +1,42 @@
 {
-  "status": "STOPPED_REGRESSION",
+  "phase2_status": "IMPLEMENTED_AND_VERIFIED_PRE_CUTOVER",
   "baseline_commit": "c5731953a29256c013597cb04b938dff41f56de0",
-  "resulting_head": "2ffb3f8eb74cd5df75ac6cd83ecabb7ff7d9f432",
-  "mechanisms": {
-    "executor_registry": "FOCUSED_SYNTHETIC_CHECK_PASSED; complete acceptance deferred",
-    "heartbeat_stale_detection": "fresh heartbeat and delayed rejection passed; stale sweep deferred",
-    "capability_routing": "incompatible pair rejected; compatible work.next fails package assembly",
-    "resource_governance": "DRAFT_UNVERIFIED",
-    "work_package": "FAILED_42702",
-    "event_dependency_release": "Phase 1 dependency suite passed; Phase 2 wakeup acceptance deferred",
-    "recovery_sweep": "DRAFT_UNVERIFIED",
-    "vertical_slices": "DRAFT_TESTS_NOT_REACHED",
-    "shadow_comparison": "NOT_EXECUTED"
-  },
-  "acceptance": false,
-  "phase3_recommendation": "Do not start Phase 3. Authorize diagnosis-based work_package repair separately, then rerun clean rebuild and all remaining acceptance before persistent application.",
-  "evidence": "docs/PHASE2_VERIFICATION.json",
-  "push_status": "Exact origin approved and pre-repair remote 519f4a7 verified; new commits pending push at document generation. Final handoff records verified remote state.",
-  "resulting_head_scope": "Bounded implementation repair commit. The subsequent evidence commit is reported as NewHEAD in the handoff.",
-  "pre_repair_head": "519f4a7a5a918950bcd74da984d76e8b2fb7f5fe",
-  "regression_defect": "42725 repaired by migration 21; new independent 42702 stops Phase 2",
-  "persistent_migration_head": 18,
-  "migrations_applied_persistent": [],
+  "starting_head": "8ee884bba1dfb25449626156a4dfd811acf3aa49",
+  "branch": "codex/phase-2-control-plane",
+  "persistent_release_commit": "ea174f08fa1a78b8cd0e4eee31970e5c00f66591",
+  "canonical_migration_head": 20,
+  "persistent_migration_head": 20,
   "authority_state": [
     "PRE_CUTOVER",
     "NON_AUTHORITATIVE"
   ],
-  "provider_effects": false,
-  "remaining_blockers": [
-    "Migration 20 work_package has PL/pgSQL r variable / SQL alias ambiguity (42702), preventing compatible work.next. New repair requires owner authorization."
-  ]
+  "provider_side_effects": false,
+  "ecos_1x_writes": false,
+  "global_shadow_verified": false,
+  "production_verified": false,
+  "remaining_material_blockers": [],
+  "acceptance_limits": [
+    "Shadow proof covers two sampled time-admission predicates, not full queue or migration parity.",
+    "Live Online/Interactive/Resident launcher deployment and independent replacement-AI acceptance are not claimed.",
+    "Independent external watchdog delivery/outage acceptance remains an inherited pending gate; no external alerts or DB outage were induced.",
+    "No 1.x worker retirement, business migration, production authority switch, Phase 3 start or merge is authorized by these results."
+  ],
+  "phase3_recommendation": "Do not begin Phase 3 in this task. Owner review of this bounded handoff and inherited pending operational gates is required before later work.",
+  "mechanisms": {
+    "executor_registry": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "heartbeat_stale_detection": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "capability_routing": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "work_package": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "resource_governance": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "dependency_release": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "recovery_sweep": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "semantic_handoff": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES",
+    "synthetic_provider": "END_TO_END_VERIFIED_WITH_SYNTHETIC_FIXTURES"
+  },
+  "phase1_passed": 31,
+  "phase2_passed": 38,
+  "concurrency": "15 sessions: same work 1 winner / 14 losers; different work 15 winners",
+  "shadow": "2 time-gate samples EQUIVALENT; no global parity claim",
+  "security_advisor_findings": 0,
+  "evidence": "docs/PHASE2_VERIFICATION.json"
 }
