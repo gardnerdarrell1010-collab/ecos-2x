@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "verified_at": "2026-09-29T16:51:18.234226+00:00",
   "baseline_commit": "375f3f61374aeaa52d28dc79fb80d14362c1e8f8",
-  "resulting_commit": null,
+  "resulting_commit": "22102337fa676a8ce357d4d6ea1bfabe975468ce",
   "resulting_commit_scope": "Completion implementation commit; subsequent evidence-only commit and final remote HEAD appear in handoff.",
   "branch": "codex/phase-1-postgres-foundation",
   "supabase_project": {
@@ -453,5 +453,9 @@
       "password_in_git_diff": false,
       "scope": "tracked and nonignored untracked files plus diff from HEAD; canonical password bytes read in memory only"
     }
+  },
+  "git": {
+    "completion_implementation_commit": "22102337fa676a8ce357d4d6ea1bfabe975468ce",
+    "completion_prior_head": "29998d90806efd7f91d98ce1d0c7c8c9a4deb421"
   }
 }
