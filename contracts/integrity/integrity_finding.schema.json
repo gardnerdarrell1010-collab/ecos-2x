@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/integrity_finding.schema.json",
+  "title": "integrity_finding",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "condition": {
+      "type": "string"
+    },
+    "entity_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "before_state": {
+      "anyOf": [
+        {
+          "type": "array"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "detected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    }
+  },
+  "required": [
+    "id",
+    "condition",
+    "entity_id",
+    "before_state",
+    "detected_at",
+    "correlation_id"
+  ]
+}

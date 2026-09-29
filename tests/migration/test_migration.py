@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 class MigrationTests(unittest.TestCase):
     def test_framework_plan_repeat_drift_and_unknown_history(self):
         migrations = inventory(ROOT/"db/migrations")
-        self.assertEqual(len(plan(migrations,[])),1)
+        self.assertEqual(plan(migrations,[]),migrations)
         history = [{k:v for k,v in m.items() if k != "sql"} for m in migrations]
         self.assertEqual(plan(migrations,history),[])
         for bad in ([history[0] | {"sha256":"f"*64}], [history[0] | {"version":2}], history+[history[0]]):

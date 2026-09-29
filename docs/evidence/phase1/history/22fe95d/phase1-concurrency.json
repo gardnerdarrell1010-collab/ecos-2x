@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "gate": "C-01",
+  "supersedes_stress_quantity": 100,
+  "independent_sessions": 20,
+  "authority": "Owner instruction: ECOS 2.x Phase 1 completion, 2026-09-29",
+  "decision": "docs/decisions/2026-09-29-phase1-concurrency.md",
+  "test_a": {
+    "eligible_occurrences": 1,
+    "winners": 1,
+    "valid_losers": 19,
+    "live_claims": 1,
+    "live_runs": 1,
+    "matching_fence_version_required": true
+  },
+  "test_b": {
+    "minimum_eligible_occurrences": 20,
+    "distinct_claims": 20,
+    "all_operations_return_before_any_commit": true,
+    "readiness_capability_evidence_required": true
+  },
+  "simulation_is_acceptance": false
+}

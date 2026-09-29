@@ -56,3 +56,7 @@ requires a new proposal linked to the original, not overwriting a verified outpu
 A023 receipt/package -> A053 proposal -> A054 deterministic commit/ACK is one application
 of the generic stages. Commit creates an ACK provider_command only after durable result;
 provider ACK success with persistence failure is reconciled by the same command identity.
+
+## Phase 1 implementation note
+
+Phase 1 SQL entrypoint is ecos.operate(text,jsonb), preserving all ten registry names. Context is authenticated by bound SQL role, never by request principal alone. Object/sensitivity authorization is checked before replay; scoped readback is ecos.read_record. See ../PHASE1_IMPLEMENTATION.md and ../PHASE1_SECURITY_PORTABILITY.md.

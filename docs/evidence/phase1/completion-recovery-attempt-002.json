@@ -1,0 +1,169 @@
+{
+  "started_at": "2026-09-29T16:44:14.527907+00:00",
+  "secret_reference": "google-drive:1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf",
+  "runtime_kind": "disposable loopback PostgreSQL process; no Windows service",
+  "runtime_directory": "C:\\Users\\info\\AppData\\Local\\Temp\\ecos-phase1-recovery-20260929-02",
+  "provider_calls_executed": false,
+  "production_data_migrated": false,
+  "stage": "source_snapshot_and_export",
+  "target_version": "PostgreSQL 17.11 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit",
+  "local_ssl": true,
+  "mig01": {
+    "status": "passed",
+    "migration_order": [
+      [
+        1,
+        "000001_foundation.sql",
+        "e708bca782117bf21f06bc98d6f28d0f9817a19e15386d4d220ff9ce1dbfa2b7"
+      ],
+      [
+        2,
+        "000002_typed_foundation.sql",
+        "72885367066299ed28af5e0094be155832fe6652c3fed70b1cfd22e6aaf65bbd"
+      ],
+      [
+        3,
+        "000003_contract_guards.sql",
+        "63d3a45b059752e93cd483642666195483c0dfc37c911e23f71547e87f4c6b67"
+      ],
+      [
+        4,
+        "000004_governed_operations.sql",
+        "b2e4190ec076070ddbd7a5bbd697c448b3780b92f3e810f1d87766a04adfa4bf"
+      ],
+      [
+        5,
+        "000005_operation_boundary.sql",
+        "027e644b6e6e10f5a252f515cdd91b930791b697c19cd29d088784edcaf965b6"
+      ],
+      [
+        6,
+        "000006_governance_support.sql",
+        "e867e5aafd638782a51864c68447ae4c86db6c1ebb7478cc906baf22bd4c9c1c"
+      ],
+      [
+        7,
+        "000007_operation_diagnostics.sql",
+        "9e6766d480a2543714b5395449b3fc234a4ab9d7bc51819a490db6a807815f08"
+      ],
+      [
+        8,
+        "000008_event_payload_type.sql",
+        "24589ea21ea367d565d4a80a0d4fd4468d18bb39ec31227c947f3d0bebd8d64b"
+      ],
+      [
+        9,
+        "000009_sqlstate_diagnostics.sql",
+        "57e381878181ed6ac5ae8889a6785e263584315aeabfbe1a89d68f10d028568d"
+      ],
+      [
+        10,
+        "000010_fence_gate_expression.sql",
+        "4fc84100d3d01ac388a746d0bf5f516fe7661eb8113770b406cbbaeca9e1b383"
+      ],
+      [
+        11,
+        "000011_proposal_version_union.sql",
+        "e30265c1aed60cd0564098fc63cd8b22c9a18129b68a8d84ebb6623e3178756b"
+      ],
+      [
+        12,
+        "000012_bootstrap_binding_union.sql",
+        "c37242db003d72b02ad7bcb839bb94025aabb03b6cba86b0c20c26ef21c0ae47"
+      ],
+      [
+        13,
+        "000013_scope_and_gate_hardening.sql",
+        "abc983766a825d3b9069168032adb445e312617d7f6ea7f7e3b4370b12bbc04d"
+      ],
+      [
+        14,
+        "000014_outbox_scope.sql",
+        "a4f01bd97911319a4476f284509996b3596fcae9eac7bd85cf0d65052eb5c0f5"
+      ],
+      [
+        15,
+        "000015_bootstrap_findings_and_vocabulary.sql",
+        "fc37ee462cc6a0fad16291d797990702fbeb8ec67ab89ae8280ab2e93df36945"
+      ],
+      [
+        16,
+        "000016_scope_and_heartbeat_freshness.sql",
+        "1a4a6668e3b9caa14072a950f0f4c3e85fcac5f23e08db6dd985f3066e3dc4a3"
+      ],
+      [
+        17,
+        "000017_reconciled_outbox_ack_recovery.sql",
+        "c0f48e9bf31a4da70aa385976245f06c39caf5c5ac4c29ee829e31cdf910484d"
+      ],
+      [
+        18,
+        "000018_replay_authorization_scope.sql",
+        "a2b56a7ff378784e652154f664e54cbe286709051359ae8ac90a9ffd5dfa3e70"
+      ]
+    ],
+    "schema_inventory": {
+      "relations": {
+        "count": 272,
+        "sha256": "bff1685b69a7c90a0781ddec50013b3a308f4e2ef0e31b82f9c09bbeb8422e4f"
+      },
+      "columns": {
+        "count": 633,
+        "sha256": "f31ee810419a2137e66c27766f2d59ae22785d86a5cfa8ee40cede85fe4aab82"
+      },
+      "constraints": {
+        "count": 375,
+        "sha256": "6c2705747d3019fb3df0bc113d971d42358eaf74188feb434aef8b3e311e5ce5"
+      },
+      "functions": {
+        "count": 47,
+        "sha256": "dda30498fe083a649272edba44cc00e6a5fb311e551e64d02a4210b24b2d291f"
+      },
+      "triggers": {
+        "count": 71,
+        "sha256": "8553ff1bdcf25cf6a3d14f3e03b68c619360897e616dd5cdae3e1dfd718022cc"
+      }
+    },
+    "transactional_checks": [
+      "task_transition_audit_outbox",
+      "idempotency_and_failure_atomicity",
+      "executor_direct_mutation_denied",
+      "evidence_and_fact_operations",
+      "atomic_notification_delivery_command",
+      "outbox_lease_recovery",
+      "unknown_outcome_reconciliation_and_duplicate_result",
+      "capability_pair_filter",
+      "claim_renewal",
+      "expired_claim_fencing_repair",
+      "immutable_completion_and_dependency_release",
+      "proposal_commit_hash_and_restart",
+      "memory_activation_supersession",
+      "bootstrap_database_package",
+      "stale_heartbeat_emergency_intent",
+      "typed_quarantine_four_defects",
+      "principal_and_role_replay_denial",
+      "proposal_stale_sibling_and_dependent_isolation",
+      "memory_cas_and_immutability",
+      "approval_expiry_revocation_maintenance_gates",
+      "dependency_cycle_rejected",
+      "dst_gap_and_fold_policies",
+      "claim_run_rollback_and_stage_preservation",
+      "all_ten_operations_principal_authorization",
+      "memory_read_role_and_sensitivity_scope",
+      "out_of_order_provider_result_preserves_success",
+      "recurrence_identity_and_schedule_update",
+      "delayed_heartbeat_cannot_revive_executor",
+      "five_stage_single_task_crash_recovery_preserves_hashes",
+      "revoked_scope_blocks_idempotent_replay",
+      "proposal_conflicting_invalid_ambiguous_isolation"
+    ],
+    "repeat_chain": "passed"
+  },
+  "source_version": "PostgreSQL 17.6 on aarch64-unknown-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+  "status": "failed",
+  "error_type": "AssertionError",
+  "sqlstate": null,
+  "diagnostic": "Remote schema differs from canonical clean rebuild",
+  "disposable_server_stopped": true,
+  "finished_at": "2026-09-29T16:44:22.512269+00:00"
+}

@@ -1,0 +1,307 @@
+-- Explicitly invoked synthetic database integration suite. All fixture state rolls back.
+begin;
+set local timezone='UTC';
+set local statement_timeout='45s';
+set local plpgsql.check_asserts=on;
+do $$ begin execute format('grant operations_api,executor,provider_adapter to %I',current_user); end $$;
+do $$
+declare
+ p uuid:=gen_random_uuid(); inst uuid:=gen_random_uuid(); ex uuid:=gen_random_uuid(); tid uuid:=gen_random_uuid(); tid2 uuid:=gen_random_uuid(); party uuid:=gen_random_uuid();
+ retry uuid:=gen_random_uuid(); def uuid:=gen_random_uuid(); stage uuid:=gen_random_uuid(); oid uuid:=gen_random_uuid(); nextoid uuid:=gen_random_uuid(); scope uuid:=gen_random_uuid(); mem uuid:=gen_random_uuid();
+ ctx jsonb; req jsonb; r jsonb; original jsonb; v jsonb; source jsonb; ev jsonb; fence_ jsonb; oldfence jsonb; results jsonb:='[]'; baseline jsonb; specimens jsonb:='{}'; entry record; stage_kind_ text; stage_ uuid; work_ uuid; previous_ uuid; fulfillment_ uuid:=gen_random_uuid(); hashes_ jsonb; schedule_ uuid; scheduled_ uuid; n bigint; cmd uuid; attempt uuid; outbox jsonb; result_ jsonb; proposal jsonb; item jsonb; item2 jsonb; package jsonb; batch uuid:=gen_random_uuid(); finding uuid;
+begin
+ baseline:=jsonb_build_object('delivery',(select count(*) from ecos.delivery),'delivery_attempt',(select count(*) from ecos.delivery_attempt),'domain_event',(select count(*) from ecos.domain_event),'emergency_intent',(select count(*) from ecos.emergency_intent),'execution_run',(select count(*) from ecos.execution_run),'memory_version',(select count(*) from ecos.memory_version),'notification',(select count(*) from ecos.notification),'outbox_item',(select count(*) from ecos.outbox_item),'provider_command',(select count(*) from ecos.provider_command),'provider_result',(select count(*) from ecos.provider_result),'task',(select count(*) from ecos.task),'work_claim',(select count(*) from ecos.work_claim));
+ insert into ecos.party values(party,'SYNTHETIC-PARTY-'||party,'Synthetic recipient',1);
+ insert into ecos.task(id,business_id,title,project_id,lifecycle_state,wait_reason,description) values(tid,'SYNTHETIC-TASK-'||tid,'Synthetic obligation',null,'open','none','Fixture'),(tid2,'SYNTHETIC-TASK-'||tid2,'Synthetic sibling',null,'open','none','Fixture');
+ insert into ecos.executor(id,name,surface,enabled) values(ex,'synthetic_executor','DATABASE_DETERMINISTIC',true);
+ insert into ecos.executor_instance(id,executor_id,boot_id,availability,principal_id) values(inst,ex,gen_random_uuid(),'available',p);
+ insert into ecos_meta.principal_binding values('operations_api',p,inst,true),('executor',p,inst,true),('provider_adapter',p,inst,true);
+ insert into ecos_meta.principal_operation select p,name from ecos_meta.operation_contract;
+ insert into ecos_meta.object_grant values(p,'task',tid),(p,'task',tid2);
+ ctx:=jsonb_build_object('principal_id',p,'executor_instance_id',inst,'correlation_id',gen_random_uuid(),'causation_id',null,'idempotency_key','transition-1');
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx,'arguments',jsonb_build_object('task_id',tid,'expected_version',1,'target_state','waiting','wait_reason','owner','reason_code','fixture','evidence','[]'::jsonb));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('task.transition',req); r:=ecos.operate('task.transition',req); perform set_config('role','postgres',true);
+ assert r->>'status'='committed', 'task.transition failed: '||r::text; original:=r;
+ assert (select lifecycle_state='waiting' and record_version=2 from ecos.task where id=tid),'transition readback';
+ assert (select count(*)=1 from ecos.domain_event where aggregate_id=tid),'domain event';
+ assert (select count(*)=1+coalesce((baseline->>'outbox_item')::bigint,0) from ecos.outbox_item),'durable outbox';
+ results:=results||'"task_transition_audit_outbox"'::jsonb;
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('task.transition',req); r:=ecos.operate('task.transition',req); perform set_config('role','postgres',true); assert r=original,'idempotency replay';
+ perform set_config('role','operations_api',true); r:=ecos.operate('task.transition',jsonb_set(req,'{arguments,reason_code}','"changed"')); perform set_config('role','postgres',true); assert r->>'code'='idempotency_conflict','key conflict: '||r::text;
+ req:=jsonb_set(req,'{context,idempotency_key}','"stale"');
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('task.transition',req); r:=ecos.operate('task.transition',req); perform set_config('role','postgres',true); assert r->>'code'='stale_version','expected version: '||r::text;
+ req:=jsonb_set(jsonb_set(jsonb_set(req,'{arguments,expected_version}','2'),'{arguments,target_state}','"draft"'),'{arguments,wait_reason}','"none"'); req:=jsonb_set(req,'{context,idempotency_key}','"bad-transition"');
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('task.transition',req); r:=ecos.operate('task.transition',req); perform set_config('role','postgres',true); assert r->>'code'='invalid_transition','invalid transition: '||r::text;
+ assert (select count(*)=1+coalesce((baseline->>'domain_event')::bigint,0) from ecos.domain_event),'failed mutation audited as success';
+ results:=results||'"idempotency_and_failure_atomicity"'::jsonb;
+ perform set_config('role','executor',true);
+ begin update ecos.task set title='Forbidden'; raise exception 'TEST: table write allowed'; exception when insufficient_privilege then null; end;
+ perform set_config('role','postgres',true);
+ results:=results||'"executor_direct_mutation_denied"'::jsonb;
+ select to_jsonb(t) into v from ecos.task t where id=tid;
+ source:=jsonb_build_object('record_type','task','record_id',tid,'record_version',2,'content_hash',ecos_meta.content_hash(v),'authority','structured_ecos');
+ ev:=jsonb_build_object('source',source,'assertion','Synthetic verified evidence','verification','verified');
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"evidence"}','arguments',jsonb_build_object('task_id',tid,'expected_version',2,'evidence',ev));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('task.evidence.attach',req); r:=ecos.operate('task.evidence.attach',req); perform set_config('role','postgres',true); assert r->>'status'='committed','attach: '||r::text;
+ select to_jsonb(t) into v from ecos.task t where id=tid; source:=source||jsonb_build_object('record_version',3,'content_hash',ecos_meta.content_hash(v));
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"fact"}','arguments',jsonb_build_object('subject_id',tid,'statement','Synthetic supported fact','source_references',jsonb_build_array(source),'sensitivity','internal'));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('fact.record',req); r:=ecos.operate('fact.record',req); perform set_config('role','postgres',true); assert r->>'status'='committed','fact: '||r::text;
+ results:=results||'"evidence_and_fact_operations"'::jsonb;
+ insert into ecos_meta.notification_policy values(tid,party,'sms','synthetic:recipient','synthetic:content',repeat('a',64),'synthetic-policy');
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"notify"}','arguments',jsonb_build_object('task_id',tid,'expected_version',3,'target_state','open','wait_reason','none','reason_code','fixture','evidence','[]'::jsonb));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('task.transition',req); r:=ecos.operate('task.transition',req); perform set_config('role','postgres',true); assert r->>'status'='committed','notification transition: '||r::text;
+ assert (select count(*)=1+coalesce((baseline->>'notification')::bigint,0) from ecos.notification),'notification count'; assert (select count(*)=1+coalesce((baseline->>'delivery')::bigint,0) from ecos.delivery),'delivery count'; assert (select count(*)=1+coalesce((baseline->>'provider_command')::bigint,0) from ecos.provider_command),'command count';
+ select id into cmd from ecos.provider_command where causation_id in(select id from ecos.domain_event where aggregate_id=tid); insert into ecos_meta.object_grant values(p,'provider_command',cmd);
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('task.transition',req); r:=ecos.operate('task.transition',req); perform set_config('role','postgres',true); assert (select count(*)=1+coalesce((baseline->>'provider_command')::bigint,0) from ecos.provider_command),'duplicate command';
+ results:=results||'"atomic_notification_delivery_command"'::jsonb;
+ perform set_config('role','provider_adapter',true); outbox:=ecos.claim_outbox(30); perform set_config('role','postgres',true); assert outbox is not null,'outbox discovery';
+ update ecos.outbox_item set lease_expires_at=clock_timestamp()-interval '1 second',record_version=record_version+1 where id=(outbox->'item'->>'id')::uuid;
+ perform set_config('role','provider_adapter',true); r:=ecos.claim_outbox(30); perform set_config('role','postgres',true); assert r->'item'->>'id'=outbox->'item'->>'id' and r->>'lease_token'<>outbox->>'lease_token','outbox recovery';
+ results:=results||'"outbox_lease_recovery"'::jsonb;
+ perform set_config('role','provider_adapter',true); attempt:=ecos.begin_synthetic_attempt(cmd,repeat('a',64)); perform set_config('role','postgres',true);
+ assert (select outcome='unknown_outcome' from ecos.provider_command where id=cmd),'unknown before side effect';
+ perform set_config('role','provider_adapter',true);
+ begin perform ecos.begin_synthetic_attempt(cmd,repeat('a',64)); raise exception 'TEST: unknown resent'; exception when check_violation then null; end;
+ perform set_config('role','postgres',true);
+ result_:=jsonb_build_object('id',gen_random_uuid(),'schema_version','1.0.0','created_at',clock_timestamp(),'provider_command_id',cmd,'provider_attempt_id',attempt,'outcome','reconciled','provider_object_id','SYNTHETIC-PROVIDER-ID','observed_at',clock_timestamp(),'evidence_hash',repeat('b',64),'reconciled_outcome','succeeded');
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"provider-result"}','arguments',jsonb_build_object('result',result_));
+ perform set_config('role','provider_adapter',true); specimens:=specimens||jsonb_build_object('provider.result.record',req); r:=ecos.operate('provider.result.record',req); perform set_config('role','postgres',true); assert r->>'status'='committed','provider result: '||r::text;
+ perform set_config('role','provider_adapter',true); r:=ecos.operate('provider.result.record',jsonb_set(req,'{context,idempotency_key}','"duplicate-result"')); perform set_config('role','postgres',true); assert r->>'status'='committed','duplicate provider result: '||r::text;
+ assert (select count(*)=1+coalesce((baseline->>'provider_result')::bigint,0) from ecos.provider_result),'duplicate result effect'; assert (select count(*)=1+coalesce((baseline->>'delivery_attempt')::bigint,0) from ecos.delivery_attempt),'duplicate delivery effect'; assert (select state='delivered' from ecos.delivery where provider_command_id=cmd),'delivery projection';
+ results:=results||'"unknown_outcome_reconciliation_and_duplicate_result"'::jsonb;
+ insert into ecos.retry_policy(id,max_attempts,initial_delay_seconds,max_delay_seconds,backoff_multiplier,jitter_basis_points,retryable_error_classes) values(retry,10,1,30,2,0,'["transient"]');
+ insert into ecos.work_definition(id,name,definition_version,enabled,fulfillment_kind,retry_policy_id) values(def,'synthetic_work',1,true,'staged',retry);
+ insert into ecos.work_stage_definition(id,work_definition_id,stage_key,kind,execution_surface,input_schema_id,result_schema_id,requires_approval) values(stage,def,'synthetic_stage','deterministic','DATABASE_DETERMINISTIC','synthetic.input.v1','synthetic.result.v1',false);
+ insert into ecos.work_occurrence(id,work_definition_id,stage_definition_id,fulfillment_id,task_id,state,occurrence_key,due_at,retry_at,ready_override_at,priority_override) values(oid,def,stage,gen_random_uuid(),tid,'ready','SYNTHETIC-FIRST',clock_timestamp()-interval '1 minute',null,null,null),(nextoid,def,stage,gen_random_uuid(),tid,'pending','SYNTHETIC-DEPENDENT',clock_timestamp()+interval '1 day',null,null,null);
+ insert into ecos.work_dependency(occurrence_id,prerequisite_occurrence_id,required_result_schema_id,required_result_hash) values(nextoid,oid,'synthetic.result.v1',null);
+ insert into ecos_meta.object_grant values(p,'work_occurrence',oid),(p,'work_occurrence',nextoid);
+ insert into ecos.capability(name,version,description) values('db.governed_operations',1,'Synthetic DB capability') on conflict(name,version) do nothing;
+ insert into ecos.stage_capability_requirement(stage_definition_id,capability_name,minimum_version) values(stage,'db.governed_operations',1);
+ perform set_config('role','executor',true); perform ecos.record_heartbeat(clock_timestamp(),repeat('c',64)); perform set_config('role','postgres',true);
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"no-capability"}','arguments',jsonb_build_object('executor_instance_id',inst,'lease_seconds',120));
+ perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.claim',req); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert r->'claim'='null'::jsonb,'capability mismatch: '||r::text;
+ insert into ecos.executor_capability(executor_instance_id,capability_name,capability_version,attested_by,expires_at) values(inst,'db.governed_operations',1,p,clock_timestamp()+interval '1 hour');
+ req:=jsonb_set(req,'{context,idempotency_key}','"claim"'); perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.claim',req); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert r->'claim'->>'occurrence_id'=oid::text,'claim: '||r::text;
+ fence_:=ecos_meta.fence(r->'claim'); oldfence:=fence_;
+ assert (select count(*)=1+coalesce((baseline->>'work_claim')::bigint,0) from ecos.work_claim),'single claim'; assert (select count(*)=1+coalesce((baseline->>'execution_run')::bigint,0) from ecos.execution_run),'single run';
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"renew"}','arguments',jsonb_build_object('fence',fence_,'lease_seconds',120));
+ perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.renew',req); r:=ecos.operate('work.renew',req); perform set_config('role','postgres',true); assert r->'claim'->>'record_version'='2','renew: '||r::text;
+ -- Expiry fixture changes only this transaction's synthetic timestamps.
+ update ecos.work_claim set acquired_at=clock_timestamp()-interval '2 minutes',expires_at=clock_timestamp()-interval '1 minute',record_version=record_version+1 where id=(fence_->>'claim_id')::uuid;
+ req:=jsonb_set(req,'{context,idempotency_key}','"expired-renew"'); perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.renew',req); r:=ecos.operate('work.renew',req); perform set_config('role','postgres',true); assert r->>'code'='expired_fence','expired fence: '||r::text;
+ finding:=ecos_meta.repair_expired_claim(oid,(ctx->>'correlation_id')::uuid); assert finding is not null,'repair finding';
+ assert (select result='repaired' and before_state<>after_state from ecos.repair_action where finding_id=finding),'repair audit';
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"replacement"}','arguments',jsonb_build_object('executor_instance_id',inst,'lease_seconds',120));
+ perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.claim',req); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert (r->'claim'->>'claim_version')::bigint>(fence_->>'claim_version')::bigint,'replacement claim: '||r::text;
+ fence_:=ecos_meta.fence(r->'claim');
+ result_:=jsonb_build_object('id',gen_random_uuid(),'schema_version','1.0.0','created_at',clock_timestamp(),'occurrence_id',oid,'stage_definition_id',stage,'execution_run_id',r->'execution_run'->'id','result_schema_id','synthetic.result.v1','content_hash',repeat('d',64),'artifact_uri','synthetic:verified-result','verified_at',clock_timestamp(),'verified_by',p,'source_references','[]'::jsonb);
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"complete"}','arguments',jsonb_build_object('fence',fence_,'result',result_));
+ perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.complete',req); r:=ecos.operate('work.complete',req); perform set_config('role','postgres',true); assert r->>'status'='committed','completion: '||r::text;
+ assert (select state='succeeded' from ecos.work_occurrence where id=oid),'completion readback'; assert (select ready_override_at<=clock_timestamp() from ecos.work_occurrence where id=nextoid),'dependent immediate handoff';
+ begin update ecos.stage_result set content_hash=repeat('e',64); raise exception 'TEST: mutable stage'; exception when check_violation then null; end;
+ req:=jsonb_set(jsonb_set(req,'{arguments,fence}',oldfence),'{context,idempotency_key}','"stale-complete"'); perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.complete',req); r:=ecos.operate('work.complete',req); perform set_config('role','postgres',true); assert r->>'code'='expired_fence','stale completion: '||r::text;
+ results:=results||'["capability_pair_filter","claim_renewal","expired_claim_fencing_repair","immutable_completion_and_dependency_release"]'::jsonb;
+ select to_jsonb(t) into v from ecos.task t where id=tid2;
+ source:=jsonb_build_object('record_type','task','record_id',tid2,'record_version',1,'content_hash',ecos_meta.content_hash(v),'authority','structured_ecos');
+ ev:=jsonb_build_object('source',source,'assertion','Synthetic proposal evidence','verification','verified');
+ item:=jsonb_build_object('item_id',gen_random_uuid(),'depends_on_item_ids','[]'::jsonb,'source_references',jsonb_build_array(source),'expected_record_versions',jsonb_build_array(source-array['content_hash','authority']),'proposed_operations',jsonb_build_array(jsonb_build_object('operation','task.transition','arguments',jsonb_build_object('task_id',tid2,'expected_version',1,'target_state','waiting','wait_reason','owner','reason_code','proposal_fixture','evidence',jsonb_build_array(ev)))),'evidence',jsonb_build_array(ev),'confidence_basis_points',9000,'unresolved_ambiguity','[]'::jsonb);
+ proposal:=jsonb_build_object('id',gen_random_uuid(),'proposal_type','synthetic_review','schema_version','1.0.0','created_at',clock_timestamp(),'correlation_id',ctx->'correlation_id','source_references',jsonb_build_array(source),'expected_record_versions',item->'expected_record_versions','items',jsonb_build_array(item)); proposal:=proposal||jsonb_build_object('content_hash',ecos_meta.content_hash(proposal));
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"proposal"}','arguments',jsonb_build_object('proposal',proposal));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('proposal.commit',req); r:=ecos.operate('proposal.commit',req); perform set_config('role','postgres',true); assert r->'items'->0->>'state'='committed','proposal: '||r::text; original:=r;
+ perform set_config('role','operations_api',true); r:=ecos.operate('proposal.commit',jsonb_set(req,'{context,idempotency_key}','"proposal-restart"')); perform set_config('role','postgres',true); assert r=original,'proposal restart';
+ req:=jsonb_set(req,'{arguments,proposal,content_hash}',to_jsonb(repeat('0',64))); req:=jsonb_set(req,'{context,idempotency_key}','"malformed-proposal"'); perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('proposal.commit',req); r:=ecos.operate('proposal.commit',req); perform set_config('role','postgres',true); assert r->>'code'='invalid_contract','malformed proposal: '||r::text;
+ results:=results||'"proposal_commit_hash_and_restart"'::jsonb;
+ select to_jsonb(t) into v from ecos.task t where id=tid2; source:=source||jsonb_build_object('record_version',2,'content_hash',ecos_meta.content_hash(v));
+ insert into ecos.memory_scope(id,scope_type,scope_id,sensitivity,authorized_role_names) values(scope,'synthetic',gen_random_uuid(),'internal','["operations_api"]');
+ insert into ecos.memory_record(id,business_id,scope_id,memory_kind,active_head_version_id) values(mem,'SYNTHETIC-MEMORY-'||mem,scope,'continuity',null);
+ insert into ecos_meta.object_grant values(p,'memory_record',mem),(p,'memory_scope',scope);
+ v:=jsonb_build_object('id',gen_random_uuid(),'schema_version','1.0.0','created_at',clock_timestamp(),'memory_record_id',mem,'version_number',1,'supersedes_version_id',null,'scope_id',scope,'statement','Synthetic memory','operational_meaning','Development only','provenance',jsonb_build_array(source),'effective_at',clock_timestamp(),'sensitivity','internal','retention_policy_ref','synthetic-no-purge','authoritative_references',jsonb_build_array(source),'compaction_run_id',null); v:=v||jsonb_build_object('content_hash',ecos_meta.content_hash(v));
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"memory-1"}','arguments',jsonb_build_object('memory_record_id',mem,'expected_version',1,'new_version',v));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('memory.activate',req); r:=ecos.operate('memory.activate',req); perform set_config('role','postgres',true); assert r->>'status'='committed','memory activation: '||r::text;
+ v:=v||jsonb_build_object('id',gen_random_uuid(),'version_number',2,'supersedes_version_id',v->'id','statement','Synthetic successor'); v:=v||jsonb_build_object('content_hash',ecos_meta.content_hash(v));
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"memory-2"}','arguments',jsonb_build_object('memory_record_id',mem,'expected_version',2,'new_version',v));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('memory.activate',req); r:=ecos.operate('memory.activate',req); perform set_config('role','postgres',true); assert r->>'status'='committed','memory supersession: '||r::text;
+ assert (select count(*)=2+coalesce((baseline->>'memory_version')::bigint,0) from ecos.memory_version),'immutable versions retained'; assert (select active_head_version_id=(v->>'id')::uuid from ecos.memory_record where id=mem),'one active head';
+ insert into ecos_meta.object_grant values(p,'memory_version',(v->>'id')::uuid);
+ perform set_config('role','operations_api',true); package:=ecos.bootstrap_package(); perform set_config('role','postgres',true); assert jsonb_array_length(package->'active_memory_heads')=1,'bootstrap memory'; assert ecos_meta.content_hash(package)=package->>'content_hash','bootstrap hash';
+ results:=results||'["memory_activation_supersession","bootstrap_database_package"]'::jsonb;
+ insert into ecos.heartbeat(executor_instance_id,observed_at,received_at,valid_until,availability,evidence_hash) values(inst,clock_timestamp()-interval '2 minutes',clock_timestamp(),clock_timestamp()-interval '1 second','available',repeat('f',64));
+ assert (select availability='unavailable' from ecos.v_node_health where executor_instance_id=inst),'stale heartbeat'; perform ecos_meta.watchdog((ctx->>'correlation_id')::uuid); assert (select count(*)=1 from ecos.emergency_intent where executor_instance_id=inst and correlation_id=(ctx->>'correlation_id')::uuid),'independent emergency intent';
+ results:=results||'"stale_heartbeat_emergency_intent"'::jsonb;
+ insert into ecos_migration.raw_migration_batch(id,source_system,extracted_at,source_registry_version,artifact_uri,sha256,row_count,column_names,source_family) values(batch,'synthetic',clock_timestamp(),'fixture-v1','synthetic:raw',repeat('a',64),4,'["legacy_id","state","title","project_id"]','task');
+ perform ecos_migration.quarantine_row(batch,'1','{"legacy_id":"SYNTHETIC-DUP","state":"compound invalid","title":"One","project_id":null}');
+ perform ecos_migration.quarantine_row(batch,'2','{"legacy_id":"SYNTHETIC-DUP","state":"open","title":"Two","project_id":null}');
+ perform ecos_migration.quarantine_row(batch,'3','{"legacy_id":"SYNTHETIC-REF","state":"open","title":"Three","project_id":"not-a-uuid"}');
+ perform ecos_migration.quarantine_row(batch,'4','{"legacy_id":"SYNTHETIC-TYPE","state":"open","title":12,"shifted":"x"}');
+ assert (select count(*)=4 from ecos_migration.quarantine_item where batch_id=batch and reason_codes<>'[]'),'quarantine defects'; assert (select count(*)=2+coalesce((baseline->>'task')::bigint,0) from ecos.task),'quarantine not imported';
+ results:=results||'"typed_quarantine_four_defects"'::jsonb;
+ -- Additional negative/edge acceptance using the same rolled-back fixture scope.
+ perform set_config('role','operations_api',true);
+ r:=ecos.operate('memory.activate',jsonb_set(req,'{context,principal_id}',to_jsonb(gen_random_uuid())));
+ perform set_config('role','postgres',true); assert r->>'code'='forbidden','principal spoof accepted';
+ perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('memory.activate',req); r:=ecos.operate('memory.activate',req); perform set_config('role','postgres',true); assert r->>'code'='forbidden','wrong operation role replay';
+ results:=results||'"principal_and_role_replay_denial"'::jsonb;
+ -- Two independent proposal items: one fresh, one stale, and one dependent on the stale item.
+ select to_jsonb(t) into v from ecos.task t where id=tid;
+ source:=jsonb_build_object('record_type','task','record_id',tid,'record_version',4,'content_hash',ecos_meta.content_hash(v),'authority','structured_ecos');
+ ev:=jsonb_build_object('source',source,'assertion','Fresh sibling evidence','verification','verified');
+ item2:=item||jsonb_build_object('item_id',gen_random_uuid(),'source_references',jsonb_build_array(source),'expected_record_versions',jsonb_build_array(source-array['content_hash','authority']),'evidence',jsonb_build_array(ev),'proposed_operations',jsonb_build_array(jsonb_build_object('operation','task.transition','arguments',jsonb_build_object('task_id',tid,'expected_version',4,'target_state','waiting','wait_reason','owner','reason_code','fresh_sibling','evidence',jsonb_build_array(ev)))));
+ item:=jsonb_set(item,'{item_id}',to_jsonb(gen_random_uuid()));
+ proposal:=proposal||jsonb_build_object('id',gen_random_uuid(),'items',jsonb_build_array(item2,item,item||jsonb_build_object('item_id',gen_random_uuid(),'depends_on_item_ids',jsonb_build_array(item->'item_id'))),'expected_record_versions',(item2->'expected_record_versions')||(item->'expected_record_versions'),'source_references',(item2->'source_references')||(item->'source_references'));
+ proposal:=proposal||jsonb_build_object('content_hash',ecos_meta.content_hash(proposal));
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"siblings"}','arguments',jsonb_build_object('proposal',proposal));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('proposal.commit',req); r:=ecos.operate('proposal.commit',req); perform set_config('role','postgres',true);
+ assert r->'items'->0->>'state'='committed' and r->'items'->1->>'state'='stale' and r->'items'->2->>'state'='blocked','sibling isolation: '||r::text;
+ assert (select record_version=5 from ecos.task where id=tid),'fresh sibling not committed'; assert (select record_version=2 from ecos.task where id=tid2),'stale sibling changed';
+ results:=results||'"proposal_stale_sibling_and_dependent_isolation"'::jsonb;
+ -- Exact expected-version CAS and immutable prior memory.
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"memory-stale"}','arguments',jsonb_build_object('memory_record_id',mem,'expected_version',1,'new_version',(select to_jsonb(mv) from ecos.memory_version mv order by version_number desc limit 1)));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('memory.activate',req); r:=ecos.operate('memory.activate',req); perform set_config('role','postgres',true); assert r->>'code'='stale_version','memory stale CAS';
+ begin update ecos.memory_version set statement='tampered'; raise exception 'TEST: memory mutable'; exception when check_violation then null; end;
+ results:=results||'"memory_cas_and_immutability"'::jsonb;
+ -- Approval binds a real current subject; expiry and revocation block the next stage.
+ select to_jsonb(t) into v from ecos.task t where id=tid;
+ insert into ecos.approval_request(task_id,subject_type,subject_id,subject_hash,state,expires_at) values(tid,'task',tid,ecos_meta.content_hash(v),'pending',clock_timestamp()+interval '1 hour') returning id into finding;
+ insert into ecos_meta.object_grant values(p,'approval_request',finding);
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"approve"}','arguments',jsonb_build_object('approval_request_id',finding,'expected_version',1,'decision','approved','subject_hash',ecos_meta.content_hash(v),'reason_code','synthetic_owner'));
+ perform set_config('role','operations_api',true); specimens:=specimens||jsonb_build_object('approval.decide',req); r:=ecos.operate('approval.decide',req); perform set_config('role','postgres',true); assert r->>'status'='committed','approval: '||r::text;
+ update ecos.work_stage_definition set requires_approval=true,record_version=record_version+1 where id=stage;
+ insert into ecos.work_approval values(nextoid,finding,ecos_meta.content_hash(v));
+ update ecos.approval_request set expires_at=clock_timestamp()-interval '1 second',record_version=record_version+1 where id=finding;
+ perform set_config('role','executor',true); perform ecos.record_heartbeat(clock_timestamp(),repeat('a',64)); perform set_config('role','postgres',true);
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"expired-approval"}','arguments',jsonb_build_object('executor_instance_id',inst,'lease_seconds',120));
+ perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.claim',req); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert r->'claim'='null'::jsonb,'expired approval bypass';
+ insert into ecos.approval_decision(approval_request_id,decision,actor_id,reason_code,evidence,supersedes_decision_id) select finding,'revoked',p,'synthetic_revocation','[]',id from ecos.approval_decision where approval_request_id=finding;
+ update ecos.approval_request set state='revoked',expires_at=clock_timestamp()+interval '1 hour',record_version=record_version+1 where id=finding;
+ req:=jsonb_set(req,'{context,idempotency_key}','"revoked-approval"'); perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.claim',req); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert r->'claim'='null'::jsonb,'revoked approval bypass';
+ update ecos_meta.control set maintenance=true,record_version=record_version+1;
+ req:=jsonb_set(req,'{context,idempotency_key}','"maintenance"'); perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.claim',req); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert r->>'code'='gate_blocked','maintenance bypass';
+ update ecos_meta.control set maintenance=false,record_version=record_version+1;
+ results:=results||'"approval_expiry_revocation_maintenance_gates"'::jsonb;
+ -- Sequential graph rejection; the distinct concurrent graph gate stays pending.
+ insert into ecos.task_dependency(task_id,prerequisite_task_id,satisfaction_rule) values(tid,tid2,'completed');
+ begin insert into ecos.task_dependency(task_id,prerequisite_task_id,satisfaction_rule) values(tid2,tid,'completed'); raise exception 'TEST: cycle accepted'; exception when check_violation then null; end;
+ results:=results||'"dependency_cycle_rejected"'::jsonb;
+ assert ecos_meta.local_occurrence('2026-03-08 02:30','America/Los_Angeles','skip','earlier') is null,'DST gap skip';
+ assert ecos_meta.local_occurrence('2026-03-08 02:30','America/Los_Angeles','next_valid','earlier')='2026-03-08T10:00:00Z'::timestamptz,'DST gap next valid';
+ assert ecos_meta.local_occurrence('2026-11-01 01:30','America/Los_Angeles','skip','earlier')='2026-11-01T08:30:00Z'::timestamptz,'DST fold earlier';
+ assert ecos_meta.local_occurrence('2026-11-01 01:30','America/Los_Angeles','skip','later')='2026-11-01T09:30:00Z'::timestamptz,'DST fold later';
+ results:=results||'"dst_gap_and_fold_policies"'::jsonb;
+ -- A failed subtransaction must roll back both claim and run, preserving completed evidence.
+ delete from ecos.work_approval where occurrence_id=nextoid;
+ update ecos.work_stage_definition set requires_approval=false,record_version=record_version+1 where id=stage;
+ delete from ecos.task_dependency where task_id=tid;
+ select count(*) into n from ecos.execution_run;
+ begin
+  req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"rollback-claim"}','arguments',jsonb_build_object('executor_instance_id',inst,'lease_seconds',120));
+  perform set_config('role','executor',true); specimens:=specimens||jsonb_build_object('work.claim',req); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert r->'claim'->>'occurrence_id'=nextoid::text,'rollback claim: '||r::text;
+  raise exception using errcode='ZX001',message='synthetic transaction abort';
+ exception when sqlstate 'ZX001' then null; end;
+ assert (select count(*)=n from ecos.execution_run),'run survived rollback'; assert not exists(select 1 from ecos.work_claim where occurrence_id=nextoid),'claim survived rollback';
+ assert (select count(*)=1 and min(content_hash)=repeat('d',64) from ecos.stage_result where occurrence_id=oid),'completed evidence lost';
+ results:=results||'"claim_run_rollback_and_stage_preservation"'::jsonb;
+
+
+ -- Every contracted operation rejects a different principal, even on a replay.
+ assert (select count(*)=10 from jsonb_object_keys(specimens)), 'operation coverage incomplete';
+ for entry in select key,value from jsonb_each(specimens) loop
+  perform set_config('role',case when entry.key like 'work.%' then 'executor' when entry.key='provider.result.record' then 'provider_adapter' else 'operations_api' end,true);
+  r:=ecos.operate(entry.key,jsonb_set(entry.value,'{context,principal_id}',to_jsonb(gen_random_uuid())));
+  perform set_config('role','postgres',true); assert r->>'code'='forbidden','authorization: '||entry.key||r::text;
+ end loop;
+ results:=results||'"all_ten_operations_principal_authorization"'::jsonb;
+ -- Role and sensitivity apply to readback as well as activation.
+ update ecos.memory_scope set sensitivity='restricted',record_version=record_version+1 where id=scope;
+ perform set_config('role','operations_api',true);
+ begin perform ecos.read_record('memory_record',mem); raise exception 'TEST: sensitivity leak'; exception when insufficient_privilege then null; end;
+ perform set_config('role','postgres',true);
+ update ecos.memory_scope set sensitivity='internal',record_version=record_version+1 where id=scope;
+ perform set_config('role','executor',true);
+ begin perform ecos.read_record('memory_record',mem); raise exception 'TEST: role scope leak'; exception when insufficient_privilege then null; end;
+ perform set_config('role','postgres',true);
+ results:=results||'"memory_read_role_and_sensitivity_scope"'::jsonb;
+ -- Delayed failure webhook after reconciled success cannot regress a delivery.
+ select to_jsonb(pr) into result_ from ecos.provider_result pr where provider_command_id=cmd limit 1;
+ result_:=(result_||'{"reconciled_outcome":null}'::jsonb)||jsonb_build_object('id',gen_random_uuid(),'outcome','failed','observed_at',clock_timestamp()-interval '1 hour','evidence_hash',repeat('9',64));
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"out-of-order"}','arguments',jsonb_build_object('result',result_));
+ perform set_config('role','provider_adapter',true); r:=ecos.operate('provider.result.record',req); perform set_config('role','postgres',true);
+ assert r->>'status'='committed','out-of-order result: '||r::text;
+ assert (select state='delivered' from ecos.delivery where provider_command_id=cmd),'success regressed';
+ assert (select count(*)=1 from ecos.delivery_attempt where provider_attempt_id=attempt),'effect repeated';
+ results:=results||'"out_of_order_provider_result_preserves_success"'::jsonb;
+ -- Recurrence logical identity is idempotent; updates cancel only future unfinished work.
+ insert into ecos.task_schedule(task_id,due_at,follow_up_at,planned_start_at,timezone,rrule,dst_gap_policy,dst_fold_policy,recurrence_anchor) values(tid,null,null,null,'America/Los_Angeles','FREQ=DAILY','skip','earlier','fixed_calendar') returning id into schedule_;
+ scheduled_:=ecos_meta.materialize_occurrence(schedule_,1,stage,'2099-11-01 10:00');
+ assert scheduled_=ecos_meta.materialize_occurrence(schedule_,1,stage,'2099-11-01 10:00'),'duplicate recurrence';
+ update ecos.task_schedule set rrule='FREQ=WEEKLY',record_version=record_version+1 where id=schedule_;
+ assert (select state='cancelled' from ecos.work_occurrence where id=scheduled_),'obsolete recurrence not cancelled';
+ begin perform ecos_meta.materialize_occurrence(schedule_,1,stage,'2099-11-02 10:00'); raise exception 'TEST: stale schedule'; exception when serialization_failure then null; end;
+ results:=results||'"recurrence_identity_and_schedule_update"'::jsonb;
+ perform set_config('role','executor',true); perform ecos.record_heartbeat(clock_timestamp()-interval '1 hour',repeat('8',64)); perform set_config('role','postgres',true);
+ assert (select availability='unavailable' from ecos.v_node_health where executor_instance_id=inst),'delayed heartbeat revived executor';
+ results:=results||'"delayed_heartbeat_cannot_revive_executor"'::jsonb;
+
+
+ -- A single obligation has five staged, synthetic fulfillment mechanisms.
+ delete from ecos_meta.object_grant where principal_id=p and record_type='work_occurrence' and record_id=nextoid;
+ select to_jsonb(t) into v from ecos.task t where id=tid2;
+ insert into ecos.approval_request(task_id,subject_type,subject_id,subject_hash,state,expires_at) values(tid2,'task',tid2,ecos_meta.content_hash(v),'pending',clock_timestamp()+interval '1 hour') returning id into finding;
+ insert into ecos_meta.object_grant values(p,'approval_request',finding);
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"staged-approval"}','arguments',jsonb_build_object('approval_request_id',finding,'expected_version',1,'decision','approved','subject_hash',ecos_meta.content_hash(v),'reason_code','synthetic_stage'));
+ perform set_config('role','operations_api',true); r:=ecos.operate('approval.decide',req); perform set_config('role','postgres',true); assert r->>'status'='committed','staged approval';
+ foreach stage_kind_ in array array['human','semantic','provider','approval','deterministic'] loop
+  stage_:=gen_random_uuid(); work_:=gen_random_uuid();
+  update ecos.executor set surface=case stage_kind_ when 'human' then 'INTERACTIVE_ADA' when 'semantic' then 'ONLINE_SEMANTIC' when 'provider' then 'RESIDENT_DETERMINISTIC_PROVIDER' when 'approval' then 'INTERACTIVE_ADA' else 'DATABASE_DETERMINISTIC' end,record_version=record_version+1 where id=ex;
+  insert into ecos.work_stage_definition(id,work_definition_id,stage_key,kind,execution_surface,input_schema_id,result_schema_id,requires_approval) select stage_,def,'synthetic_'||stage_kind_,stage_kind_,surface,'synthetic.input.v1','synthetic.result.v1',stage_kind_='approval' from ecos.executor where id=ex;
+  insert into ecos.work_occurrence(id,work_definition_id,stage_definition_id,fulfillment_id,task_id,state,occurrence_key,due_at,retry_at,ready_override_at,priority_override) values(work_,def,stage_,fulfillment_,tid2,'ready','SYNTHETIC-STAGED-'||stage_kind_,clock_timestamp(),null,null,null);
+  insert into ecos_meta.object_grant values(p,'work_occurrence',work_);
+  if previous_ is not null then insert into ecos.work_dependency(occurrence_id,prerequisite_occurrence_id,required_result_schema_id,required_result_hash) values(work_,previous_,'synthetic.result.v1',null); end if;
+  if stage_kind_='approval' then insert into ecos.work_approval values(work_,finding,ecos_meta.content_hash(v)); end if;
+  select coalesce(jsonb_agg(jsonb_build_array(occurrence_id,content_hash) order by occurrence_id),'[]') into hashes_ from ecos.stage_result;
+  perform set_config('role','executor',true); perform ecos.record_heartbeat(clock_timestamp(),repeat('a',64)); perform set_config('role','postgres',true);
+  req:=jsonb_build_object('schema_version','1.0.0','context',ctx||jsonb_build_object('idempotency_key','stage-claim-'||stage_kind_),'arguments',jsonb_build_object('executor_instance_id',inst,'lease_seconds',120));
+  perform set_config('role','executor',true); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true); assert r->'claim'->>'occurrence_id'=work_::text,'stage claim: '||r::text;
+  oldfence:=ecos_meta.fence(r->'claim');
+  update ecos.work_claim set acquired_at=clock_timestamp()-interval '2 minutes',expires_at=clock_timestamp()-interval '1 minute',record_version=record_version+1 where id=(oldfence->>'claim_id')::uuid;
+  req:=jsonb_set(req,'{context,idempotency_key}',to_jsonb('stage-recover-'||stage_kind_));
+  perform set_config('role','executor',true); r:=ecos.operate('work.claim',req); perform set_config('role','postgres',true);
+  assert (r->'claim'->>'claim_version')::bigint>(oldfence->>'claim_version')::bigint,'stage abandoned claim';
+  assert hashes_=(select coalesce(jsonb_agg(jsonb_build_array(occurrence_id,content_hash) order by occurrence_id),'[]') from ecos.stage_result),'prior stage evidence changed';
+  fence_:=ecos_meta.fence(r->'claim');
+  result_:=jsonb_build_object('id',gen_random_uuid(),'schema_version','1.0.0','created_at',clock_timestamp(),'occurrence_id',work_,'stage_definition_id',stage_,'execution_run_id',r->'execution_run'->'id','result_schema_id','synthetic.result.v1','content_hash',repeat('d',64),'artifact_uri','synthetic:stage-'||stage_kind_,'verified_at',clock_timestamp(),'verified_by',p,'source_references','[]'::jsonb);
+  req:=jsonb_build_object('schema_version','1.0.0','context',ctx||jsonb_build_object('idempotency_key','stage-complete-'||stage_kind_),'arguments',jsonb_build_object('fence',fence_,'result',result_));
+  perform set_config('role','executor',true); r:=ecos.operate('work.complete',req); perform set_config('role','postgres',true); assert r->>'status'='committed','stage complete: '||r::text;
+  assert (select state='succeeded' from ecos.work_occurrence where id=work_),'stage readback'; previous_:=work_;
+ end loop;
+ assert (select count(*)=5 from ecos.work_occurrence where fulfillment_id=fulfillment_ and task_id=tid2),'fulfillment separation';
+ assert (select count(*)=2+coalesce((baseline->>'task')::bigint,0) from ecos.task),'duplicate obligation';
+ results:=results||'"five_stage_single_task_crash_recovery_preserves_hashes"'::jsonb;
+ insert into ecos_meta.object_grant select p,'integrity_finding',id from ecos.integrity_finding where entity_id=oid;
+ perform set_config('role','operations_api',true); package:=ecos.bootstrap_package(); perform set_config('role','postgres',true);
+ assert jsonb_array_length(package->'unresolved_exceptions')>=1,'finding absent from bootstrap';
+ perform set_config('ecos.bootstrap_sample',package::text,true);
+
+
+ delete from ecos_meta.object_grant where principal_id=p and record_type='task' and record_id=tid;
+ perform set_config('role','operations_api',true); r:=ecos.operate('task.transition',specimens->'task.transition'); perform set_config('role','postgres',true);
+ assert r->>'code'='forbidden','revoked object grant bypassed by receipt';
+ insert into ecos_meta.object_grant values(p,'task',tid);
+ results:=results||'"revoked_scope_blocks_idempotent_replay"'::jsonb;
+
+
+ -- Conflicting, unverified and ambiguous items remain isolated without mutation.
+ item:=jsonb_set(item2,'{evidence,0,verification}','"conflicting"');
+ item:=jsonb_set(item,'{item_id}',to_jsonb(gen_random_uuid()));
+ item2:=jsonb_set(jsonb_set(item,'{item_id}',to_jsonb(gen_random_uuid())),'{evidence,0,verification}','"unverified"');
+ proposal:=proposal||jsonb_build_object('id',gen_random_uuid(),'items',jsonb_build_array(item,item2,item2||jsonb_build_object('item_id',gen_random_uuid(),'unresolved_ambiguity',jsonb_build_array('synthetic ambiguity'))),'expected_record_versions',item->'expected_record_versions','source_references',item->'source_references');
+ proposal:=proposal||jsonb_build_object('content_hash',ecos_meta.content_hash(proposal));
+ req:=jsonb_build_object('schema_version','1.0.0','context',ctx||'{"idempotency_key":"conflict-isolation"}','arguments',jsonb_build_object('proposal',proposal));
+ perform set_config('role','operations_api',true); r:=ecos.operate('proposal.commit',req); perform set_config('role','postgres',true);
+ assert r->'items'->0->>'state'='conflicting' and r->'items'->1->>'state'='invalid' and r->'items'->2->>'state'='ambiguous','conflict isolation: '||r::text;
+ assert (select record_version=5 from ecos.task where id=tid),'rejected proposal mutated task';
+ results:=results||'"proposal_conflicting_invalid_ambiguous_isolation"'::jsonb;
+
+ perform set_config('ecos.acceptance_results',results::text,true);
+end $$;
+select current_setting('ecos.acceptance_results')::jsonb as passed_checks;
+rollback;

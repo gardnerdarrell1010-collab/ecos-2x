@@ -1,0 +1,1653 @@
+{
+  "database": {
+    "pg_version": "PostgreSQL 17.6 on aarch64-unknown-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+    "identity": {
+      "authority": "non_production",
+      "singleton": true,
+      "environment": "development",
+      "schema_version": "1.0.0",
+      "architecture_version": "2.x",
+      "provider_effects_enabled": false
+    },
+    "migrations": [
+      {
+        "name": "000001_foundation.sql",
+        "sha256": "e708bca782117bf21f06bc98d6f28d0f9817a19e15386d4d220ff9ce1dbfa2b7",
+        "version": 1,
+        "applied_at": "2026-09-29T08:43:19.065786+00:00"
+      },
+      {
+        "name": "000002_typed_foundation.sql",
+        "sha256": "72885367066299ed28af5e0094be155832fe6652c3fed70b1cfd22e6aaf65bbd",
+        "version": 2,
+        "applied_at": "2026-09-29T08:43:19.442125+00:00"
+      },
+      {
+        "name": "000003_contract_guards.sql",
+        "sha256": "63d3a45b059752e93cd483642666195483c0dfc37c911e23f71547e87f4c6b67",
+        "version": 3,
+        "applied_at": "2026-09-29T08:43:19.46469+00:00"
+      },
+      {
+        "name": "000004_governed_operations.sql",
+        "sha256": "b2e4190ec076070ddbd7a5bbd697c448b3780b92f3e810f1d87766a04adfa4bf",
+        "version": 4,
+        "applied_at": "2026-09-29T08:43:19.474302+00:00"
+      },
+      {
+        "name": "000005_operation_boundary.sql",
+        "sha256": "027e644b6e6e10f5a252f515cdd91b930791b697c19cd29d088784edcaf965b6",
+        "version": 5,
+        "applied_at": "2026-09-29T08:43:19.559128+00:00"
+      },
+      {
+        "name": "000006_governance_support.sql",
+        "sha256": "e867e5aafd638782a51864c68447ae4c86db6c1ebb7478cc906baf22bd4c9c1c",
+        "version": 6,
+        "applied_at": "2026-09-29T08:46:05.38239+00:00"
+      },
+      {
+        "name": "000007_operation_diagnostics.sql",
+        "sha256": "9e6766d480a2543714b5395449b3fc234a4ab9d7bc51819a490db6a807815f08",
+        "version": 7,
+        "applied_at": "2026-09-29T08:51:37.908606+00:00"
+      },
+      {
+        "name": "000008_event_payload_type.sql",
+        "sha256": "24589ea21ea367d565d4a80a0d4fd4468d18bb39ec31227c947f3d0bebd8d64b",
+        "version": 8,
+        "applied_at": "2026-09-29T08:52:34.65028+00:00"
+      },
+      {
+        "name": "000009_sqlstate_diagnostics.sql",
+        "sha256": "57e381878181ed6ac5ae8889a6785e263584315aeabfbe1a89d68f10d028568d",
+        "version": 9,
+        "applied_at": "2026-09-29T08:54:02.347849+00:00"
+      },
+      {
+        "name": "000010_fence_gate_expression.sql",
+        "sha256": "4fc84100d3d01ac388a746d0bf5f516fe7661eb8113770b406cbbaeca9e1b383",
+        "version": 10,
+        "applied_at": "2026-09-29T08:54:49.86077+00:00"
+      },
+      {
+        "name": "000011_proposal_version_union.sql",
+        "sha256": "e30265c1aed60cd0564098fc63cd8b22c9a18129b68a8d84ebb6623e3178756b",
+        "version": 11,
+        "applied_at": "2026-09-29T08:55:50.618451+00:00"
+      },
+      {
+        "name": "000012_bootstrap_binding_union.sql",
+        "sha256": "c37242db003d72b02ad7bcb839bb94025aabb03b6cba86b0c20c26ef21c0ae47",
+        "version": 12,
+        "applied_at": "2026-09-29T08:56:57.075099+00:00"
+      },
+      {
+        "name": "000013_scope_and_gate_hardening.sql",
+        "sha256": "abc983766a825d3b9069168032adb445e312617d7f6ea7f7e3b4370b12bbc04d",
+        "version": 13,
+        "applied_at": "2026-09-29T08:59:53.873873+00:00"
+      },
+      {
+        "name": "000014_outbox_scope.sql",
+        "sha256": "a4f01bd97911319a4476f284509996b3596fcae9eac7bd85cf0d65052eb5c0f5",
+        "version": 14,
+        "applied_at": "2026-09-29T09:04:24.989549+00:00"
+      },
+      {
+        "name": "000015_bootstrap_findings_and_vocabulary.sql",
+        "sha256": "fc37ee462cc6a0fad16291d797990702fbeb8ec67ab89ae8280ab2e93df36945",
+        "version": 15,
+        "applied_at": "2026-09-29T09:05:58.010313+00:00"
+      },
+      {
+        "name": "000016_scope_and_heartbeat_freshness.sql",
+        "sha256": "1a4a6668e3b9caa14072a950f0f4c3e85fcac5f23e08db6dd985f3066e3dc4a3",
+        "version": 16,
+        "applied_at": "2026-09-29T09:13:41.589619+00:00"
+      },
+      {
+        "name": "000017_reconciled_outbox_ack_recovery.sql",
+        "sha256": "c0f48e9bf31a4da70aa385976245f06c39caf5c5ac4c29ee829e31cdf910484d",
+        "version": 17,
+        "applied_at": "2026-09-29T09:20:10.191217+00:00"
+      },
+      {
+        "name": "000018_replay_authorization_scope.sql",
+        "sha256": "a2b56a7ff378784e652154f664e54cbe286709051359ae8ac90a9ffd5dfa3e70",
+        "version": 18,
+        "applied_at": "2026-09-29T09:23:19.509214+00:00"
+      }
+    ],
+    "tables": 74,
+    "functions": 47,
+    "bindings": 0,
+    "operations": [
+      "approval.decide",
+      "fact.record",
+      "memory.activate",
+      "proposal.commit",
+      "provider.result.record",
+      "task.evidence.attach",
+      "task.transition",
+      "work.claim",
+      "work.complete",
+      "work.renew"
+    ],
+    "roles": [
+      {
+        "role": "auditor",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      },
+      {
+        "role": "backup_operator",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      },
+      {
+        "role": "ecos_owner",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      },
+      {
+        "role": "executor",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      },
+      {
+        "role": "migration_runner",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      },
+      {
+        "role": "operations_api",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      },
+      {
+        "role": "provider_adapter",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      },
+      {
+        "role": "read_only_analytics",
+        "login": false,
+        "bypassrls": false,
+        "superuser": false
+      }
+    ]
+  },
+  "transactional": {
+    "passed_checks": [
+      "task_transition_audit_outbox",
+      "idempotency_and_failure_atomicity",
+      "executor_direct_mutation_denied",
+      "evidence_and_fact_operations",
+      "atomic_notification_delivery_command",
+      "outbox_lease_recovery",
+      "unknown_outcome_reconciliation_and_duplicate_result",
+      "capability_pair_filter",
+      "claim_renewal",
+      "expired_claim_fencing_repair",
+      "immutable_completion_and_dependency_release",
+      "proposal_commit_hash_and_restart",
+      "memory_activation_supersession",
+      "bootstrap_database_package",
+      "stale_heartbeat_emergency_intent",
+      "typed_quarantine_four_defects",
+      "principal_and_role_replay_denial",
+      "proposal_stale_sibling_and_dependent_isolation",
+      "memory_cas_and_immutability",
+      "approval_expiry_revocation_maintenance_gates",
+      "dependency_cycle_rejected",
+      "dst_gap_and_fold_policies",
+      "claim_run_rollback_and_stage_preservation",
+      "all_ten_operations_principal_authorization",
+      "memory_read_role_and_sensitivity_scope",
+      "out_of_order_provider_result_preserves_success",
+      "recurrence_identity_and_schedule_update",
+      "delayed_heartbeat_cannot_revive_executor",
+      "five_stage_single_task_crash_recovery_preserves_hashes",
+      "revoked_scope_blocks_idempotent_replay",
+      "proposal_conflicting_invalid_ambiguous_isolation"
+    ]
+  },
+  "durability": {
+    "durabilitySeed": [
+      {
+        "task_id": "82a16d2b-8a84-4fd7-8503-fbd9f541fbd6",
+        "domain_event_id": "9e4457a3-9ed4-475f-82bd-3d09e7d91aa9",
+        "provider_command_id": "42044aab-ddf0-4a8b-8de4-e86f61509c03",
+        "provider_outbox_id": "802d2c30-c62d-46f3-8a78-f14033a485f6",
+        "state": "pending",
+        "principal_id": "26e20060-959a-4ef4-9d8d-f150ea0fa325",
+        "correlation_id": "81321a94-7132-40d8-8cb8-68cbfd10cdee"
+      }
+    ],
+    "durabilityClaim1": [
+      {
+        "claimed": {
+          "item": {
+            "id": "cb37a924-9dd3-4493-8255-fb1876573911",
+            "state": "claimed",
+            "created_at": "2026-09-29T09:03:09.548619+00:00",
+            "destination": "domain_events",
+            "available_at": "2026-09-29T09:03:09.548619+00:00",
+            "attempt_count": 1,
+            "correlation_id": "81321a94-7132-40d8-8cb8-68cbfd10cdee",
+            "record_version": 2,
+            "schema_version": "1.0.0",
+            "domain_event_id": "9e4457a3-9ed4-475f-82bd-3d09e7d91aa9",
+            "idempotency_key": "9e4457a3-9ed4-475f-82bd-3d09e7d91aa9",
+            "lease_expires_at": "2026-09-29T09:03:51.632534+00:00",
+            "provider_command_id": null
+          },
+          "lease_token": "e81de5ce-230f-4737-9ff3-9cc59b1032f5"
+        }
+      }
+    ],
+    "durabilityClaim2": [
+      {
+        "claimed": {
+          "item": {
+            "id": "cb37a924-9dd3-4493-8255-fb1876573911",
+            "state": "claimed",
+            "created_at": "2026-09-29T09:03:09.548619+00:00",
+            "destination": "domain_events",
+            "available_at": "2026-09-29T09:03:09.548619+00:00",
+            "attempt_count": 2,
+            "correlation_id": "81321a94-7132-40d8-8cb8-68cbfd10cdee",
+            "record_version": 3,
+            "schema_version": "1.0.0",
+            "domain_event_id": "9e4457a3-9ed4-475f-82bd-3d09e7d91aa9",
+            "idempotency_key": "9e4457a3-9ed4-475f-82bd-3d09e7d91aa9",
+            "lease_expires_at": "2026-09-29T09:04:32.636123+00:00",
+            "provider_command_id": null
+          },
+          "lease_token": "792c461b-033b-4cb7-b6ba-6aeebd90f490"
+        }
+      }
+    ],
+    "durabilityAck": [
+      {
+        "evidence": {
+          "attempt_id": "2c86d727-44c0-44b4-8fc8-ae0227347a04",
+          "acknowledged_domain_outbox": "cb37a924-9dd3-4493-8255-fb1876573911",
+          "simulated_consumer_exit_before_result": true
+        }
+      }
+    ],
+    "durabilityUnknown": [
+      {
+        "id": "42044aab-ddf0-4a8b-8de4-e86f61509c03",
+        "provider": "synthetic",
+        "account_scope": "development",
+        "outcome": "unknown_outcome",
+        "attempt_id": "2c86d727-44c0-44b4-8fc8-ae0227347a04",
+        "attempt_outcome": "unknown_outcome",
+        "result_count": 0
+      }
+    ],
+    "durabilityReconcile": [
+      {
+        "outcome": "reconciled",
+        "attempts": 1,
+        "results": 1,
+        "delivery_attempts": 1,
+        "outbox": [
+          {
+            "id": "802d2c30-c62d-46f3-8a78-f14033a485f6",
+            "state": "delivered",
+            "attempt_count": 1
+          },
+          {
+            "id": "cb37a924-9dd3-4493-8255-fb1876573911",
+            "state": "delivered",
+            "attempt_count": 3
+          }
+        ]
+      }
+    ]
+  },
+  "bootstrap": {
+    "package_id": "92d0a9f1-1cf2-4530-9943-92a1501849ec",
+    "content_hash": "616d5b52bc054660adb410a1d2e83d9508588d17bd54011a564dd64e97b1adae",
+    "independent_python_schema_count": 73
+  },
+  "security": {
+    "lints": []
+  },
+  "performance": {
+    "lints": [
+      {
+        "name": "unindexed_foreign_keys",
+        "title": "Unindexed foreign keys",
+        "level": "INFO",
+        "facing": "EXTERNAL",
+        "categories": [
+          "PERFORMANCE"
+        ],
+        "description": "Identifies foreign key constraints without a covering index, which can impact database performance.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys",
+        "count": 6,
+        "findings": [
+          {
+            "detail": "Table \\`ecos.execution_run\\` has a foreign key \\`execution_run_claim_id_occurrence_id_stage_definition_id_c_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+            "metadata": {
+              "name": "execution_run",
+              "type": "table",
+              "schema": "ecos",
+              "fkey_name": "execution_run_claim_id_occurrence_id_stage_definition_id_c_fkey",
+              "fkey_columns": [
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
+              ]
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Table \\`ecos.memory_record\\` has a foreign key \\`memory_record_active_head_version_id_id_scope_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+            "metadata": {
+              "name": "memory_record",
+              "type": "table",
+              "schema": "ecos",
+              "fkey_name": "memory_record_active_head_version_id_id_scope_id_fkey",
+              "fkey_columns": [
+                8,
+                1,
+                6
+              ]
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Table \\`ecos.memory_version\\` has a foreign key \\`memory_version_memory_record_id_scope_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+            "metadata": {
+              "name": "memory_version",
+              "type": "table",
+              "schema": "ecos",
+              "fkey_name": "memory_version_memory_record_id_scope_id_fkey",
+              "fkey_columns": [
+                4,
+                7
+              ]
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Table \\`ecos.provider_result\\` has a foreign key \\`provider_result_provider_attempt_id_provider_command_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+            "metadata": {
+              "name": "provider_result",
+              "type": "table",
+              "schema": "ecos",
+              "fkey_name": "provider_result_provider_attempt_id_provider_command_id_fkey",
+              "fkey_columns": [
+                5,
+                4
+              ]
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Table \\`ecos.stage_result\\` has a foreign key \\`stage_result_execution_run_id_occurrence_id_stage_definiti_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+            "metadata": {
+              "name": "stage_result",
+              "type": "table",
+              "schema": "ecos",
+              "fkey_name": "stage_result_execution_run_id_occurrence_id_stage_definiti_fkey",
+              "fkey_columns": [
+                6,
+                4,
+                5
+              ]
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Table \\`ecos.work_occurrence\\` has a foreign key \\`work_occurrence_stage_definition_id_work_definition_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+            "metadata": {
+              "name": "work_occurrence",
+              "type": "table",
+              "schema": "ecos",
+              "fkey_name": "work_occurrence_stage_definition_id_work_definition_id_fkey",
+              "fkey_columns": [
+                6,
+                5
+              ]
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          }
+        ]
+      },
+      {
+        "name": "unused_index",
+        "title": "Unused Index",
+        "level": "INFO",
+        "facing": "EXTERNAL",
+        "categories": [
+          "PERFORMANCE"
+        ],
+        "description": "Detects if an index has never been used and may be a candidate for removal.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index",
+        "count": 57,
+        "findings": [
+          {
+            "detail": "Index \\`task_project_id_idx\\` on table \\`ecos.task\\` has not been used",
+            "metadata": {
+              "name": "task",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`task_assignment_task_id_idx\\` on table \\`ecos.task_assignment\\` has not been used",
+            "metadata": {
+              "name": "task_assignment",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`task_assignment_party_id_idx\\` on table \\`ecos.task_assignment\\` has not been used",
+            "metadata": {
+              "name": "task_assignment",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`task_schedule_task_id_idx\\` on table \\`ecos.task_schedule\\` has not been used",
+            "metadata": {
+              "name": "task_schedule",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`task_dependency_task_id_idx\\` on table \\`ecos.task_dependency\\` has not been used",
+            "metadata": {
+              "name": "task_dependency",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`task_dependency_prerequisite_task_id_idx\\` on table \\`ecos.task_dependency\\` has not been used",
+            "metadata": {
+              "name": "task_dependency",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`approval_decision_supersedes_decision_id_idx\\` on table \\`ecos.approval_decision\\` has not been used",
+            "metadata": {
+              "name": "approval_decision",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`task_evidence_task_id_idx\\` on table \\`ecos.task_evidence\\` has not been used",
+            "metadata": {
+              "name": "task_evidence",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_definition_retry_policy_id_idx\\` on table \\`ecos.work_definition\\` has not been used",
+            "metadata": {
+              "name": "work_definition",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_stage_definition_work_definition_id_idx\\` on table \\`ecos.work_stage_definition\\` has not been used",
+            "metadata": {
+              "name": "work_stage_definition",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_occurrence_work_definition_id_idx\\` on table \\`ecos.work_occurrence\\` has not been used",
+            "metadata": {
+              "name": "work_occurrence",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_occurrence_stage_definition_id_idx\\` on table \\`ecos.work_occurrence\\` has not been used",
+            "metadata": {
+              "name": "work_occurrence",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_dependency_occurrence_id_idx\\` on table \\`ecos.work_dependency\\` has not been used",
+            "metadata": {
+              "name": "work_dependency",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_claim_stage_definition_id_idx\\` on table \\`ecos.work_claim\\` has not been used",
+            "metadata": {
+              "name": "work_claim",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_claim_executor_instance_id_idx\\` on table \\`ecos.work_claim\\` has not been used",
+            "metadata": {
+              "name": "work_claim",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`stage_result_occurrence_id_idx\\` on table \\`ecos.stage_result\\` has not been used",
+            "metadata": {
+              "name": "stage_result",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`stage_result_stage_definition_id_idx\\` on table \\`ecos.stage_result\\` has not been used",
+            "metadata": {
+              "name": "stage_result",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`stage_result_execution_run_id_idx\\` on table \\`ecos.stage_result\\` has not been used",
+            "metadata": {
+              "name": "stage_result",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`dead_letter_item_occurrence_id_idx\\` on table \\`ecos.dead_letter_item\\` has not been used",
+            "metadata": {
+              "name": "dead_letter_item",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`dead_letter_item_last_run_id_idx\\` on table \\`ecos.dead_letter_item\\` has not been used",
+            "metadata": {
+              "name": "dead_letter_item",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`executor_instance_executor_id_idx\\` on table \\`ecos.executor_instance\\` has not been used",
+            "metadata": {
+              "name": "executor_instance",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`executor_capability_executor_instance_id_idx\\` on table \\`ecos.executor_capability\\` has not been used",
+            "metadata": {
+              "name": "executor_capability",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`stage_capability_requirement_stage_definition_id_idx\\` on table \\`ecos.stage_capability_requirement\\` has not been used",
+            "metadata": {
+              "name": "stage_capability_requirement",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`heartbeat_executor_instance_id_idx\\` on table \\`ecos.heartbeat\\` has not been used",
+            "metadata": {
+              "name": "heartbeat",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`outbox_item_domain_event_id_idx\\` on table \\`ecos.outbox_item\\` has not been used",
+            "metadata": {
+              "name": "outbox_item",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`outbox_item_provider_command_id_idx\\` on table \\`ecos.outbox_item\\` has not been used",
+            "metadata": {
+              "name": "outbox_item",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`provider_command_approval_request_id_idx\\` on table \\`ecos.provider_command\\` has not been used",
+            "metadata": {
+              "name": "provider_command",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`provider_attempt_provider_command_id_idx\\` on table \\`ecos.provider_attempt\\` has not been used",
+            "metadata": {
+              "name": "provider_attempt",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`provider_result_provider_attempt_id_idx\\` on table \\`ecos.provider_result\\` has not been used",
+            "metadata": {
+              "name": "provider_result",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`communication_receipt_id_idx\\` on table \\`ecos.communication\\` has not been used",
+            "metadata": {
+              "name": "communication",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`communication_sender_party_id_idx\\` on table \\`ecos.communication\\` has not been used",
+            "metadata": {
+              "name": "communication",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`communication_processing_communication_id_idx\\` on table \\`ecos.communication_processing\\` has not been used",
+            "metadata": {
+              "name": "communication_processing",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`communication_processing_occurrence_id_idx\\` on table \\`ecos.communication_processing\\` has not been used",
+            "metadata": {
+              "name": "communication_processing",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`communication_processing_proposal_id_idx\\` on table \\`ecos.communication_processing\\` has not been used",
+            "metadata": {
+              "name": "communication_processing",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`delivery_notification_id_idx\\` on table \\`ecos.delivery\\` has not been used",
+            "metadata": {
+              "name": "delivery",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`delivery_recipient_party_id_idx\\` on table \\`ecos.delivery\\` has not been used",
+            "metadata": {
+              "name": "delivery",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`delivery_approval_request_id_idx\\` on table \\`ecos.delivery\\` has not been used",
+            "metadata": {
+              "name": "delivery",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`delivery_attempt_delivery_id_idx\\` on table \\`ecos.delivery_attempt\\` has not been used",
+            "metadata": {
+              "name": "delivery_attempt",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_record_scope_id_idx\\` on table \\`ecos.memory_record\\` has not been used",
+            "metadata": {
+              "name": "memory_record",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_version_memory_record_id_idx\\` on table \\`ecos.memory_version\\` has not been used",
+            "metadata": {
+              "name": "memory_version",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_version_scope_id_idx\\` on table \\`ecos.memory_version\\` has not been used",
+            "metadata": {
+              "name": "memory_version",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_version_supersedes_version_id_idx\\` on table \\`ecos.memory_version\\` has not been used",
+            "metadata": {
+              "name": "memory_version",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_version_compaction_run_id_idx\\` on table \\`ecos.memory_version\\` has not been used",
+            "metadata": {
+              "name": "memory_version",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_reference_memory_version_id_idx\\` on table \\`ecos.memory_reference\\` has not been used",
+            "metadata": {
+              "name": "memory_reference",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_compaction_run_scope_id_idx\\` on table \\`ecos.memory_compaction_run\\` has not been used",
+            "metadata": {
+              "name": "memory_compaction_run",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`memory_compaction_run_output_version_id_idx\\` on table \\`ecos.memory_compaction_run\\` has not been used",
+            "metadata": {
+              "name": "memory_compaction_run",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`backup_record_restore_test_id_idx\\` on table \\`ecos.backup_record\\` has not been used",
+            "metadata": {
+              "name": "backup_record",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`quarantine_item_batch_id_idx\\` on table \\`ecos_migration.quarantine_item\\` has not been used",
+            "metadata": {
+              "name": "quarantine_item",
+              "type": "table",
+              "schema": "ecos_migration"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`quarantine_item_identity_resolution_id_idx\\` on table \\`ecos_migration.quarantine_item\\` has not been used",
+            "metadata": {
+              "name": "quarantine_item",
+              "type": "table",
+              "schema": "ecos_migration"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`legacy_identity_source_batch_id_idx\\` on table \\`ecos_migration.legacy_identity\\` has not been used",
+            "metadata": {
+              "name": "legacy_identity",
+              "type": "table",
+              "schema": "ecos_migration"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`command_occurrence_by_occurrence\\` on table \\`ecos.command_occurrence\\` has not been used",
+            "metadata": {
+              "name": "command_occurrence",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`emergency_intent_by_heartbeat\\` on table \\`ecos.emergency_intent\\` has not been used",
+            "metadata": {
+              "name": "emergency_intent",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`work_approval_request\\` on table \\`ecos.work_approval\\` has not been used",
+            "metadata": {
+              "name": "work_approval",
+              "type": "table",
+              "schema": "ecos"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`entity_contract_schema\\` on table \\`ecos_meta.entity_contract\\` has not been used",
+            "metadata": {
+              "name": "entity_contract",
+              "type": "table",
+              "schema": "ecos_meta"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`notification_policy_recipient\\` on table \\`ecos_meta.notification_policy\\` has not been used",
+            "metadata": {
+              "name": "notification_policy",
+              "type": "table",
+              "schema": "ecos_meta"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`principal_binding_instance\\` on table \\`ecos_meta.principal_binding\\` has not been used",
+            "metadata": {
+              "name": "principal_binding",
+              "type": "table",
+              "schema": "ecos_meta"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          },
+          {
+            "detail": "Index \\`principal_operation_name\\` on table \\`ecos_meta.principal_operation\\` has not been used",
+            "metadata": {
+              "name": "principal_operation",
+              "type": "table",
+              "schema": "ecos_meta"
+            },
+            "observed_at": "2026-09-29T09:25:39.707Z"
+          }
+        ]
+      }
+    ]
+  },
+  "plans": [
+    {
+      "name": "ready_work",
+      "query": "select id from ecos.work_occurrence w where state in ('pending','ready','retry_wait','claimed','running') and (due_at<=now() or ready_override_at<=now()) and (retry_at is null or retry_at<=now()) and (ecos_meta.selection(w.id,'00000000-0000-0000-0000-000000000000',now())->>'eligible')::boolean order by due_at,created_at,id limit 1",
+      "plan": [
+        {
+          "QUERY PLAN": [
+            {
+              "Plan": {
+                "Node Type": "Limit",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 0.01,
+                "Total Cost": 0.02,
+                "Plan Rows": 1,
+                "Plan Width": 32,
+                "Actual Startup Time": 0.043,
+                "Actual Total Time": 0.043,
+                "Actual Rows": 0,
+                "Actual Loops": 1,
+                "Shared Hit Blocks": 6,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0,
+                "Plans": [
+                  {
+                    "Node Type": "Sort",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Startup Cost": 0.01,
+                    "Total Cost": 0.02,
+                    "Plan Rows": 1,
+                    "Plan Width": 32,
+                    "Actual Startup Time": 0.042,
+                    "Actual Total Time": 0.042,
+                    "Actual Rows": 0,
+                    "Actual Loops": 1,
+                    "Sort Key": [
+                      "due_at",
+                      "created_at",
+                      "id"
+                    ],
+                    "Sort Method": "quicksort",
+                    "Sort Space Used": 25,
+                    "Sort Space Type": "Memory",
+                    "Shared Hit Blocks": 6,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0,
+                    "Plans": [
+                      {
+                        "Node Type": "Seq Scan",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Relation Name": "work_occurrence",
+                        "Alias": "w",
+                        "Startup Cost": 0,
+                        "Total Cost": 0,
+                        "Plan Rows": 1,
+                        "Plan Width": 32,
+                        "Actual Startup Time": 0.008,
+                        "Actual Total Time": 0.008,
+                        "Actual Rows": 0,
+                        "Actual Loops": 1,
+                        "Filter": "(((retry_at IS NULL) OR (retry_at <= now())) AND (state = ANY ('{pending,ready,retry_wait,claimed,running}'::text[])) AND ((due_at <= now()) OR (ready_override_at <= now())) AND ((ecos_meta.selection(id, '00000000-0000-0000-0000-000000000000'::uuid, now()) ->> 'eligible'::text))::boolean)",
+                        "Rows Removed by Filter": 0,
+                        "Shared Hit Blocks": 0,
+                        "Shared Read Blocks": 0,
+                        "Shared Dirtied Blocks": 0,
+                        "Shared Written Blocks": 0,
+                        "Local Hit Blocks": 0,
+                        "Local Read Blocks": 0,
+                        "Local Dirtied Blocks": 0,
+                        "Local Written Blocks": 0,
+                        "Temp Read Blocks": 0,
+                        "Temp Written Blocks": 0
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Planning": {
+                "Shared Hit Blocks": 248,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning Time": 0.868,
+              "Triggers": [],
+              "Execution Time": 0.115
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "capability",
+      "query": "select * from ecos.executor_capability where executor_instance_id='00000000-0000-0000-0000-000000000000' and capability_name='db.governed_operations' and capability_version>=1 and expires_at>now()",
+      "plan": [
+        {
+          "QUERY PLAN": [
+            {
+              "Plan": {
+                "Node Type": "Index Scan",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Scan Direction": "Forward",
+                "Index Name": "capability_attestation_lookup",
+                "Relation Name": "executor_capability",
+                "Alias": "executor_capability",
+                "Startup Cost": 0.15,
+                "Total Cost": 2.38,
+                "Plan Rows": 1,
+                "Plan Width": 144,
+                "Actual Startup Time": 0.061,
+                "Actual Total Time": 0.062,
+                "Actual Rows": 0,
+                "Actual Loops": 1,
+                "Index Cond": "((capability_name = 'db.governed_operations'::text) AND (capability_version >= 1))",
+                "Rows Removed by Index Recheck": 0,
+                "Filter": "((executor_instance_id = '00000000-0000-0000-0000-000000000000'::uuid) AND (expires_at > now()))",
+                "Rows Removed by Filter": 0,
+                "Shared Hit Blocks": 6,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning": {
+                "Shared Hit Blocks": 148,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning Time": 0.59,
+              "Triggers": [],
+              "Execution Time": 0.116
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dependency",
+      "query": "select d.occurrence_id from ecos.work_dependency d where d.occurrence_id='00000000-0000-0000-0000-000000000000' and not exists(select 1 from ecos.stage_result r where r.occurrence_id=d.prerequisite_occurrence_id and r.result_schema_id=d.required_result_schema_id)",
+      "plan": [
+        {
+          "QUERY PLAN": [
+            {
+              "Plan": {
+                "Node Type": "Nested Loop",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Join Type": "Anti",
+                "Startup Cost": 1.41,
+                "Total Cost": 8.15,
+                "Plan Rows": 2,
+                "Plan Width": 16,
+                "Actual Startup Time": 0.011,
+                "Actual Total Time": 0.011,
+                "Actual Rows": 0,
+                "Actual Loops": 1,
+                "Inner Unique": false,
+                "Shared Hit Blocks": 1,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0,
+                "Plans": [
+                  {
+                    "Node Type": "Bitmap Heap Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Relation Name": "work_dependency",
+                    "Alias": "d",
+                    "Startup Cost": 1.26,
+                    "Total Cost": 3.4,
+                    "Plan Rows": 2,
+                    "Plan Width": 64,
+                    "Actual Startup Time": 0.01,
+                    "Actual Total Time": 0.01,
+                    "Actual Rows": 0,
+                    "Actual Loops": 1,
+                    "Recheck Cond": "(occurrence_id = '00000000-0000-0000-0000-000000000000'::uuid)",
+                    "Rows Removed by Index Recheck": 0,
+                    "Exact Heap Blocks": 0,
+                    "Lossy Heap Blocks": 0,
+                    "Shared Hit Blocks": 1,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0,
+                    "Plans": [
+                      {
+                        "Node Type": "Bitmap Index Scan",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Index Name": "work_dependency_occurrence_id_prerequisite_occurrence_id_key",
+                        "Startup Cost": 0,
+                        "Total Cost": 1.26,
+                        "Plan Rows": 2,
+                        "Plan Width": 0,
+                        "Actual Startup Time": 0.004,
+                        "Actual Total Time": 0.004,
+                        "Actual Rows": 0,
+                        "Actual Loops": 1,
+                        "Index Cond": "(occurrence_id = '00000000-0000-0000-0000-000000000000'::uuid)",
+                        "Shared Hit Blocks": 1,
+                        "Shared Read Blocks": 0,
+                        "Shared Dirtied Blocks": 0,
+                        "Shared Written Blocks": 0,
+                        "Local Hit Blocks": 0,
+                        "Local Read Blocks": 0,
+                        "Local Dirtied Blocks": 0,
+                        "Local Written Blocks": 0,
+                        "Temp Read Blocks": 0,
+                        "Temp Written Blocks": 0
+                      }
+                    ]
+                  },
+                  {
+                    "Node Type": "Index Scan",
+                    "Parent Relationship": "Inner",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Scan Direction": "Forward",
+                    "Index Name": "stage_result_occurrence_id_stage_definition_id_key",
+                    "Relation Name": "stage_result",
+                    "Alias": "r",
+                    "Startup Cost": 0.15,
+                    "Total Cost": 2.37,
+                    "Plan Rows": 1,
+                    "Plan Width": 48,
+                    "Actual Startup Time": 0,
+                    "Actual Total Time": 0,
+                    "Actual Rows": 0,
+                    "Actual Loops": 0,
+                    "Index Cond": "(occurrence_id = d.prerequisite_occurrence_id)",
+                    "Rows Removed by Index Recheck": 0,
+                    "Filter": "(result_schema_id = d.required_result_schema_id)",
+                    "Rows Removed by Filter": 0,
+                    "Shared Hit Blocks": 0,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0
+                  }
+                ]
+              },
+              "Planning": {
+                "Shared Hit Blocks": 435,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning Time": 1.354,
+              "Triggers": [],
+              "Execution Time": 0.108
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "live_claim",
+      "query": "select id from ecos.work_claim where occurrence_id='00000000-0000-0000-0000-000000000000' and state='active' and expires_at>now()",
+      "plan": [
+        {
+          "QUERY PLAN": [
+            {
+              "Plan": {
+                "Node Type": "Seq Scan",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Relation Name": "work_claim",
+                "Alias": "work_claim",
+                "Startup Cost": 0,
+                "Total Cost": 1.74,
+                "Plan Rows": 1,
+                "Plan Width": 16,
+                "Actual Startup Time": 0.038,
+                "Actual Total Time": 0.038,
+                "Actual Rows": 0,
+                "Actual Loops": 1,
+                "Filter": "((occurrence_id = '00000000-0000-0000-0000-000000000000'::uuid) AND (state = 'active'::text) AND (expires_at > now()))",
+                "Rows Removed by Filter": 0,
+                "Shared Hit Blocks": 1,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning": {
+                "Shared Hit Blocks": 186,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning Time": 0.667,
+              "Triggers": [],
+              "Execution Time": 0.089
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "outbox",
+      "query": "select id from ecos.outbox_item where available_at<=now() and (state in ('pending','retry_wait') or (state='claimed' and lease_expires_at<=now())) order by available_at,id limit 1",
+      "plan": [
+        {
+          "QUERY PLAN": [
+            {
+              "Plan": {
+                "Node Type": "Limit",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 1.06,
+                "Total Cost": 1.06,
+                "Plan Rows": 1,
+                "Plan Width": 24,
+                "Actual Startup Time": 0.073,
+                "Actual Total Time": 0.074,
+                "Actual Rows": 1,
+                "Actual Loops": 1,
+                "Shared Hit Blocks": 7,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0,
+                "Plans": [
+                  {
+                    "Node Type": "Sort",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Startup Cost": 1.06,
+                    "Total Cost": 1.06,
+                    "Plan Rows": 1,
+                    "Plan Width": 24,
+                    "Actual Startup Time": 0.072,
+                    "Actual Total Time": 0.072,
+                    "Actual Rows": 1,
+                    "Actual Loops": 1,
+                    "Sort Key": [
+                      "available_at",
+                      "id"
+                    ],
+                    "Sort Method": "quicksort",
+                    "Sort Space Used": 25,
+                    "Sort Space Type": "Memory",
+                    "Shared Hit Blocks": 7,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0,
+                    "Plans": [
+                      {
+                        "Node Type": "Seq Scan",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Relation Name": "outbox_item",
+                        "Alias": "outbox_item",
+                        "Startup Cost": 0,
+                        "Total Cost": 1.05,
+                        "Plan Rows": 1,
+                        "Plan Width": 24,
+                        "Actual Startup Time": 0.023,
+                        "Actual Total Time": 0.024,
+                        "Actual Rows": 2,
+                        "Actual Loops": 1,
+                        "Filter": "((available_at <= now()) AND ((state = ANY ('{pending,retry_wait}'::text[])) OR ((state = 'claimed'::text) AND (lease_expires_at <= now()))))",
+                        "Rows Removed by Filter": 0,
+                        "Shared Hit Blocks": 1,
+                        "Shared Read Blocks": 0,
+                        "Shared Dirtied Blocks": 0,
+                        "Shared Written Blocks": 0,
+                        "Local Hit Blocks": 0,
+                        "Local Read Blocks": 0,
+                        "Local Dirtied Blocks": 0,
+                        "Local Written Blocks": 0,
+                        "Temp Read Blocks": 0,
+                        "Temp Written Blocks": 0
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Planning": {
+                "Shared Hit Blocks": 219,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning Time": 0.822,
+              "Triggers": [],
+              "Execution Time": 0.134
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "heartbeat",
+      "query": "select executor_instance_id from ecos.heartbeat where valid_until<=now()",
+      "plan": [
+        {
+          "QUERY PLAN": [
+            {
+              "Plan": {
+                "Node Type": "Bitmap Heap Scan",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Relation Name": "heartbeat",
+                "Alias": "heartbeat",
+                "Startup Cost": 2.36,
+                "Total Cost": 14.5,
+                "Plan Rows": 143,
+                "Plan Width": 16,
+                "Actual Startup Time": 0.023,
+                "Actual Total Time": 0.024,
+                "Actual Rows": 0,
+                "Actual Loops": 1,
+                "Recheck Cond": "(valid_until <= now())",
+                "Rows Removed by Index Recheck": 0,
+                "Exact Heap Blocks": 1,
+                "Lossy Heap Blocks": 0,
+                "Shared Hit Blocks": 2,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0,
+                "Plans": [
+                  {
+                    "Node Type": "Bitmap Index Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Index Name": "heartbeat_expiry",
+                    "Startup Cost": 0,
+                    "Total Cost": 2.32,
+                    "Plan Rows": 143,
+                    "Plan Width": 0,
+                    "Actual Startup Time": 0.006,
+                    "Actual Total Time": 0.006,
+                    "Actual Rows": 35,
+                    "Actual Loops": 1,
+                    "Index Cond": "(valid_until <= now())",
+                    "Shared Hit Blocks": 1,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0
+                  }
+                ]
+              },
+              "Planning": {
+                "Shared Hit Blocks": 129,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning Time": 0.571,
+              "Triggers": [],
+              "Execution Time": 0.078
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "memory_head",
+      "query": "select v.* from ecos.memory_record m join ecos.memory_version v on v.id=m.active_head_version_id where m.scope_id='00000000-0000-0000-0000-000000000000' and m.memory_kind='continuity'",
+      "plan": [
+        {
+          "QUERY PLAN": [
+            {
+              "Plan": {
+                "Node Type": "Nested Loop",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Join Type": "Inner",
+                "Startup Cost": 0.29,
+                "Total Cost": 4.75,
+                "Plan Rows": 1,
+                "Plan Width": 360,
+                "Actual Startup Time": 0.014,
+                "Actual Total Time": 0.014,
+                "Actual Rows": 0,
+                "Actual Loops": 1,
+                "Inner Unique": true,
+                "Shared Hit Blocks": 1,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0,
+                "Plans": [
+                  {
+                    "Node Type": "Index Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Scan Direction": "Forward",
+                    "Index Name": "memory_active_head",
+                    "Relation Name": "memory_record",
+                    "Alias": "m",
+                    "Startup Cost": 0.14,
+                    "Total Cost": 2.36,
+                    "Plan Rows": 1,
+                    "Plan Width": 16,
+                    "Actual Startup Time": 0.013,
+                    "Actual Total Time": 0.013,
+                    "Actual Rows": 0,
+                    "Actual Loops": 1,
+                    "Index Cond": "((scope_id = '00000000-0000-0000-0000-000000000000'::uuid) AND (memory_kind = 'continuity'::text))",
+                    "Rows Removed by Index Recheck": 0,
+                    "Shared Hit Blocks": 1,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0
+                  },
+                  {
+                    "Node Type": "Index Scan",
+                    "Parent Relationship": "Inner",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Scan Direction": "Forward",
+                    "Index Name": "memory_version_id_memory_record_id_scope_id_key",
+                    "Relation Name": "memory_version",
+                    "Alias": "v",
+                    "Startup Cost": 0.14,
+                    "Total Cost": 2.36,
+                    "Plan Rows": 1,
+                    "Plan Width": 360,
+                    "Actual Startup Time": 0,
+                    "Actual Total Time": 0,
+                    "Actual Rows": 0,
+                    "Actual Loops": 0,
+                    "Index Cond": "(id = m.active_head_version_id)",
+                    "Rows Removed by Index Recheck": 0,
+                    "Shared Hit Blocks": 0,
+                    "Shared Read Blocks": 0,
+                    "Shared Dirtied Blocks": 0,
+                    "Shared Written Blocks": 0,
+                    "Local Hit Blocks": 0,
+                    "Local Read Blocks": 0,
+                    "Local Dirtied Blocks": 0,
+                    "Local Written Blocks": 0,
+                    "Temp Read Blocks": 0,
+                    "Temp Written Blocks": 0
+                  }
+                ]
+              },
+              "Planning": {
+                "Shared Hit Blocks": 450,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              },
+              "Planning Time": 1.311,
+              "Triggers": [],
+              "Execution Time": 0.111
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "drift_rejection": {
+    "error": {
+      "name": "HttpException",
+      "message": "Failed to apply database migration: ERROR:  P0001: Migration drift at version 1\nCONTEXT:  PL/pgSQL function inline_code_block line 5 at RAISE\n"
+    }
+  },
+  "observed_at": "2026-09-29 09:25:40 UTC"
+}

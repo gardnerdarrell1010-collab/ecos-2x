@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "gate": "C-01",
+  "independent_sessions": 15,
+  "authority": "Owner instruction: ECOS 2.x Complete Phase 1 Now, 2026-09-29",
+  "decision": "docs/decisions/2026-09-29-phase1-capacity-basis.md",
+  "test_a": {
+    "eligible_occurrences": 1,
+    "winners": 1,
+    "valid_losers": 14,
+    "live_claims": 1,
+    "live_runs": 1,
+    "matching_fence_version_required": true
+  },
+  "test_b": {
+    "minimum_eligible_occurrences": 15,
+    "distinct_claims": 15,
+    "all_operations_return_before_any_commit": true,
+    "readiness_capability_evidence_required": true
+  },
+  "simulation_is_acceptance": false,
+  "supersedes_stress_quantities": [
+    100,
+    20
+  ],
+  "designed_maximum_executors": 10,
+  "stress_margin_percent": 50,
+  "topology": {
+    "overlapping_online_ada": 8,
+    "interactive_ada": 1,
+    "resident_ada": 1
+  }
+}

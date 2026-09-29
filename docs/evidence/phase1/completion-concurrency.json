@@ -1,0 +1,156 @@
+{
+  "started_at": "2026-09-29T16:32:52.028347+00:00",
+  "connection_mode": "Supabase Shared Pooler Session Mode",
+  "canonical_secret_reference": "google-drive:1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf",
+  "project_ref": "loonpojawpfagzobxoko",
+  "provider_calls_executed": false,
+  "production_data_migrated": false,
+  "test_a": {
+    "status": "failed",
+    "requested_sessions": 20,
+    "observed_backend_sessions": 15,
+    "observations": [
+      {
+        "contender": 0,
+        "phase": "connecting",
+        "error_type": "OperationalError",
+        "sqlstate": null
+      },
+      {
+        "contender": 1,
+        "phase": "starting_barrier",
+        "backend_pid": 58183,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 2,
+        "phase": "starting_barrier",
+        "backend_pid": 58192,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 3,
+        "phase": "starting_barrier",
+        "backend_pid": 58190,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 4,
+        "phase": "connecting",
+        "error_type": "OperationalError",
+        "sqlstate": null
+      },
+      {
+        "contender": 5,
+        "phase": "starting_barrier",
+        "backend_pid": 58194,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 6,
+        "phase": "starting_barrier",
+        "backend_pid": 58195,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 7,
+        "phase": "starting_barrier",
+        "backend_pid": 58188,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 8,
+        "phase": "starting_barrier",
+        "backend_pid": 58197,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 9,
+        "phase": "starting_barrier",
+        "backend_pid": 58186,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 10,
+        "phase": "starting_barrier",
+        "backend_pid": 58193,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 11,
+        "phase": "starting_barrier",
+        "backend_pid": 58191,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 12,
+        "phase": "connecting",
+        "error_type": "OperationalError",
+        "sqlstate": null
+      },
+      {
+        "contender": 13,
+        "phase": "connecting",
+        "error_type": "OperationalError",
+        "sqlstate": null
+      },
+      {
+        "contender": 14,
+        "phase": "starting_barrier",
+        "backend_pid": 58189,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 15,
+        "phase": "starting_barrier",
+        "backend_pid": 58187,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 16,
+        "phase": "starting_barrier",
+        "backend_pid": 58196,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 17,
+        "phase": "starting_barrier",
+        "backend_pid": 58198,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 18,
+        "phase": "starting_barrier",
+        "backend_pid": 58185,
+        "error_type": "BrokenBarrierError",
+        "sqlstate": null
+      },
+      {
+        "contender": 19,
+        "phase": "connecting",
+        "error_type": "OperationalError",
+        "sqlstate": null
+      }
+    ]
+  },
+  "status": "failed",
+  "error_type": "AssertionError",
+  "sqlstate": null,
+  "assertion": "Test A did not establish the required completed simultaneous operations",
+  "fixture_cleanup": "passed",
+  "finished_at": "2026-09-29T16:33:31.020779+00:00"
+}

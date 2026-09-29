@@ -1,0 +1,88 @@
+{
+  "started_at": "2026-09-29T16:34:43.604324+00:00",
+  "connection_mode": "Supabase Shared Pooler Session Mode",
+  "canonical_secret_reference": "google-drive:1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf",
+  "project_ref": "loonpojawpfagzobxoko",
+  "provider_calls_executed": false,
+  "production_data_migrated": false,
+  "c06": [
+    {
+      "status": "passed",
+      "race": "maintenance",
+      "writer_pid": 58195,
+      "contender_pid": 58183,
+      "observed_blockers": [
+        58195
+      ],
+      "operation_result": {
+        "code": "gate_blocked",
+        "message": "gate_blocked",
+        "retryable": false,
+        "correlation_id": "1f54825e-f320-4e35-996d-57844617c37e"
+      },
+      "readback_state": [
+        "ready",
+        0
+      ],
+      "stage_result_count": 0
+    },
+    {
+      "status": "passed",
+      "race": "revocation_effect",
+      "writer_pid": 58183,
+      "contender_pid": 58195,
+      "observed_blockers": [
+        58183
+      ],
+      "operation_result": {
+        "code": "gate_blocked",
+        "message": "gate_blocked",
+        "retryable": false,
+        "correlation_id": "1f54825e-f320-4e35-996d-57844617c37e"
+      },
+      "readback_state": [
+        "running",
+        1
+      ],
+      "stage_result_count": 0
+    },
+    {
+      "status": "passed",
+      "race": "expiry",
+      "writer_pid": 58195,
+      "contender_pid": 58183,
+      "observed_blockers": [
+        58195
+      ],
+      "operation_result": {
+        "claim": null,
+        "execution_run": null,
+        "correlation_id": "1f54825e-f320-4e35-996d-57844617c37e",
+        "schema_version": "1.0.0"
+      },
+      "readback_state": [
+        "ready",
+        0
+      ],
+      "stage_result_count": 0
+    }
+  ],
+  "task02": {
+    "status": "passed",
+    "writer_pid": 58183,
+    "contender_pid": 58195,
+    "observed_blockers": [
+      58183
+    ],
+    "rejection_sqlstate": "23514",
+    "final_edges": [
+      [
+        "556ddfb0-ae60-4a89-a8da-f45240f14ce3",
+        "afaf6cf3-9cc5-4ddb-982e-75b84ca36456"
+      ]
+    ]
+  },
+  "status": "passed",
+  "fixture_cleanup": "passed",
+  "finished_at": "2026-09-29T16:35:02.905533+00:00"
+}

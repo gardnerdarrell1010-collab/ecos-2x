@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-09-29T16:31:10.892522+00:00",
+  "connection_mode": "Supabase Shared Pooler Session Mode",
+  "canonical_secret_reference": "google-drive:1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf",
+  "project_ref": "loonpojawpfagzobxoko",
+  "provider_calls_executed": false,
+  "production_data_migrated": false,
+  "status": "failed",
+  "error_type": "BrokenBarrierError",
+  "sqlstate": null,
+  "fixture_cleanup": "passed",
+  "finished_at": "2026-09-29T16:31:49.724490+00:00"
+}

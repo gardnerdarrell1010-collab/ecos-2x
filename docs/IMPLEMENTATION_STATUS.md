@@ -1,3 +1,17 @@
+# Current Phase 1 status
+
+Database foundation: **BUILT**. Specific demonstrated database paths: **END-TO-END VERIFIED**.
+Phase 1 database acceptance: **20 of 20 required gates passed**, ready for Ada/owner review.
+No global shadow or production verification is claimed. Current implementation, coverage,
+remaining gates and evidence are in [PHASE1_IMPLEMENTATION.md](PHASE1_IMPLEMENTATION.md),
+[PHASE1_RESULTS.json](PHASE1_RESULTS.json), and [PHASE1_VERIFICATION.json](PHASE1_VERIFICATION.json).
+Core migrations 000002-000018 implement the typed model, all ten contracted operations,
+governed claims/proposals/outbox/memory, scoped roles and synthetic repair/health/quarantine.
+
+The text below is the historical Phase 0 handoff, retained without rewriting its evidence.
+
+---
+
 # Phase 0 delivery status
 
 Repository: `C:\ECOS\ecos-2x`, isolated Git branch `main`.
@@ -32,3 +46,5 @@ Toast change or deployment occurred. There is no remote Git push or configured d
 Operational ECOS 2.x maturity remains DESIGNED. Phase 0 foundation is BUILT and ready for
 owner review; baseline signoff and the six named owner choices are not fabricated. Phase 1
 implements the SQL domain/transaction/API behavior and passes the pending database gates.
+
+Forward requirement CAP-01: [Capacity / Quota / Bandwidth Governance](architecture/CAPACITY_QUOTA_BANDWIDTH_GOVERNANCE.md), required in [Phase 2 planning](PHASE2_PLANNING.md); no implementation in this phase.

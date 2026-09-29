@@ -1,0 +1,14 @@
+{
+  "started_at": "2026-09-29T16:38:19.384636+00:00",
+  "secret_reference": "google-drive:1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf",
+  "runtime_kind": "disposable loopback PostgreSQL process; no Windows service",
+  "runtime_directory": "C:\\Users\\info\\AppData\\Local\\Temp\\ecos-phase1-recovery-20260929-01",
+  "provider_calls_executed": false,
+  "production_data_migrated": false,
+  "stage": "start_disposable_server",
+  "status": "failed",
+  "error_type": "TimeoutExpired",
+  "sqlstate": null,
+  "diagnostic": "Command '['C:\\\\Users\\\\info\\\\AppData\\\\Local\\\\Temp\\\\ecos-phase1-pg17\\\\binaries\\\\pgsql\\\\bin\\\\pg_ctl.exe', '-D', 'C:\\\\Users\\\\info\\\\AppData\\\\Local\\\\Temp\\\\ecos-phase1-recovery-20260929-01\\\\data', '-l', 'C:\\\\Users\\\\info\\\\AppData\\\\Local\\\\Temp\\\\ecos-phase1-recovery-20260929-01\\\\server.log', '-o', '-h 127.0.0.1 -p 55432 -c ssl=on -c max_connections=50 -c log_statement=none -c log_min_error_statement=panic', '-w', 'start']' timed out after 180 seconds",
+  "finished_at": "2026-09-29T16:43:50.988631+00:00"
+}

@@ -1,4 +1,18 @@
-# ECOS 2.x — Phase 0
+# ECOS 2.x — Phase 1 development branch
+
+Portable PostgreSQL database foundation implemented in the authorized **development-only**
+Supabase project. Phase 1 acceptance remains incomplete. Start with
+[implementation and pending gates](docs/PHASE1_IMPLEMENTATION.md),
+[verification evidence](docs/PHASE1_VERIFICATION.json), and
+[security/portability](docs/PHASE1_SECURITY_PORTABILITY.md).
+ECOS 1.x remains production authority. No real provider or production effect is enabled.
+The default check harness remains offline. Do not merge this branch automatically.
+
+The following Phase 0 repository introduction is historical:
+
+---
+
+# ECOS 2.x â€” Phase 0
 
 Portable PostgreSQL modular-monolith contracts and an **offline executable acceptance
 foundation**. Repository: `C:\ECOS\ecos-2x`. No application server, database, provider

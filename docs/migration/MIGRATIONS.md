@@ -19,3 +19,7 @@ Before commit: test clean install, no-op second application, drift rejection, fa
 two concurrent runners and forward correction. A destructive down migration is not an automatic
 rollback strategy; rehearse logical restore or a reviewed reversible forward change instead.
 Retention/destructive data rollback requires owner policy and backup verification.
+
+## Phase 1 implementation note
+
+Canonical migrations 000001-000018 are applied to the authorized development target. The ledger hashes every original byte; all repairs are forward migrations. The full final-chain clean rebuild remains pending. Use scripts/supabase_migration_payload.py for the host transport or scripts/migrations.py render for PostgreSQL. See ../PHASE1_IMPLEMENTATION.md.
