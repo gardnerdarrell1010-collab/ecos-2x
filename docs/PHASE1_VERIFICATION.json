@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "verified_at": "2026-09-29 09:25:40 UTC",
   "baseline_commit": "375f3f61374aeaa52d28dc79fb80d14362c1e8f8",
-  "resulting_commit": "2c3f427c766c38d4dcfd5aee14d17c716b714a45",
+  "resulting_commit": "f7a29db48157bc5cf24e2414deef5893b6c5fbec",
   "resulting_commit_scope": "Implementation commit, populated after commit; subsequent evidence-only commit and final remote HEAD are reported in the handoff.",
   "branch": "codex/phase-1-postgres-foundation",
   "supabase_project": {
@@ -240,7 +240,7 @@
     "scripts/build_worker_registry.py": "186dfdea87adb5064694839d8c047b7baec3c1445ee72e05a13313eff907f295",
     "scripts/check.py": "2bd81c110a0ebed6033a0c2a3f6a5ccdb6b2de9a569cea805ff5d10e07cc216f",
     "scripts/migrations.py": "4a322e9602c1f425dc3c0784f3516e89938c6d150ae51139902e5d69600c3c7e",
-    "scripts/phase1_contention.py": "6a544cc0c8a95201cc46a28e5cdaee9b65aea680a70de2ea52c82479ebcf9144",
+    "scripts/phase1_contention.py": "f851ba1d4c5c80a96016d3813940eb125e63e48110520cee6290f4d31744847f",
     "scripts/phase1_evidence_check.py": "e199b93eaa37805c50c01561bb22ea5a939cef9b7d15350ad7b364758dd8f713",
     "scripts/supabase_migration_payload.py": "2f4502c4680f7c2b467b9c8d782e594e227d8e5995ca3a0b8582b6aa3764527d",
     "scripts/__init__.py": "881c97d48076a86026b6a76e7b56efc6ebab3ea596d06efecf152f284d2d098a",
@@ -260,7 +260,7 @@
     "No Phase 2, Phase 3 or production verification."
   ],
   "git_validation": {
-    "implementation_commit": "2c3f427c766c38d4dcfd5aee14d17c716b714a45",
+    "implementation_commit": "f7a29db48157bc5cf24e2414deef5893b6c5fbec",
     "baseline_remote_main_verified": "375f3f61374aeaa52d28dc79fb80d14362c1e8f8",
     "whitespace_note": "Applied migration 000002 retains its original trailing blank line to preserve the database checksum."
   },
@@ -277,7 +277,62 @@
         "undelivered_outbox": 0,
         "temporary_service_memberships": 3
       }
-    ]
+    ],
+    "role_membership_details": {
+      "memberships": [
+        {
+          "role_name": "ecos_owner",
+          "member": "postgres",
+          "grantor": "supabase_admin",
+          "admin_option": true,
+          "inherit_option": false,
+          "set_option": false
+        },
+        {
+          "role_name": "operations_api",
+          "member": "postgres",
+          "grantor": "supabase_admin",
+          "admin_option": true,
+          "inherit_option": false,
+          "set_option": false
+        },
+        {
+          "role_name": "executor",
+          "member": "postgres",
+          "grantor": "supabase_admin",
+          "admin_option": true,
+          "inherit_option": false,
+          "set_option": false
+        },
+        {
+          "role_name": "provider_adapter",
+          "member": "postgres",
+          "grantor": "supabase_admin",
+          "admin_option": true,
+          "inherit_option": false,
+          "set_option": false
+        },
+        {
+          "role_name": "ecos_owner",
+          "member": "postgres",
+          "grantor": "postgres",
+          "admin_option": false,
+          "inherit_option": true,
+          "set_option": true
+        }
+      ],
+      "cleanup": [
+        {
+          "can_set_executor": false,
+          "temporary_executable_memberships": 0,
+          "principal_bindings": 0,
+          "active_claims": 0,
+          "undelivered_outbox": 0
+        }
+      ]
+    },
+    "membership_count_explanation": "The first count included three platform-managed admin-only grants from supabase_admin with SET=false and INHERIT=false. Final temporary executable membership count is zero; no platform grant was changed."
   },
-  "phase1_evidence_check_exit_code": 2
+  "phase1_evidence_check_exit_code": 2,
+  "client_harness_validation": "Python syntax/help and missing-DSN fail-closed check passed; no direct database connection attempted."
 }

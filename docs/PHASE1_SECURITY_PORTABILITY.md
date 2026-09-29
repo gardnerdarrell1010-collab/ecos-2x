@@ -37,3 +37,10 @@ review before execution; debugging continued through governed operations and rea
 
 Client reference: [Psycopg installation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
 The optional pinned client has not been installed or connected on HOME-01 in this phase.
+
+Final privilege readback found platform-managed admin-only membership grants from
+`supabase_admin` to `postgres`. These have SET=false and INHERIT=false; they are not
+temporary executor access and were left intact. Executable temporary service memberships,
+principal bindings, active claims and undelivered outbox counts are all zero. The direct
+client harness checks `pg_has_role(..., 'SET')` before temporary fixture grants, because
+MEMBER alone does not establish permission to switch roles on PostgreSQL 17.
