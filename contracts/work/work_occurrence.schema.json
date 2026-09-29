@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/work_occurrence.schema.json",
+  "title": "work_occurrence",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "work_definition_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "stage_definition_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "fulfillment_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "task_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "state": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/work_occurrence"
+    },
+    "occurrence_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "due_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "retry_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ready_override_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "priority_override": {
+      "anyOf": [
+        {
+          "$ref": "https://contracts.ecos.invalid/v1/priority_override.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "claim_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "attempt_count": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "work_definition_id",
+    "stage_definition_id",
+    "fulfillment_id",
+    "task_id",
+    "state",
+    "occurrence_key",
+    "due_at",
+    "retry_at",
+    "ready_override_at",
+    "priority_override",
+    "claim_version",
+    "attempt_count"
+  ],
+  "additionalProperties": false
+}

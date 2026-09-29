@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/communication.schema.json",
+  "title": "communication",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "receipt_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "email",
+        "sms",
+        "calendar",
+        "review"
+      ]
+    },
+    "provider_thread_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "inbound",
+        "outbound"
+      ]
+    },
+    "sender_party_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "body_artifact_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "body_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "receipt_id",
+    "channel",
+    "provider_thread_id",
+    "direction",
+    "sender_party_id",
+    "body_artifact_uri",
+    "body_hash"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/vocabulary.schema.json",
+  "$defs": {
+    "task_lifecycle": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "open",
+        "waiting",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "task_wait_reason": {
+      "type": "string",
+      "enum": [
+        "none",
+        "dependency",
+        "owner",
+        "external",
+        "approval",
+        "scheduled"
+      ]
+    },
+    "approval": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "changes_requested",
+        "expired",
+        "revoked"
+      ]
+    },
+    "work_occurrence": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "ready",
+        "claimed",
+        "running",
+        "succeeded",
+        "retry_wait",
+        "failed",
+        "dead_lettered",
+        "cancelled"
+      ]
+    },
+    "delivery": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "ready",
+        "held",
+        "sending",
+        "delivered",
+        "failed",
+        "acknowledged",
+        "cancelled"
+      ]
+    },
+    "provider_outcome": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "succeeded",
+        "failed",
+        "unknown_outcome",
+        "reconciled"
+      ]
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "designed",
+        "built",
+        "end_to_end_verified",
+        "shadow_verified",
+        "production_verified"
+      ]
+    },
+    "claim": {
+      "type": "string",
+      "enum": [
+        "active",
+        "released",
+        "expired",
+        "revoked"
+      ]
+    },
+    "outbox": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "claimed",
+        "delivered",
+        "retry_wait",
+        "dead_lettered",
+        "cancelled"
+      ]
+    },
+    "execution_run": {
+      "type": "string",
+      "enum": [
+        "started",
+        "succeeded",
+        "failed",
+        "abandoned",
+        "cancelled"
+      ]
+    },
+    "proposal": {
+      "type": "string",
+      "enum": [
+        "created",
+        "validated",
+        "partially_committed",
+        "committed",
+        "rejected",
+        "conflicted"
+      ]
+    },
+    "proposal_item": {
+      "type": "string",
+      "enum": [
+        "valid",
+        "committed",
+        "invalid",
+        "stale",
+        "conflicting",
+        "ambiguous",
+        "blocked"
+      ]
+    },
+    "communication_processing": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "ready",
+        "running",
+        "succeeded",
+        "retry_wait",
+        "failed",
+        "dead_lettered"
+      ]
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "available",
+        "degraded",
+        "unavailable",
+        "unknown"
+      ]
+    },
+    "sensitivity": {
+      "type": "string",
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "quarantine": {
+      "type": "string",
+      "enum": [
+        "received",
+        "invalid",
+        "identity_unresolved",
+        "validated",
+        "transformed",
+        "promoted",
+        "excluded"
+      ]
+    },
+    "migration_classification": {
+      "type": "string",
+      "enum": [
+        "MIGRATE",
+        "MIGRATE_CURRENT_STATE",
+        "ARCHIVE_REFERENCE",
+        "REBUILD",
+        "RETIRE"
+      ]
+    },
+    "backup_kind": {
+      "type": "string",
+      "enum": [
+        "managed_pitr",
+        "logical_postgresql",
+        "portable_ecos_export"
+      ]
+    },
+    "restore_state": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "passed",
+        "failed"
+      ]
+    },
+    "stage_kind": {
+      "type": "string",
+      "enum": [
+        "human",
+        "deterministic",
+        "semantic",
+        "provider",
+        "approval"
+      ]
+    },
+    "execution_surface": {
+      "type": "string",
+      "enum": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC",
+        "INTERACTIVE_ADA"
+      ]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/memory_reference.schema.json",
+  "title": "memory_reference",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "memory_version_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source": {
+      "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+    },
+    "relationship": {
+      "type": "string",
+      "enum": [
+        "supports",
+        "qualifies",
+        "contradicts"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "memory_version_id",
+    "source",
+    "relationship"
+  ],
+  "additionalProperties": false
+}

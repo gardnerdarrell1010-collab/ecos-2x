@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0.0",
+  "policy": "Allowed edges still require governed gates and evidence",
+  "transitions": {
+    "task_lifecycle": {
+      "draft": [
+        "open",
+        "cancelled"
+      ],
+      "open": [
+        "waiting",
+        "completed",
+        "cancelled"
+      ],
+      "waiting": [
+        "open",
+        "completed",
+        "cancelled"
+      ],
+      "completed": [
+        "open"
+      ],
+      "cancelled": [
+        "open"
+      ]
+    },
+    "approval": {
+      "pending": [
+        "approved",
+        "rejected",
+        "changes_requested",
+        "expired"
+      ],
+      "approved": [
+        "revoked",
+        "expired"
+      ],
+      "rejected": [],
+      "changes_requested": [],
+      "expired": [],
+      "revoked": []
+    },
+    "work_occurrence": {
+      "pending": [
+        "ready",
+        "cancelled"
+      ],
+      "ready": [
+        "claimed",
+        "cancelled"
+      ],
+      "claimed": [
+        "running",
+        "retry_wait",
+        "cancelled"
+      ],
+      "running": [
+        "succeeded",
+        "retry_wait",
+        "failed",
+        "cancelled"
+      ],
+      "succeeded": [],
+      "retry_wait": [
+        "ready",
+        "dead_lettered",
+        "cancelled"
+      ],
+      "failed": [
+        "dead_lettered"
+      ],
+      "dead_lettered": [],
+      "cancelled": []
+    },
+    "delivery": {
+      "planned": [
+        "ready",
+        "held",
+        "cancelled"
+      ],
+      "ready": [
+        "held",
+        "sending",
+        "cancelled"
+      ],
+      "held": [
+        "ready",
+        "cancelled"
+      ],
+      "sending": [
+        "delivered",
+        "failed"
+      ],
+      "delivered": [
+        "acknowledged"
+      ],
+      "failed": [
+        "ready",
+        "cancelled"
+      ],
+      "acknowledged": [],
+      "cancelled": []
+    },
+    "provider_outcome": {
+      "pending": [
+        "accepted",
+        "succeeded",
+        "failed",
+        "unknown_outcome"
+      ],
+      "accepted": [
+        "succeeded",
+        "failed",
+        "unknown_outcome"
+      ],
+      "succeeded": [],
+      "failed": [
+        "pending",
+        "reconciled"
+      ],
+      "unknown_outcome": [
+        "reconciled"
+      ],
+      "reconciled": [
+        "pending"
+      ]
+    },
+    "maturity": {
+      "designed": [
+        "built"
+      ],
+      "built": [
+        "end_to_end_verified"
+      ],
+      "end_to_end_verified": [
+        "shadow_verified"
+      ],
+      "shadow_verified": [
+        "production_verified"
+      ],
+      "production_verified": []
+    },
+    "claim": {
+      "active": [
+        "released",
+        "expired",
+        "revoked"
+      ],
+      "released": [],
+      "expired": [],
+      "revoked": []
+    }
+  }
+}

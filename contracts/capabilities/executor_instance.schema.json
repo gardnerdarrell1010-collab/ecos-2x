@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/executor_instance.schema.json",
+  "title": "executor_instance",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "executor_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "boot_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "availability": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/availability"
+    },
+    "principal_id": {
+      "type": "string",
+      "format": "uuid"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "executor_id",
+    "boot_id",
+    "availability",
+    "principal_id"
+  ],
+  "additionalProperties": false
+}

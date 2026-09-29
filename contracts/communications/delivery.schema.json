@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/delivery.schema.json",
+  "title": "delivery",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "notification_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "recipient_party_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "email",
+        "sms"
+      ]
+    },
+    "destination_reference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "policy_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "state": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/delivery"
+    },
+    "approval_request_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "provider_command_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "notification_id",
+    "recipient_party_id",
+    "channel",
+    "destination_reference",
+    "policy_key",
+    "state",
+    "approval_request_id",
+    "provider_command_id"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/bootstrap_package.schema.json",
+  "title": "bootstrap_package",
+  "type": "object",
+  "properties": {
+    "package_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "database_schema_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "principal_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sensitivity_ceiling": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/sensitivity"
+    },
+    "governed_context": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "context_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+          },
+          "record_schema_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "record": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "source",
+          "record_schema_id",
+          "record"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "active_memory_heads": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/memory_version.schema.json"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "unresolved_exceptions": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "operation_schema_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 10000
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "capability_vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "operation_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "request_schema_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "response_schema_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        },
+        "required": [
+          "operation",
+          "path",
+          "request_schema_id",
+          "response_schema_id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "schema_bundle": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schema_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "document": {
+            "type": "object",
+            "required": [
+              "$schema",
+              "$id"
+            ],
+            "properties": {
+              "$schema": {
+                "const": "https://json-schema.org/draft/2020-12/schema"
+              },
+              "$id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000
+              }
+            }
+          }
+        },
+        "required": [
+          "schema_id",
+          "sha256",
+          "document"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "relevant_work": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/work_occurrence.schema.json"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "package_id",
+    "schema_version",
+    "database_schema_version",
+    "generated_at",
+    "principal_id",
+    "sensitivity_ceiling",
+    "governed_context",
+    "context_records",
+    "active_memory_heads",
+    "unresolved_exceptions",
+    "operation_schema_ids",
+    "capability_vocabulary",
+    "operation_bindings",
+    "schema_bundle",
+    "relevant_work",
+    "content_hash"
+  ],
+  "additionalProperties": false
+}

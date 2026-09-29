@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/work_dependency.schema.json",
+  "title": "work_dependency",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurrence_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "prerequisite_occurrence_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "required_result_schema_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "required_result_hash": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "occurrence_id",
+    "prerequisite_occurrence_id",
+    "required_result_schema_id",
+    "required_result_hash"
+  ],
+  "additionalProperties": false
+}

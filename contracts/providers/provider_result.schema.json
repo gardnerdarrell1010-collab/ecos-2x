@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/provider_result.schema.json",
+  "title": "provider_result",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provider_command_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "provider_attempt_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "outcome": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/provider_outcome"
+    },
+    "provider_object_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "reconciled_outcome": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "succeeded",
+            "failed",
+            "no_effect"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "provider_command_id",
+    "provider_attempt_id",
+    "outcome",
+    "provider_object_id",
+    "observed_at",
+    "evidence_hash",
+    "reconciled_outcome"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "reconciled"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reconciled_outcome": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "no_effect"
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "reconciled_outcome": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

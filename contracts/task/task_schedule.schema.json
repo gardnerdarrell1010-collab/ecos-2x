@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/task_schedule.schema.json",
+  "title": "task_schedule",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "task_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "due_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "follow_up_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "planned_start_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "timezone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "rrule": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "dst_gap_policy": {
+      "type": "string",
+      "enum": [
+        "skip",
+        "next_valid"
+      ]
+    },
+    "dst_fold_policy": {
+      "type": "string",
+      "enum": [
+        "earlier",
+        "later"
+      ]
+    },
+    "recurrence_anchor": {
+      "type": "string",
+      "enum": [
+        "fixed_calendar",
+        "completion_relative",
+        "none"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "task_id",
+    "due_at",
+    "follow_up_at",
+    "planned_start_at",
+    "timezone",
+    "rrule",
+    "dst_gap_policy",
+    "dst_fold_policy",
+    "recurrence_anchor"
+  ],
+  "additionalProperties": false
+}

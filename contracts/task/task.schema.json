@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/task.schema.json",
+  "title": "task",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "business_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "project_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "lifecycle_state": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_lifecycle"
+    },
+    "wait_reason": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_wait_reason"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "business_id",
+    "title",
+    "project_id",
+    "lifecycle_state",
+    "wait_reason",
+    "description"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle_state": {
+            "const": "waiting"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "wait_reason": {
+            "not": {
+              "const": "none"
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "wait_reason": {
+            "const": "none"
+          }
+        }
+      }
+    }
+  ]
+}

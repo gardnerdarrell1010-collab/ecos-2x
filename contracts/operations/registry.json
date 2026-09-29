@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0.0",
+  "operations": [
+    {
+      "name": "task.transition",
+      "request_schema": "https://contracts.ecos.invalid/v1/task.transition-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+      "required_role": "operations_api",
+      "semantic_proposable": true,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "task.evidence.attach",
+      "request_schema": "https://contracts.ecos.invalid/v1/task.evidence.attach-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+      "required_role": "operations_api",
+      "semantic_proposable": true,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "fact.record",
+      "request_schema": "https://contracts.ecos.invalid/v1/fact.record-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+      "required_role": "operations_api",
+      "semantic_proposable": true,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "work.claim",
+      "request_schema": "https://contracts.ecos.invalid/v1/work.claim-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/claim_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "work.renew",
+      "request_schema": "https://contracts.ecos.invalid/v1/work.renew-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/claim_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "work.complete",
+      "request_schema": "https://contracts.ecos.invalid/v1/work.complete-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "proposal.commit",
+      "request_schema": "https://contracts.ecos.invalid/v1/proposal.commit-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/proposal_commit_result.schema.json",
+      "required_role": "operations_api",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "per proposal item and its operations",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "provider.result.record",
+      "request_schema": "https://contracts.ecos.invalid/v1/provider.result.record-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+      "required_role": "provider_adapter",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "memory.activate",
+      "request_schema": "https://contracts.ecos.invalid/v1/memory.activate-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+      "required_role": "operations_api",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    },
+    {
+      "name": "approval.decide",
+      "request_schema": "https://contracts.ecos.invalid/v1/approval.decide-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+      "required_role": "owner",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction",
+      "acceptance_ids": [
+        "API-01",
+        "API-02",
+        "API-03"
+      ]
+    }
+  ]
+}

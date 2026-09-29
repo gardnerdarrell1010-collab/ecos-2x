@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0.0",
+  "phase0_repository": "C:\\ECOS\\ecos-2x",
+  "repository_path_is_development_record_not_runtime_dependency": true,
+  "phase0_status": "built_contract_foundation",
+  "operational_system_maturity": "designed",
+  "baseline_signoff": "pending owner review; no approval fabricated",
+  "production_authority": "ECOS 1.x",
+  "provisioning_authorized_by_phase0": false,
+  "steps": [
+    {
+      "id": "P1-01",
+      "depends_on": [],
+      "deliverable": "Migration executor, roles and schema ledger",
+      "contracts": [
+        "db/migrations",
+        "scripts/migrations.py"
+      ],
+      "acceptance_gates": [
+        "MIG-01"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "P1-02",
+      "depends_on": [
+        "P1-01"
+      ],
+      "deliverable": "Typed business and work model; identity aliases and invariant constraints",
+      "contracts": [
+        "db/schemas/model.json",
+        "docs/architecture/MODEL.md"
+      ],
+      "acceptance_gates": [
+        "TASK-01",
+        "TASK-02"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "P1-03",
+      "depends_on": [
+        "P1-02"
+      ],
+      "deliverable": "Atomic claims, gates, fences, renewal, stage evidence and recovery",
+      "contracts": [
+        "db/functions/claim_work.md"
+      ],
+      "acceptance_gates": [
+        "C-01",
+        "C-02",
+        "C-03",
+        "C-04",
+        "C-05",
+        "C-06",
+        "C-07"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "P1-04",
+      "depends_on": [
+        "P1-02"
+      ],
+      "deliverable": "Durable audit/event/outbox and provider commands with simulated adapters",
+      "contracts": [
+        "contracts/events",
+        "contracts/providers"
+      ],
+      "acceptance_gates": [
+        "EV-01",
+        "EV-02",
+        "EV-03"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "P1-05",
+      "depends_on": [
+        "P1-03",
+        "P1-04"
+      ],
+      "deliverable": "Operations API authorization/idempotency and semantic proposal commits",
+      "contracts": [
+        "contracts/api/openapi.json",
+        "contracts/operations",
+        "contracts/semantic"
+      ],
+      "acceptance_gates": [
+        "API-01",
+        "API-02",
+        "API-03",
+        "SEM-01",
+        "SEM-02"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "P1-06",
+      "depends_on": [
+        "P1-05"
+      ],
+      "deliverable": "Memory head/version governance and scoped bootstrap retrieval",
+      "contracts": [
+        "contracts/memory"
+      ],
+      "acceptance_gates": [
+        "MEM-01"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "P1-07",
+      "depends_on": [
+        "P1-06"
+      ],
+      "deliverable": "Portable logical export, clean-room restore and synthetic conformance",
+      "contracts": [
+        "contracts/recovery",
+        "docs/recovery/RESTORE.md"
+      ],
+      "acceptance_gates": [
+        "REST-01"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "phase1_exit": "All Phase 1 catalog gates pass on clean standard PostgreSQL; skipped gates fail the release gate",
+  "later_phase_gates": [
+    "PORT-01",
+    "SURFACE-01",
+    "INTEGRITY-01",
+    "WATCH-01",
+    "SHADOW-01",
+    "MIG-02"
+  ],
+  "owner_decisions": "docs/architecture/owner-decisions.json"
+}

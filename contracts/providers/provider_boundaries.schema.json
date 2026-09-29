@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/provider_boundaries.schema.json",
+  "title": "provider_boundaries",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "provider_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "authoritative_externally": {
+            "type": "boolean"
+          },
+          "authority_scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "ecos_stores": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "idempotency_and_reconciliation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "portable_replacement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "secret_storage": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "phase0_effects_allowed": {
+            "const": false
+          },
+          "retry_policy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "policy_gate": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        },
+        "required": [
+          "provider_id",
+          "name",
+          "authoritative_externally",
+          "authority_scope",
+          "ecos_stores",
+          "idempotency_and_reconciliation",
+          "portable_replacement",
+          "secret_storage",
+          "phase0_effects_allowed",
+          "retry_policy",
+          "policy_gate"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 10,
+      "uniqueItems": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "providers"
+  ],
+  "additionalProperties": false
+}

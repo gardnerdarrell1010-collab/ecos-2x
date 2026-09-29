@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/retry_policy.schema.json",
+  "title": "retry_policy",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_attempts": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "initial_delay_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_delay_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "backoff_multiplier": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "jitter_basis_points": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "retryable_error_classes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "max_attempts",
+    "initial_delay_seconds",
+    "max_delay_seconds",
+    "backoff_multiplier",
+    "jitter_basis_points",
+    "retryable_error_classes"
+  ],
+  "additionalProperties": false
+}

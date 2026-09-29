@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/raw_migration_batch.schema.json",
+  "title": "raw_migration_batch",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_system": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "extracted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_registry_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "artifact_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "row_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "column_names": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "source_family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "source_system",
+    "extracted_at",
+    "source_registry_version",
+    "artifact_uri",
+    "sha256",
+    "row_count",
+    "column_names",
+    "source_family"
+  ],
+  "additionalProperties": false
+}

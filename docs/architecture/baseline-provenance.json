@@ -1,0 +1,21 @@
+{
+  "review_date": "2026-09-28",
+  "current_authority": "ECOS 1.x",
+  "production_spreadsheet_id": "1LF0isNKZBgEbr8E_pzekSWJ8-iXGfGn3e3xteKuivu0",
+  "review_time_continuity": {
+    "business_id": "MEM-ECOS-000036",
+    "rolling_version": 94
+  },
+  "fresh_production_read_performed": false,
+  "scope": "Approved review snapshots, not a fresh claim about live production",
+  "sources": [
+    {
+      "path": "docs/baseline/ECOS_2X_PREIMPLEMENTATION_ARCHITECTURE_REVIEW.md",
+      "sha256": "26dcf88caa41c199d521e44a409b2f250e1a59a4db6e825059ce55dc762354dc"
+    },
+    {
+      "path": "docs/baseline/ECOS_2X_WORKER_DISPOSITION_APPENDIX.md",
+      "sha256": "841c800b522390917f74abfc189a4d46edf9e22d8455ada87778a8495fcccf89"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/backup_record.schema.json",
+  "title": "backup_record",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "kind": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/backup_kind"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifact_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "manifest_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "encrypted": {
+      "const": true
+    },
+    "recovery_point_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "restore_test_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "kind",
+    "started_at",
+    "completed_at",
+    "artifact_uri",
+    "manifest_hash",
+    "encrypted",
+    "recovery_point_at",
+    "restore_test_id"
+  ],
+  "additionalProperties": false
+}

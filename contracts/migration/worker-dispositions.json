@@ -1,0 +1,2076 @@
+{
+  "schema_version": "1.0.0",
+  "review_date": "2026-09-28",
+  "usage": "migration_and_acceptance_only",
+  "source_sha256": "841c800b522390917f74abfc189a4d46edf9e22d8455ada87778a8495fcccf89",
+  "workers": [
+    {
+      "legacy_worker_id": "TASK-AUTO-000001",
+      "legacy_short_id": "A001",
+      "legacy_name": "Gmail Intake",
+      "business_capability": "Inbox mailroom: classify/file current Gmail.",
+      "current_trigger": "completion-relative 30m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MODIFY",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "gmail_delta_or_webhook_with_recovery_poll",
+      "target_latency": "<1 minute",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "gmail"
+      ],
+      "proposed_objects": [
+        "provider_receipt",
+        "communication",
+        "semantic classification proposal",
+        "Gmail command"
+      ],
+      "acceptance_test": "Duplicate receipt produces one disposition; provider success/DB failure reconciles by message ID/history. Shadow parity, then Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Duplicate receipt produces one disposition; provider success/DB failure reconciles by message ID/history. Shadow parity, then Production.",
+      "retired_at_review": false,
+      "notes": "Gmail inbox + filing governance -> labels/read/archive disposition. Gmail provider; retries bounded batches and preserves blocked item IDs. | **MODIFY.** ONLINE_SEMANTIC with Gmail deterministic adapter; Gmail history/webhook or bounded delta event, recovery poll; <1m. | `provider_receipt`, `communication`, semantic classification proposal, Gmail command; Gmail adapter; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A001 Gmail Intake",
+        "Inbox mailroom: classify/file current Gmail. AI Agent; completion-relative 30m.",
+        "Gmail inbox + filing governance -> labels/read/archive disposition. Gmail provider; retries bounded batches and preserves blocked item IDs.",
+        "**MODIFY.** ONLINE_SEMANTIC with Gmail deterministic adapter; Gmail history/webhook or bounded delta event, recovery poll; <1m.",
+        "`provider_receipt`, `communication`, semantic classification proposal, Gmail command; Gmail adapter; semantic yes.",
+        "Duplicate receipt produces one disposition; provider success/DB failure reconciles by message ID/history. Shadow parity, then Production."
+      ],
+      "source_line": 16,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000002",
+      "legacy_short_id": "A002",
+      "legacy_name": "Drive Ingestion",
+      "business_capability": "Quick Scan/intake identification, rename/move/register/link.",
+      "current_trigger": "2h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MODIFY",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "drive_change_or_recovery_delta",
+      "target_latency": "<1 minute",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "google_drive"
+      ],
+      "proposed_objects": [
+        "provider_receipt",
+        "artifact_version",
+        "ingestion item/stage"
+      ],
+      "acceptance_test": "Same Drive ID never ingested twice; isolated unreadable file does not block others; exact move/hash evidence. Shadow/Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Same Drive ID never ingested twice; isolated unreadable file does not block others; exact move/hash evidence. Shadow/Production.",
+      "retired_at_review": false,
+      "notes": "Drive folder deltas/files -> artifacts, links, obligations, checkpoint. Drive; resumable boundary. | **MODIFY.** HYBRID: Drive adapter + ONLINE_SEMANTIC; Drive change event/recovery delta; <1m. | `provider_receipt`, `artifact_version`, ingestion item/stage; Drive adapter; semantic for classification/correlation. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A002 Drive Ingestion",
+        "Quick Scan/intake identification, rename/move/register/link. AI Agent; 2h.",
+        "Drive folder deltas/files -> artifacts, links, obligations, checkpoint. Drive; resumable boundary.",
+        "**MODIFY.** HYBRID: Drive adapter + ONLINE_SEMANTIC; Drive change event/recovery delta; <1m.",
+        "`provider_receipt`, `artifact_version`, ingestion item/stage; Drive adapter; semantic for classification/correlation.",
+        "Same Drive ID never ingested twice; isolated unreadable file does not block others; exact move/hash evidence. Shadow/Production."
+      ],
+      "source_line": 17,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000003",
+      "legacy_short_id": "A003",
+      "legacy_name": "Ingestion Verification",
+      "business_capability": "Verify A001/A002 outcomes and standards.",
+      "current_trigger": "2h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB/MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "ingestion_commit_and_scheduled_audit",
+      "target_latency": "transaction for invariants; audit SLA pending",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "gmail",
+        "google_drive"
+      ],
+      "proposed_objects": [
+        "assertion views",
+        "integrity_finding",
+        "provider reconciliation adapter"
+      ],
+      "acceptance_test": "Seed label/checkpoint mismatch and detect; healthy run needs no AI. Production before retirement.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Seed label/checkpoint mismatch and detect; healthy run needs no AI. Production before retirement.",
+      "retired_at_review": false,
+      "notes": "recent runs/checkpoints/provider state -> discrepancy evidence. | **ABSORB/MODIFY.** DB constraints and flow assertions; provider sampling only where DB cannot prove; event after ingestion + scheduled audit. | assertion views, `integrity_finding`, provider reconciliation adapter; semantic only for classification quality samples. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A003 Ingestion Verification",
+        "Verify A001/A002 outcomes and standards. AI Agent; 2h.",
+        "recent runs/checkpoints/provider state -> discrepancy evidence.",
+        "**ABSORB/MODIFY.** DB constraints and flow assertions; provider sampling only where DB cannot prove; event after ingestion + scheduled audit.",
+        "assertion views, `integrity_finding`, provider reconciliation adapter; semantic only for classification quality samples.",
+        "Seed label/checkpoint mismatch and detect; healthy run needs no AI. Production before retirement."
+      ],
+      "source_line": 18,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000004",
+      "legacy_short_id": "A004",
+      "legacy_name": "Executive Briefing",
+      "business_capability": "Twice-daily executive synthesis.",
+      "current_trigger": "fixed 05:00/17:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/IMPROVE",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "scheduled_occurrence",
+      "target_latency": "<5 minutes after due",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "google_drive",
+        "gmail",
+        "twilio"
+      ],
+      "proposed_objects": [
+        "briefing query contract",
+        "artifact_version",
+        "notification/delivery"
+      ],
+      "acceptance_test": "Reproduce required sections from frozen snapshot; stale/unknown sources explicit; no duplicate delivery. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Reproduce required sections from frozen snapshot; stale/unknown sources explicit; no duplicate delivery. Production.",
+      "retired_at_review": false,
+      "notes": "tasks/projects/calendar/financial facts -> versioned briefing artifact and governed delivery. | **KEEP/IMPROVE.** ONLINE_SEMANTIC; scheduled occurrence; <5m after due. | briefing query contract, `artifact_version`, notification/delivery; Docs/Drive adapter; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A004 Executive Briefing",
+        "Twice-daily executive synthesis. AI Agent; fixed 05:00/17:00.",
+        "tasks/projects/calendar/financial facts -> versioned briefing artifact and governed delivery.",
+        "**KEEP/IMPROVE.** ONLINE_SEMANTIC; scheduled occurrence; <5m after due.",
+        "briefing query contract, `artifact_version`, notification/delivery; Docs/Drive adapter; semantic yes.",
+        "Reproduce required sections from frozen snapshot; stale/unknown sources explicit; no duplicate delivery. Production."
+      ],
+      "source_line": 19,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000005",
+      "legacy_short_id": "A005",
+      "legacy_name": "Operational Backup",
+      "business_capability": "Spreadsheet/Drive/Docs continuity backups.",
+      "current_trigger": "Mon/Fri 08:00 and RUN NOW.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "REPLACE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "managed_backup_daily_logical_quarterly_restore",
+      "target_latency": "RPO/RTO pending owner approval",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "postgresql_backup",
+        "controlled_storage"
+      ],
+      "proposed_objects": [
+        "backup_record",
+        "export_package",
+        "restore_test"
+      ],
+      "acceptance_test": "Clean-room restore without Supabase access, manifest/hash pass, RPO/RTO met. Production + two successful restore cycles.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Clean-room restore without Supabase access, manifest/hash pass, RPO/RTO met. Production + two successful restore cycles.",
+      "retired_at_review": false,
+      "notes": "workbook/memory/recovery map -> backup artifacts/checkpoints. | **REPLACE.** DATABASE_DETERMINISTIC + backup operator; managed PITR, daily logical dump, quarterly restore. | `backup_record`, `export_package`, `restore_test`; pg_dump/storage adapter; semantic no except continuity summary. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A005 Operational Backup",
+        "Spreadsheet/Drive/Docs continuity backups. AI Agent; Mon/Fri 08:00 and RUN NOW.",
+        "workbook/memory/recovery map -> backup artifacts/checkpoints.",
+        "**REPLACE.** DATABASE_DETERMINISTIC + backup operator; managed PITR, daily logical dump, quarterly restore.",
+        "`backup_record`, `export_package`, `restore_test`; pg_dump/storage adapter; semantic no except continuity summary.",
+        "Clean-room restore without Supabase access, manifest/hash pass, RPO/RTO met. Production + two successful restore cycles."
+      ],
+      "source_line": 20,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000006",
+      "legacy_short_id": "A006",
+      "legacy_name": "Documentation Execution",
+      "business_capability": "Governed Bruno's documentation/review workflow.",
+      "current_trigger": "4h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP BUSINESS / MODIFY",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "document_event_or_approval",
+      "target_latency": "policy-specific; pending",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "google_drive",
+        "gmail"
+      ],
+      "proposed_objects": [
+        "artifact_version",
+        "approval",
+        "document work stages"
+      ],
+      "acceptance_test": "Changes require expected artifact version and approval; restart cannot redistribute. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Changes require expected artifact version and approval; restart cannot redistribute. Production.",
+      "retired_at_review": false,
+      "notes": "tasks, approval, Docs/Gmail evidence -> controlled document version, approval/delivery. | **KEEP BUSINESS / MODIFY.** HYBRID semantic drafting + deterministic version/approval + Docs adapter; event/approval trigger. | `artifact_version`, approval, document work stages; Docs/Gmail adapter; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A006 Documentation Execution",
+        "Governed Bruno's documentation/review workflow. AI Agent; 4h.",
+        "tasks, approval, Docs/Gmail evidence -> controlled document version, approval/delivery.",
+        "**KEEP BUSINESS / MODIFY.** HYBRID semantic drafting + deterministic version/approval + Docs adapter; event/approval trigger.",
+        "`artifact_version`, approval, document work stages; Docs/Gmail adapter; semantic yes.",
+        "Changes require expected artifact version and approval; restart cannot redistribute. Production."
+      ],
+      "source_line": 21,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000007",
+      "legacy_short_id": "A007",
+      "legacy_name": "Drive Consolidation",
+      "business_capability": "Identify duplicates, controlled consolidation, approval.",
+      "current_trigger": "4h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MODIFY",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "drive_inventory_event",
+      "target_latency": "policy-specific; pending",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "google_drive"
+      ],
+      "proposed_objects": [
+        "file identity/hash",
+        "consolidation case",
+        "approval"
+      ],
+      "acceptance_test": "Three identical files produce one review case; no deletion without authority; stable IDs/evidence. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Three identical files produce one review case; no deletion without authority; stable IDs/evidence. Production.",
+      "retired_at_review": false,
+      "notes": "Drive files/tasks/artifact registry -> canonical selection/move evidence. | **MODIFY.** Event-driven Drive inventory + semantic duplicate review; explicit approval for destructive moves. | file identity/hash, consolidation case, approval; Drive adapter; semantic sometimes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A007 Drive Consolidation",
+        "Identify duplicates, controlled consolidation, approval. AI Agent; 4h.",
+        "Drive files/tasks/artifact registry -> canonical selection/move evidence.",
+        "**MODIFY.** Event-driven Drive inventory + semantic duplicate review; explicit approval for destructive moves.",
+        "file identity/hash, consolidation case, approval; Drive adapter; semantic sometimes.",
+        "Three identical files produce one review case; no deletion without authority; stable IDs/evidence. Production."
+      ],
+      "source_line": 22,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000008",
+      "legacy_short_id": "A008",
+      "legacy_name": "Fast Integrity",
+      "business_capability": "Frequent control drift and bounded self-heal.",
+      "current_trigger": "1h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "REPLACE MOSTLY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "transaction_and_recovery_sweep",
+      "target_latency": "synchronous invariants; 1 minute sweep",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "constraints",
+        "integrity_finding",
+        "repair_action",
+        "assertion views"
+      ],
+      "acceptance_test": "Seed stale claim, bad readiness, duplicate active state; deterministic repair or quarantine; flow-health failure detected. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Seed stale claim, bad readiness, duplicate active state; deterministic repair or quarantine; flow-health failure detected. Production.",
+      "retired_at_review": false,
+      "notes": "registries/runtime state -> repairs/findings. | **REPLACE MOSTLY.** DATABASE_DETERMINISTIC continuous invariants + 1m recovery sweep. | constraints, `integrity_finding`, `repair_action`, assertion views; no adapter; semantic no. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A008 Fast Integrity",
+        "Frequent control drift and bounded self-heal. AI Agent; 1h.",
+        "registries/runtime state -> repairs/findings.",
+        "**REPLACE MOSTLY.** DATABASE_DETERMINISTIC continuous invariants + 1m recovery sweep.",
+        "constraints, `integrity_finding`, `repair_action`, assertion views; no adapter; semantic no.",
+        "Seed stale claim, bad readiness, duplicate active state; deterministic repair or quarantine; flow-health failure detected. Production."
+      ],
+      "source_line": 23,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000009",
+      "legacy_short_id": "A009",
+      "legacy_name": "Deep Integrity",
+      "business_capability": "Daily broad audit.",
+      "current_trigger": "02:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "nightly_audit",
+      "target_latency": "nightly; duration pending",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "scoped_reconciliation"
+      ],
+      "proposed_objects": [
+        "audit suite/results",
+        "reconciliation samples"
+      ],
+      "acceptance_test": "Detect FK, identity, stalled-flow, contradiction fixtures; zero false “healthy” when flow SLA broken. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Detect FK, identity, stalled-flow, contradiction fixtures; zero false “healthy” when flow SLA broken. Production.",
+      "retired_at_review": false,
+      "notes": "all governed state/provider samples -> audit findings. | **MODIFY.** deterministic nightly audit plus semantic evidence-quality audit. | audit suite/results, reconciliation samples; provider adapters as scoped; semantic selective. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A009 Deep Integrity",
+        "Daily broad audit. AI Agent; 02:00.",
+        "all governed state/provider samples -> audit findings.",
+        "**MODIFY.** deterministic nightly audit plus semantic evidence-quality audit.",
+        "audit suite/results, reconciliation samples; provider adapters as scoped; semantic selective.",
+        "Detect FK, identity, stalled-flow, contradiction fixtures; zero false “healthy” when flow SLA broken. Production."
+      ],
+      "source_line": 24,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000010",
+      "legacy_short_id": "A010",
+      "legacy_name": "Email Notification Dispatcher",
+      "business_capability": "Create/send governed email deliveries.",
+      "current_trigger": "15m; currently blocked by identity ambiguity.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "REPLACE WORKER",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "delivery_commit",
+      "target_latency": "<5 seconds to ready draft transport",
+      "semantic_required": "upstream_only",
+      "provider_adapter": [
+        "gmail"
+      ],
+      "proposed_objects": [
+        "notification",
+        "delivery",
+        "delivery_attempt",
+        "provider_command"
+      ],
+      "acceptance_test": "Draft-first gate, exact recipient/thread/signature, idempotent retry and provider reconciliation. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Draft-first gate, exact recipient/thread/signature, idempotent retry and provider reconciliation. Production.",
+      "retired_at_review": false,
+      "notes": "Notification/Delivery + email policies -> Gmail draft/send/provider evidence. | **REPLACE WORKER.** shared delivery dispatcher + Gmail adapter; committed Delivery; <5s draft creation when ready. | `notification`, `delivery`, `delivery_attempt`, `provider_command`; Gmail adapter; semantic content upstream only. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A010 Email Notification Dispatcher",
+        "Create/send governed email deliveries. AI Agent; 15m; currently blocked by identity ambiguity.",
+        "Notification/Delivery + email policies -> Gmail draft/send/provider evidence.",
+        "**REPLACE WORKER.** shared delivery dispatcher + Gmail adapter; committed Delivery; <5s draft creation when ready.",
+        "`notification`, `delivery`, `delivery_attempt`, `provider_command`; Gmail adapter; semantic content upstream only.",
+        "Draft-first gate, exact recipient/thread/signature, idempotent retry and provider reconciliation. Production."
+      ],
+      "source_line": 25,
+      "subordinate_preservation": [
+        "A010/A027/A028 consolidate queue machinery, not channel-specific provider evidence or policies."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000011",
+      "legacy_short_id": "A011",
+      "legacy_name": "Completion Reconciliation",
+      "business_capability": "Cross-source task completion reconciliation.",
+      "current_trigger": "4h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB MOSTLY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "completion_event_and_exception_sweep",
+      "target_latency": "transaction; sweep 1-5 minutes",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "scoped_reconciliation"
+      ],
+      "proposed_objects": [
+        "evidence requirements",
+        "task transition",
+        "reconciliation finding"
+      ],
+      "acceptance_test": "Completion cannot occur without required evidence; late provider result updates once; unrelated tasks proceed. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Completion cannot occur without required evidence; late provider result updates once; unrelated tasks proceed. Production.",
+      "retired_at_review": false,
+      "notes": "tasks/provider/evidence -> completion/state updates. | **ABSORB MOSTLY.** transactional completion procedures/events; scheduled exception reconciliation. | evidence requirements, task transition, reconciliation finding; provider adapters if needed; semantic only ambiguous cases. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A011 Completion Reconciliation",
+        "Cross-source task completion reconciliation. AI Agent; 4h.",
+        "tasks/provider/evidence -> completion/state updates.",
+        "**ABSORB MOSTLY.** transactional completion procedures/events; scheduled exception reconciliation.",
+        "evidence requirements, task transition, reconciliation finding; provider adapters if needed; semantic only ambiguous cases.",
+        "Completion cannot occur without required evidence; late provider result updates once; unrelated tasks proceed. Production."
+      ],
+      "source_line": 26,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000012",
+      "legacy_short_id": "A012",
+      "legacy_name": "Snapshot Fingerprint",
+      "business_capability": "Verify continuity snapshots/fingerprints.",
+      "current_trigger": "6h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "package_created_and_daily_sweep",
+      "target_latency": "on package creation; daily sweep",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "controlled_storage"
+      ],
+      "proposed_objects": [
+        "export_package",
+        "manifest entries",
+        "checksum verification"
+      ],
+      "acceptance_test": "Bit flip fails; unchanged package verifies without rewrite; restore linkage proven. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Bit flip fails; unchanged package verifies without rewrite; restore linkage proven. Production.",
+      "retired_at_review": false,
+      "notes": "backup artifacts/manifests -> verified fingerprint. | **MODIFY.** export/backup manifest verification; event on package creation + daily sweep. | `export_package`, manifest entries, checksum verification; storage adapter; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A012 Snapshot Fingerprint",
+        "Verify continuity snapshots/fingerprints. AI Agent; 6h.",
+        "backup artifacts/manifests -> verified fingerprint.",
+        "**MODIFY.** export/backup manifest verification; event on package creation + daily sweep.",
+        "`export_package`, manifest entries, checksum verification; storage adapter; no semantic.",
+        "Bit flip fails; unchanged package verifies without rewrite; restore linkage proven. Production."
+      ],
+      "source_line": 27,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000013",
+      "legacy_short_id": "A013",
+      "legacy_name": "Audit Replay",
+      "business_capability": "Replay audit to verify outcomes.",
+      "current_trigger": "daily 01:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MODIFY/ABSORB",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "scheduled_replay",
+      "target_latency": "schedule pending",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "scoped_reconciliation"
+      ],
+      "proposed_objects": [
+        "event schemas",
+        "projections",
+        "replay checkpoint"
+      ],
+      "acceptance_test": "Rebuild selected projection from events and compare; corrupt/missing event detected. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Rebuild selected projection from events and compare; corrupt/missing event detected. Production.",
+      "retired_at_review": false,
+      "notes": "activity/run/provider evidence -> replay discrepancies/remediation. | **MODIFY/ABSORB.** immutable audit/event conformance and deterministic replay tests; scheduled. | event schemas, projections, replay checkpoint; adapters only for provider reconciliation; semantic rare. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A013 Audit Replay",
+        "Replay audit to verify outcomes. AI Agent; daily 01:00.",
+        "activity/run/provider evidence -> replay discrepancies/remediation.",
+        "**MODIFY/ABSORB.** immutable audit/event conformance and deterministic replay tests; scheduled.",
+        "event schemas, projections, replay checkpoint; adapters only for provider reconciliation; semantic rare.",
+        "Rebuild selected projection from events and compare; corrupt/missing event detected. Production."
+      ],
+      "source_line": 28,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000014",
+      "legacy_short_id": "A014",
+      "legacy_name": "Contract Test Harness",
+      "business_capability": "Validate worker contracts.",
+      "current_trigger": "weekly Sun 03:30.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/EXPAND",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "ci_and_scheduled_conformance",
+      "target_latency": "per CI run",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "JSON Schemas",
+        "OpenAPI/SQL conformance suite",
+        "contract_test_run"
+      ],
+      "acceptance_test": "Every definition validates, unknown capability fails, every operation has idempotency/auth tests. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Every definition validates, unknown capability fails, every operation has idempotency/auth tests. Production.",
+      "retired_at_review": false,
+      "notes": "worker/capability/settings contracts -> test results. | **KEEP/EXPAND.** deterministic CI + scheduled production conformance. | JSON Schemas, OpenAPI/SQL conformance suite, `contract_test_run`; no provider except synthetic adapters; semantic no. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A014 Contract Test Harness",
+        "Validate worker contracts. AI Agent; weekly Sun 03:30.",
+        "worker/capability/settings contracts -> test results.",
+        "**KEEP/EXPAND.** deterministic CI + scheduled production conformance.",
+        "JSON Schemas, OpenAPI/SQL conformance suite, `contract_test_run`; no provider except synthetic adapters; semantic no.",
+        "Every definition validates, unknown capability fails, every operation has idempotency/auth tests. Production."
+      ],
+      "source_line": 29,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000015",
+      "legacy_short_id": "A015",
+      "legacy_name": "Task Coverage & Proactive Control",
+      "business_capability": "Ensure active tasks have actionable coverage/owner routing.",
+      "current_trigger": "30m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP BUSINESS / REDESIGN",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "coverage_threshold_or_state_event",
+      "target_latency": "<1 minute threshold detection",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "gmail",
+        "twilio"
+      ],
+      "proposed_objects": [
+        "coverage view",
+        "obligation SLA",
+        "notification policy"
+      ],
+      "acceptance_test": "100% scoped coverage computed deterministically; one consolidated route per recipient; no duplicate. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "100% scoped coverage computed deterministically; one consolidated route per recipient; no duplicate. Production.",
+      "retired_at_review": false,
+      "notes": "Tasks, communication rules, deliveries -> proposals/notifications. | **KEEP BUSINESS / REDESIGN.** DB SLA/readiness queries + semantic batching/drafting; threshold/event. | coverage view, obligation SLA, notification policy; Gmail/SMS adapters downstream; semantic yes for communication. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A015 Task Coverage & Proactive Control",
+        "Ensure active tasks have actionable coverage/owner routing. AI Agent; 30m.",
+        "Tasks, communication rules, deliveries -> proposals/notifications.",
+        "**KEEP BUSINESS / REDESIGN.** DB SLA/readiness queries + semantic batching/drafting; threshold/event.",
+        "coverage view, obligation SLA, notification policy; Gmail/SMS adapters downstream; semantic yes for communication.",
+        "100% scoped coverage computed deterministically; one consolidated route per recipient; no duplicate. Production."
+      ],
+      "source_line": 30,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000016",
+      "legacy_short_id": "A016",
+      "legacy_name": "Outstanding Request Monitor",
+      "business_capability": "Follow-ups and overdue requests.",
+      "current_trigger": "2h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "follow_up_threshold",
+      "target_latency": "<1 minute",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "gmail",
+        "twilio"
+      ],
+      "proposed_objects": [
+        "SLA rules",
+        "follow-up occurrence",
+        "delivery"
+      ],
+      "acceptance_test": "Deadline fixture creates one occurrence; reply cancels/satisfies it transactionally. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Deadline fixture creates one occurrence; reply cancels/satisfies it transactionally. Production.",
+      "retired_at_review": false,
+      "notes": "tasks/communications/deadlines -> follow-up obligation/draft/escalation. | **MODIFY.** DB threshold detection; semantic judgment only for message/ambiguity; <1m after threshold. | SLA rules, follow-up occurrence, delivery; adapter downstream; semantic selective. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A016 Outstanding Request Monitor",
+        "Follow-ups and overdue requests. AI Agent; 2h.",
+        "tasks/communications/deadlines -> follow-up obligation/draft/escalation.",
+        "**MODIFY.** DB threshold detection; semantic judgment only for message/ambiguity; <1m after threshold.",
+        "SLA rules, follow-up occurrence, delivery; adapter downstream; semantic selective.",
+        "Deadline fixture creates one occurrence; reply cancels/satisfies it transactionally. Production."
+      ],
+      "source_line": 31,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000017",
+      "legacy_short_id": "A017",
+      "legacy_name": "Gmail Label Migration",
+      "business_capability": "Finite label migration; disabled/retired.",
+      "current_trigger": "disabled/retired.",
+      "current_execution_class": "not stated in review; disabled/retired",
+      "2x_disposition": "RETIRE",
+      "2x_execution_surface": [],
+      "2x_trigger": "none_retired",
+      "target_latency": "not applicable",
+      "semantic_required": "not_applicable",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "archived migration record"
+      ],
+      "acceptance_test": "Verify no active dependency; retain evidence. Can retire immediately after authority confirmation.",
+      "retirement_maturity": "capability_retired_pending_authority_confirmation",
+      "retirement_conditions": "Verify no active dependency; retain evidence. Can retire immediately after authority confirmation.",
+      "retired_at_review": true,
+      "notes": "Gmail label state -> migrated labels. | **RETIRE.** Preserve migration evidence only. | archived migration record; Gmail adapter only for separately approved repair. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A017 Gmail Label Migration",
+        "Finite label migration; disabled/retired.",
+        "Gmail label state -> migrated labels.",
+        "**RETIRE.** Preserve migration evidence only.",
+        "archived migration record; Gmail adapter only for separately approved repair.",
+        "Verify no active dependency; retain evidence. Can retire immediately after authority confirmation."
+      ],
+      "source_line": 32,
+      "subordinate_preservation": [
+        "Finite A017/A030 history is preserved without permanent workers."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000018",
+      "legacy_short_id": "A018",
+      "legacy_name": "Incremental Continuity",
+      "business_capability": "Rolling semantic continuity checkpoint.",
+      "current_trigger": "6h.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP CAPABILITY / REPLACE MECHANICS",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "state_event_or_six_hour_schedule",
+      "target_latency": "six hours or event",
+      "semantic_required": "yes",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "memory version/scope/reference/compaction run"
+      ],
+      "acceptance_test": "Replacement AI bootstraps from new head; contradictions and missing references fail; backup remains separate. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Replacement AI bootstraps from new head; contradictions and missing references fail; backup remains separate. Production.",
+      "retired_at_review": false,
+      "notes": "structured state + active memory + residual chat context -> new continuity version/export component. | **KEEP CAPABILITY / REPLACE MECHANICS.** ONLINE_SEMANTIC compaction followed by deterministic activation; event/6h. | memory version/scope/reference/compaction run; export linkage; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A018 Incremental Continuity",
+        "Rolling semantic continuity checkpoint. AI Agent; 6h.",
+        "structured state + active memory + residual chat context -> new continuity version/export component.",
+        "**KEEP CAPABILITY / REPLACE MECHANICS.** ONLINE_SEMANTIC compaction followed by deterministic activation; event/6h.",
+        "memory version/scope/reference/compaction run; export linkage; semantic yes.",
+        "Replacement AI bootstraps from new head; contradictions and missing references fail; backup remains separate. Production."
+      ],
+      "source_line": 33,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000019",
+      "legacy_short_id": "A019",
+      "legacy_name": "Staffing Feedback",
+      "business_capability": "Daily staffing outcome/feedback.",
+      "current_trigger": "11:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/IMPROVE",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "actual_reconciliation_and_daily_schedule",
+      "target_latency": "daily; after actual reconciliation",
+      "semantic_required": "yes",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "forecast observation/learning",
+        "artifact"
+      ],
+      "acceptance_test": "Trace every conclusion to immutable forecast/actual snapshot; no hindsight overwrite. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Trace every conclusion to immutable forecast/actual snapshot; no hindsight overwrite. Production.",
+      "retired_at_review": false,
+      "notes": "schedules, forecasts, actuals, qualitative observations -> feedback/learning records. | **KEEP/IMPROVE.** ONLINE_SEMANTIC after actual reconciliation; scheduled/dependency completion. | forecast observation/learning, artifact; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A019 Staffing Feedback",
+        "Daily staffing outcome/feedback. AI Agent; 11:00.",
+        "schedules, forecasts, actuals, qualitative observations -> feedback/learning records.",
+        "**KEEP/IMPROVE.** ONLINE_SEMANTIC after actual reconciliation; scheduled/dependency completion.",
+        "forecast observation/learning, artifact; semantic yes.",
+        "Trace every conclusion to immutable forecast/actual snapshot; no hindsight overwrite. Production."
+      ],
+      "source_line": 39,
+      "subordinate_preservation": [
+        "A029 acquisition, SQL feature calculation, A020/A021 forecasting, and A019 feedback remain separate lifecycle stages with independently testable evidence."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000020",
+      "legacy_short_id": "A020",
+      "legacy_name": "21-Day Staffing",
+      "business_capability": "Daily 21-day staffing/event plan.",
+      "current_trigger": "16:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/IMPROVE",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "scheduled_forecast",
+      "target_latency": "daily; before horizon",
+      "semantic_required": "yes",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "forecast snapshot/interval/recommendation"
+      ],
+      "acceptance_test": "Forecast frozen before horizon; source-set/sample counts; later actuals separate. Shadow forecast cycle, then Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Forecast frozen before horizon; source-set/sample counts; later actuals separate. Shadow forecast cycle, then Production.",
+      "retired_at_review": false,
+      "notes": "normalized facts/features, events, policy -> immutable forecast/plan. | **KEEP/IMPROVE.** ONLINE_SEMANTIC consuming SQL feature contract; scheduled. | forecast snapshot/interval/recommendation; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A020 21-Day Staffing",
+        "Daily 21-day staffing/event plan. AI Agent; 16:00.",
+        "normalized facts/features, events, policy -> immutable forecast/plan.",
+        "**KEEP/IMPROVE.** ONLINE_SEMANTIC consuming SQL feature contract; scheduled.",
+        "forecast snapshot/interval/recommendation; semantic yes.",
+        "Forecast frozen before horizon; source-set/sample counts; later actuals separate. Shadow forecast cycle, then Production."
+      ],
+      "source_line": 40,
+      "subordinate_preservation": [
+        "A029 acquisition, SQL feature calculation, A020/A021 forecasting, and A019 feedback remain separate lifecycle stages with independently testable evidence."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000021",
+      "legacy_short_id": "A021",
+      "legacy_name": "3-Day Deep Dive",
+      "business_capability": "Daily near-term staffing analysis.",
+      "current_trigger": "06:30.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/IMPROVE",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "schedule_and_fresh_base_snapshot",
+      "target_latency": "daily",
+      "semantic_required": "yes",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "forecast analysis version",
+        "decisions/risks"
+      ],
+      "acceptance_test": "Reject stale/missing base snapshot; produce evidence-linked recommendations. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Reject stale/missing base snapshot; produce evidence-linked recommendations. Production.",
+      "retired_at_review": false,
+      "notes": "latest forecast/features/events -> deep-dive artifact/action. | **KEEP/IMPROVE.** ONLINE_SEMANTIC; schedule + fresh-output gate. | forecast analysis version, decisions/risks; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A021 3-Day Deep Dive",
+        "Daily near-term staffing analysis. AI Agent; 06:30.",
+        "latest forecast/features/events -> deep-dive artifact/action.",
+        "**KEEP/IMPROVE.** ONLINE_SEMANTIC; schedule + fresh-output gate.",
+        "forecast analysis version, decisions/risks; semantic yes.",
+        "Reject stale/missing base snapshot; produce evidence-linked recommendations. Production."
+      ],
+      "source_line": 41,
+      "subordinate_preservation": [
+        "A029 acquisition, SQL feature calculation, A020/A021 forecasting, and A019 feedback remain separate lifecycle stages with independently testable evidence."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000022",
+      "legacy_short_id": "A022",
+      "legacy_name": "System Status Builder",
+      "business_capability": "Hourly system status assembly.",
+      "current_trigger": "hourly.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "CONSOLIDATE/REDESIGN",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "state_event_or_hourly_schedule",
+      "target_latency": "hourly or event",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "health views",
+        "status snapshot/package"
+      ],
+      "acceptance_test": "Same authoritative state yields deterministic package; degraded chains visible. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Same authoritative state yields deterministic package; degraded chains visible. Production.",
+      "retired_at_review": false,
+      "notes": "A037–A043 outputs -> canonical status package. | **CONSOLIDATE/REDESIGN.** DB status views + one snapshot/package function; hourly/event. | health views, status snapshot/package; semantic no for core status. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A022 System Status Builder",
+        "Hourly system status assembly. AI Agent; hourly.",
+        "A037–A043 outputs -> canonical status package.",
+        "**CONSOLIDATE/REDESIGN.** DB status views + one snapshot/package function; hourly/event.",
+        "health views, status snapshot/package; semantic no for core status.",
+        "Same authoritative state yields deterministic package; degraded chains visible. Production."
+      ],
+      "source_line": 42,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000023",
+      "legacy_short_id": "A023",
+      "legacy_name": "Task Owner Review Retriever",
+      "business_capability": "Poll remote review queue and create immutable work package.",
+      "current_trigger": "4m.",
+      "current_execution_class": "Application",
+      "2x_disposition": "MODIFY",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "review_webhook_or_recovery_poll",
+      "target_latency": "<5 seconds webhook",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "owner_review"
+      ],
+      "proposed_objects": [
+        "provider_receipt",
+        "review transaction/work package"
+      ],
+      "acceptance_test": "Duplicate transaction produces one receipt/package; ACK only after commit proof. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Duplicate transaction produces one receipt/package; ACK only after commit proof. Production.",
+      "retired_at_review": false,
+      "notes": "authenticated review queue -> Staging work package, handoff A053. | **MODIFY.** provider webhook preferred, bounded recovery poll; RESIDENT/provider adapter; <5s webhook. | `provider_receipt`, review transaction/work package; review adapter; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A023 Task Owner Review Retriever",
+        "Poll remote review queue and create immutable work package. Application; 4m.",
+        "authenticated review queue -> Staging work package, handoff A053.",
+        "**MODIFY.** provider webhook preferred, bounded recovery poll; RESIDENT/provider adapter; <5s webhook.",
+        "`provider_receipt`, review transaction/work package; review adapter; no semantic.",
+        "Duplicate transaction produces one receipt/package; ACK only after commit proof. Production."
+      ],
+      "source_line": 43,
+      "subordinate_preservation": [
+        "A023/A053/A054 remain three explicit stages—receipt/package, semantic proposal, deterministic commit/ACK—even if implemented by shared generic engines."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000024",
+      "legacy_short_id": "A024",
+      "legacy_name": "AI Task Bridge",
+      "business_capability": "Generic execution of AI-owned finite Tasks.",
+      "current_trigger": "4m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "MAJOR REDESIGN",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "ready_work_event",
+      "target_latency": "<1 minute semantic; <5 seconds provider transport",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "declared_by_stage"
+      ],
+      "proposed_objects": [
+        "work definitions/stages/occurrences/claims"
+      ],
+      "acceptance_test": "Multiple task types run through schemas, no hard-coded IDs; capability mismatch isolated; claim tests pass. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Multiple task types run through schemas, no hard-coded IDs; capability mismatch isolated; claim tests pass. Production.",
+      "retired_at_review": false,
+      "notes": "eligible Tasks/capabilities -> bounded semantic/deterministic task outcomes. | **MAJOR REDESIGN.** replace with generic work dispatcher + semantic executor; event-driven. | work definitions/stages/occurrences/claims; provider adapters per stage; semantic as declared. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A024 AI Task Bridge",
+        "Generic execution of AI-owned finite Tasks. AI Agent; 4m.",
+        "eligible Tasks/capabilities -> bounded semantic/deterministic task outcomes.",
+        "**MAJOR REDESIGN.** replace with generic work dispatcher + semantic executor; event-driven.",
+        "work definitions/stages/occurrences/claims; provider adapters per stage; semantic as declared.",
+        "Multiple task types run through schemas, no hard-coded IDs; capability mismatch isolated; claim tests pass. Production."
+      ],
+      "source_line": 44,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000025",
+      "legacy_short_id": "A025",
+      "legacy_name": "Claimability Reconciliation",
+      "business_capability": "Repair Task Loop claim/readiness drift.",
+      "current_trigger": "10m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "RETIRE AS WORKER",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "claim_transaction_and_lease_expiry",
+      "target_latency": "transaction; 1-5 minutes recovery",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "claim indexes/procedures/recovery job"
+      ],
+      "acceptance_test": "Concurrency/abandonment suite passes; no manual rank/claim rewrite needed. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Concurrency/abandonment suite passes; no manual rank/claim rewrite needed. Production.",
+      "retired_at_review": false,
+      "notes": "Task Loop claims/schedules -> repairs. | **RETIRE AS WORKER.** DB constraints, claim procedure, lease recovery sweep. | claim indexes/procedures/recovery job; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A025 Claimability Reconciliation",
+        "Repair Task Loop claim/readiness drift. AI Agent; 10m.",
+        "Task Loop claims/schedules -> repairs.",
+        "**RETIRE AS WORKER.** DB constraints, claim procedure, lease recovery sweep.",
+        "claim indexes/procedures/recovery job; no semantic.",
+        "Concurrency/abandonment suite passes; no manual rank/claim rewrite needed. Production."
+      ],
+      "source_line": 45,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000026",
+      "legacy_short_id": "A026",
+      "legacy_name": "Life & Business Dashboard Builder",
+      "business_capability": "Assemble producer outputs into dashboard package.",
+      "current_trigger": "04:45/16:45.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP BUSINESS / SIMPLIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "source_completion_event",
+      "target_latency": "policy-specific; pending",
+      "semantic_required": "conditional",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "dashboard snapshot/package/schema"
+      ],
+      "acceptance_test": "Exact contract, freshness/unknown states, no block on one unavailable independent producer, reproducible package. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Exact contract, freshness/unknown states, no block on one unavailable independent producer, reproducible package. Production.",
+      "retired_at_review": false,
+      "notes": "A045–A051 snapshots -> validated render package/handoff A052. | **KEEP BUSINESS / SIMPLIFY.** DB snapshot function/materialized view plus semantic executive narrative only if required; source-completion/event. | dashboard snapshot/package/schema; semantic optional narrative. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A026 Life & Business Dashboard Builder",
+        "Assemble producer outputs into dashboard package. AI Agent; 04:45/16:45.",
+        "A045–A051 snapshots -> validated render package/handoff A052.",
+        "**KEEP BUSINESS / SIMPLIFY.** DB snapshot function/materialized view plus semantic executive narrative only if required; source-completion/event.",
+        "dashboard snapshot/package/schema; semantic optional narrative.",
+        "Exact contract, freshness/unknown states, no block on one unavailable independent producer, reproducible package. Production."
+      ],
+      "source_line": 46,
+      "subordinate_preservation": [
+        "A026 retains independent source availability semantics: one missing source degrades the assembled dashboard but does not erase other sections."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000027",
+      "legacy_short_id": "A027",
+      "legacy_name": "SMS Transport Queue Consumer",
+      "business_capability": "Poll gateway queue/reconcile inbound/outbound transport.",
+      "current_trigger": "5m.",
+      "current_execution_class": "Application",
+      "2x_disposition": "CONSOLIDATE/REPLACE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "webhook_or_provider_command",
+      "target_latency": "<5 seconds",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "sms_gateway"
+      ],
+      "proposed_objects": [
+        "provider receipt/command/attempt/result"
+      ],
+      "acceptance_test": "Queue outage/replay cannot duplicate SMS; receipt durable before ACK. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Queue outage/replay cannot duplicate SMS; receipt durable before ACK. Production.",
+      "retired_at_review": false,
+      "notes": "external queue -> transport work/results. | **CONSOLIDATE/REPLACE.** remove redundant queue hop; webhook receipts and shared dispatcher. | provider receipt/command/attempt/result; gateway adapter; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A027 SMS Transport Queue Consumer",
+        "Poll gateway queue/reconcile inbound/outbound transport. Application; 5m.",
+        "external queue -> transport work/results.",
+        "**CONSOLIDATE/REPLACE.** remove redundant queue hop; webhook receipts and shared dispatcher.",
+        "provider receipt/command/attempt/result; gateway adapter; no semantic.",
+        "Queue outage/replay cannot duplicate SMS; receipt durable before ACK. Production."
+      ],
+      "source_line": 47,
+      "subordinate_preservation": [
+        "A010/A027/A028 consolidate queue machinery, not channel-specific provider evidence or policies."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000028",
+      "legacy_short_id": "A028",
+      "legacy_name": "Outbound SMS Dispatcher",
+      "business_capability": "Send Twilio deliveries.",
+      "current_trigger": "5m.",
+      "current_execution_class": "Application",
+      "2x_disposition": "KEEP TRANSPORT / REPLACE MECHANICS",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "provider_command_committed",
+      "target_latency": "<5 seconds",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "twilio"
+      ],
+      "proposed_objects": [
+        "shared delivery tables"
+      ],
+      "acceptance_test": "Stable idempotency/reconciliation by SID; webhook updates attempt; DB-write failure causes query, not blind resend. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Stable idempotency/reconciliation by SID; webhook updates attempt; DB-write failure causes query, not blind resend. Production.",
+      "retired_at_review": false,
+      "notes": "ready SMS Delivery -> Twilio message/status. | **KEEP TRANSPORT / REPLACE MECHANICS.** Twilio adapter on committed provider command; <5s. | shared delivery tables; Twilio adapter; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A028 Outbound SMS Dispatcher",
+        "Send Twilio deliveries. Application; 5m.",
+        "ready SMS Delivery -> Twilio message/status.",
+        "**KEEP TRANSPORT / REPLACE MECHANICS.** Twilio adapter on committed provider command; <5s.",
+        "shared delivery tables; Twilio adapter; no semantic.",
+        "Stable idempotency/reconciliation by SID; webhook updates attempt; DB-write failure causes query, not blind resend. Production."
+      ],
+      "source_line": 48,
+      "subordinate_preservation": [
+        "A010/A027/A028 consolidate queue machinery, not channel-specific provider evidence or policies."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000029",
+      "legacy_short_id": "A029",
+      "legacy_name": "Toast Refresh",
+      "business_capability": "Acquire/normalize operational Toast data.",
+      "current_trigger": "daily 05:00/RUN NOW.",
+      "current_execution_class": "Application",
+      "2x_disposition": "KEEP",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "closed_actuals_delta_or_schedule",
+      "target_latency": "<1 minute after close/due",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "toast"
+      ],
+      "proposed_objects": [
+        "POS import batch",
+        "sales/order/labor intervals",
+        "source checkpoint"
+      ],
+      "acceptance_test": "Incremental closed-date import, exact totals/source proof, partial day excluded, replay idempotent. Shadow then Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Incremental closed-date import, exact totals/source proof, partial day excluded, replay idempotent. Shadow then Production.",
+      "retired_at_review": false,
+      "notes": "Toast + governed date boundary -> normalized closed actuals, artifact/checkpoint, event to A029-B. | **KEEP.** deterministic provider adapter; webhook/delta/schedule; <1m after close/due. | POS import batch, sales/order/labor intervals, source checkpoint; Toast adapter; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A029 Toast Refresh",
+        "Acquire/normalize operational Toast data. Application; daily 05:00/RUN NOW.",
+        "Toast + governed date boundary -> normalized closed actuals, artifact/checkpoint, event to A029-B.",
+        "**KEEP.** deterministic provider adapter; webhook/delta/schedule; <1m after close/due.",
+        "POS import batch, sales/order/labor intervals, source checkpoint; Toast adapter; no semantic.",
+        "Incremental closed-date import, exact totals/source proof, partial day excluded, replay idempotent. Shadow then Production."
+      ],
+      "source_line": 49,
+      "subordinate_preservation": [
+        "A029 acquisition, SQL feature calculation, A020/A021 forecasting, and A019 feedback remain separate lifecycle stages with independently testable evidence."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000029-B",
+      "legacy_short_id": "A029-B",
+      "legacy_name": "Historical Summary",
+      "business_capability": "Incremental staffing features from verified closed actuals.",
+      "current_trigger": "event driven.",
+      "current_execution_class": "Application",
+      "2x_disposition": "ABSORB INTO DATABASE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "closed_actuals_committed",
+      "target_latency": "seconds",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "interval facts",
+        "feature views/materializations",
+        "source-set hash"
+      ],
+      "acceptance_test": "Match accepted 2,587-feature baseline/approved sample, unchanged input no-op, incremental affected-window refresh. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Match accepted 2,587-feature baseline/approved sample, unchanged input no-op, incremental affected-window refresh. Production.",
+      "retired_at_review": false,
+      "notes": "A029 facts + forecast performance + governed labels -> AFR-ECOS-000253-like features. | **ABSORB INTO DATABASE.** SQL/materialized feature tables after actual commit; seconds. | interval facts, feature views/materializations, source-set hash; no provider; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A029-B Historical Summary",
+        "Incremental staffing features from verified closed actuals. Application; event driven.",
+        "A029 facts + forecast performance + governed labels -> AFR-ECOS-000253-like features.",
+        "**ABSORB INTO DATABASE.** SQL/materialized feature tables after actual commit; seconds.",
+        "interval facts, feature views/materializations, source-set hash; no provider; no semantic.",
+        "Match accepted 2,587-feature baseline/approved sample, unchanged input no-op, incremental affected-window refresh. Production."
+      ],
+      "source_line": 50,
+      "subordinate_preservation": [
+        "A029 acquisition, SQL feature calculation, A020/A021 forecasting, and A019 feedback remain separate lifecycle stages with independently testable evidence."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000030",
+      "legacy_short_id": "A030",
+      "legacy_name": "One-Time Reminder",
+      "business_capability": "UFC access-check reminder; disabled/retired.",
+      "current_trigger": "disabled/retired.",
+      "current_execution_class": "not stated in review; disabled/retired",
+      "2x_disposition": "RETIRE",
+      "2x_execution_surface": [],
+      "2x_trigger": "none_retired",
+      "target_latency": "not applicable",
+      "semantic_required": "not_applicable",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "archived task/evidence."
+      ],
+      "acceptance_test": "Confirm terminal and no dependency. Immediate.",
+      "retirement_maturity": "capability_retired_pending_authority_confirmation",
+      "retirement_conditions": "Confirm terminal and no dependency. Immediate.",
+      "retired_at_review": true,
+      "notes": "terminal one-time state. | **RETIRE.** One-time work belongs to Task/schedule occurrence. | archived task/evidence. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A030 One-Time Reminder",
+        "UFC access-check reminder; disabled/retired.",
+        "terminal one-time state.",
+        "**RETIRE.** One-time work belongs to Task/schedule occurrence.",
+        "archived task/evidence.",
+        "Confirm terminal and no dependency. Immediate."
+      ],
+      "source_line": 51,
+      "subordinate_preservation": [
+        "Finite A017/A030 history is preserved without permanent workers."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000031",
+      "legacy_short_id": "A031",
+      "legacy_name": "Inbound SMS Processor",
+      "business_capability": "Semantically process Communications/Twilio receipts.",
+      "current_trigger": "1m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/IMPROVE",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "receipt_committed",
+      "target_latency": "<1 minute",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "twilio"
+      ],
+      "proposed_objects": [
+        "receipt",
+        "communication processing",
+        "proposal",
+        "task operation"
+      ],
+      "acceptance_test": "Exact text preserved; stale version conflicts isolate item; restart does not reinterpret committed receipt. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Exact text preserved; stale version conflicts isolate item; restart does not reinterpret committed receipt. Production.",
+      "retired_at_review": false,
+      "notes": "pending inbound SMS Communication -> task/fact/notification changes and reply intent. | **KEEP/IMPROVE.** webhook -> durable receipt -> ONLINE_SEMANTIC proposal -> deterministic commit; <1m. | receipt, communication processing, proposal, task operation; Twilio adapter; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A031 Inbound SMS Processor",
+        "Semantically process Communications/Twilio receipts. AI Agent; 1m.",
+        "pending inbound SMS Communication -> task/fact/notification changes and reply intent.",
+        "**KEEP/IMPROVE.** webhook -> durable receipt -> ONLINE_SEMANTIC proposal -> deterministic commit; <1m.",
+        "receipt, communication processing, proposal, task operation; Twilio adapter; semantic yes.",
+        "Exact text preserved; stale version conflicts isolate item; restart does not reinterpret committed receipt. Production."
+      ],
+      "source_line": 52,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000032",
+      "legacy_short_id": "A032",
+      "legacy_name": "Vercel Publisher",
+      "business_capability": "Publish generated canonical files.",
+      "current_trigger": "hourly :10.",
+      "current_execution_class": "Application",
+      "2x_disposition": "KEEP",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "verified_artifact_version",
+      "target_latency": "<1 minute",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "vercel_blob",
+        "google_drive"
+      ],
+      "proposed_objects": [
+        "publication target/release/attempt"
+      ],
+      "acceptance_test": "Same artifact hash does not redeploy; failed deploy preserves previous release; alias/readback verified. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Same artifact hash does not redeploy; failed deploy preserves previous release; alias/readback verified. Production.",
+      "retired_at_review": false,
+      "notes": "publication registry + Drive artifact -> Vercel deployment/version evidence. | **KEEP.** deterministic adapter, event on verified artifact version; <1m. | publication target/release/attempt; Vercel/Drive adapters; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A032 Vercel Publisher",
+        "Publish generated canonical files. Application; hourly :10.",
+        "publication registry + Drive artifact -> Vercel deployment/version evidence.",
+        "**KEEP.** deterministic adapter, event on verified artifact version; <1m.",
+        "publication target/release/attempt; Vercel/Drive adapters; no semantic.",
+        "Same artifact hash does not redeploy; failed deploy preserves previous release; alias/readback verified. Production."
+      ],
+      "source_line": 53,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000033",
+      "legacy_short_id": "A033",
+      "legacy_name": "Social Content Planning",
+      "business_capability": "Daily semantic content/calendar planning.",
+      "current_trigger": "daily.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "daily_or_business_event",
+      "target_latency": "daily or event",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "approved_publication"
+      ],
+      "proposed_objects": [
+        "content plan/version/task/draft artifact"
+      ],
+      "acceptance_test": "No duplicate chain; claims distinguish plan from publication approval. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "No duplicate chain; claims distinguish plan from publication approval. Production.",
+      "retired_at_review": false,
+      "notes": "business calendar/events/content state -> plan/tasks/drafts. | **KEEP.** ONLINE_SEMANTIC; daily/event triggers. | content plan/version/task/draft artifact; provider adapter only at approved publish stage; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A033 Social Content Planning",
+        "Daily semantic content/calendar planning. AI Agent; daily.",
+        "business calendar/events/content state -> plan/tasks/drafts.",
+        "**KEEP.** ONLINE_SEMANTIC; daily/event triggers.",
+        "content plan/version/task/draft artifact; provider adapter only at approved publish stage; semantic yes.",
+        "No duplicate chain; claims distinguish plan from publication approval. Production."
+      ],
+      "source_line": 54,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000034",
+      "legacy_short_id": "A034",
+      "legacy_name": "PRE_APPROVAL SMS",
+      "business_capability": "Legacy pre-approval SMS controller; disabled/retired.",
+      "current_trigger": "disabled/retired.",
+      "current_execution_class": "not stated in review; disabled/retired",
+      "2x_disposition": "RETIRE",
+      "2x_execution_surface": [],
+      "2x_trigger": "none_retired",
+      "target_latency": "not applicable",
+      "semantic_required": "not_applicable",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "approval/notification policy."
+      ],
+      "acceptance_test": "No active unmatched obligation depends on worker. Immediate after reconciliation.",
+      "retirement_maturity": "capability_retired_pending_authority_confirmation",
+      "retirement_conditions": "No active unmatched obligation depends on worker. Immediate after reconciliation.",
+      "retired_at_review": true,
+      "notes": "legacy notification conditions -> SMS alert. | **RETIRE.** Express approval prerequisite and notification policy in shared delivery model. | approval/notification policy. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A034 PRE_APPROVAL SMS",
+        "Legacy pre-approval SMS controller; disabled/retired.",
+        "legacy notification conditions -> SMS alert.",
+        "**RETIRE.** Express approval prerequisite and notification policy in shared delivery model.",
+        "approval/notification policy.",
+        "No active unmatched obligation depends on worker. Immediate after reconciliation."
+      ],
+      "source_line": 55,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000035",
+      "legacy_short_id": "A035",
+      "legacy_name": "Gmail Semantic Processor",
+      "business_capability": "Deep-process governed Gmail review labels/folders.",
+      "current_trigger": "5m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/MODIFY",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "gmail_delta_or_webhook_with_recovery_poll",
+      "target_latency": "<1 minute",
+      "semantic_required": "yes",
+      "provider_adapter": [
+        "gmail"
+      ],
+      "proposed_objects": [
+        "communication processing/proposal",
+        "business operations"
+      ],
+      "acceptance_test": "A001 independence preserved; each message processed once per version; draft gate and task correlation pass. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "A001 independence preserved; each message processed once per version; draft gate and task correlation pass. Production.",
+      "retired_at_review": false,
+      "notes": "Gmail messages/threads + ECOS state -> semantic business proposals, tasks, drafts, filing. | **KEEP/MODIFY.** durable receipt/delta + ONLINE_SEMANTIC; event-driven/recovery poll; <1m. | communication processing/proposal, business operations; Gmail adapter; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A035 Gmail Semantic Processor",
+        "Deep-process governed Gmail review labels/folders. AI Agent; 5m.",
+        "Gmail messages/threads + ECOS state -> semantic business proposals, tasks, drafts, filing.",
+        "**KEEP/MODIFY.** durable receipt/delta + ONLINE_SEMANTIC; event-driven/recovery poll; <1m.",
+        "communication processing/proposal, business operations; Gmail adapter; semantic yes.",
+        "A001 independence preserved; each message processed once per version; draft gate and task correlation pass. Production."
+      ],
+      "source_line": 56,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000036",
+      "legacy_short_id": "A036",
+      "legacy_name": "Calendar SMS Reminder",
+      "business_capability": "Detect calendar reminder obligations.",
+      "current_trigger": "15m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB MOSTLY",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "calendar_threshold",
+      "target_latency": "<1 minute",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "google_calendar"
+      ],
+      "proposed_objects": [
+        "calendar reference",
+        "reminder policy",
+        "scheduled notification occurrence"
+      ],
+      "acceptance_test": "Time-zone/DST/all-day tests; exactly one reminder per policy key; update/cancel reconciles. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Time-zone/DST/all-day tests; exactly one reminder per policy key; update/cancel reconciles. Production.",
+      "retired_at_review": false,
+      "notes": "calendar events/policy -> Notification/Delivery. | **ABSORB MOSTLY.** deterministic schedule/threshold rules; semantic only ambiguous importance; <1m threshold. | calendar reference, reminder policy, scheduled notification occurrence; Calendar adapter; semantic optional. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A036 Calendar SMS Reminder",
+        "Detect calendar reminder obligations. AI Agent; 15m.",
+        "calendar events/policy -> Notification/Delivery.",
+        "**ABSORB MOSTLY.** deterministic schedule/threshold rules; semantic only ambiguous importance; <1m threshold.",
+        "calendar reference, reminder policy, scheduled notification occurrence; Calendar adapter; semantic optional.",
+        "Time-zone/DST/all-day tests; exactly one reminder per policy key; update/cancel reconciles. Production."
+      ],
+      "source_line": 57,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000037",
+      "legacy_short_id": "A037",
+      "legacy_name": "Status Header",
+      "business_capability": "Current status/header producer.",
+      "current_trigger": "15m.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB INTO DATABASE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "query_or_state_event",
+      "target_latency": "sub-second",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "v_system_status_header"
+      ],
+      "acceptance_test": "Fixture produces deterministic header and freshness. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Fixture produces deterministic header and freshness. Production.",
+      "retired_at_review": false,
+      "notes": "core state -> header snapshot. | **ABSORB INTO DATABASE** status view; query/event, sub-second. | `v_system_status_header`; no adapter/semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A037 Status Header",
+        "Current status/header producer. AI Agent; 15m.",
+        "core state -> header snapshot.",
+        "**ABSORB INTO DATABASE** status view; query/event, sub-second.",
+        "`v_system_status_header`; no adapter/semantic.",
+        "Fixture produces deterministic header and freshness. Production."
+      ],
+      "source_line": 63,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000038",
+      "legacy_short_id": "A038",
+      "legacy_name": "Status Nodes",
+      "business_capability": "Node/executor status producer.",
+      "current_trigger": "hourly :30.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB INTO DATABASE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "heartbeat_or_expiry",
+      "target_latency": "<1 minute detection target",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "executor/heartbeat tables",
+        "v_node_health"
+      ],
+      "acceptance_test": "Stale heartbeat changes health and watchdog alert. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Stale heartbeat changes health and watchdog alert. Production.",
+      "retired_at_review": false,
+      "notes": "executor/host heartbeats -> node status. | **ABSORB INTO DATABASE** health view; heartbeat event/threshold. | executor/heartbeat tables, `v_node_health`; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A038 Status Nodes",
+        "Node/executor status producer. AI Agent; hourly :30.",
+        "executor/host heartbeats -> node status.",
+        "**ABSORB INTO DATABASE** health view; heartbeat event/threshold.",
+        "executor/heartbeat tables, `v_node_health`; no semantic.",
+        "Stale heartbeat changes health and watchdog alert. Production."
+      ],
+      "source_line": 64,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000039",
+      "legacy_short_id": "A039",
+      "legacy_name": "Status Task Loop",
+      "business_capability": "Worker queue/status producer.",
+      "current_trigger": "hourly :30/RUN NOW.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB INTO DATABASE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "query",
+      "target_latency": "query-time",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "v_work_health"
+      ],
+      "acceptance_test": "Ready/claimed/retry/dead-letter counts exact; no rank rewrites. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Ready/claimed/retry/dead-letter counts exact; no rank rewrites. Production.",
+      "retired_at_review": false,
+      "notes": "Task Loop/runtime state -> queue metrics. | **ABSORB INTO DATABASE** work health view; query-time. | `v_work_health`; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A039 Status Task Loop",
+        "Worker queue/status producer. AI Agent; hourly :30/RUN NOW.",
+        "Task Loop/runtime state -> queue metrics.",
+        "**ABSORB INTO DATABASE** work health view; query-time.",
+        "`v_work_health`; no semantic.",
+        "Ready/claimed/retry/dead-letter counts exact; no rank rewrites. Production."
+      ],
+      "source_line": 65,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000040",
+      "legacy_short_id": "A040",
+      "legacy_name": "Execution Activity",
+      "business_capability": "Execution activity producer.",
+      "current_trigger": "hourly :30.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB INTO DATABASE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "execution_event",
+      "target_latency": "seconds",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "execution activity projection"
+      ],
+      "acceptance_test": "Projection rebuild matches event ledger. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Projection rebuild matches event ledger. Production.",
+      "retired_at_review": false,
+      "notes": "Run Control/activity -> execution section. | **ABSORB INTO DATABASE** event projection/materialized view. | execution activity projection; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A040 Execution Activity",
+        "Execution activity producer. AI Agent; hourly :30.",
+        "Run Control/activity -> execution section.",
+        "**ABSORB INTO DATABASE** event projection/materialized view.",
+        "execution activity projection; no semantic.",
+        "Projection rebuild matches event ledger. Production."
+      ],
+      "source_line": 66,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000041",
+      "legacy_short_id": "A041",
+      "legacy_name": "Rolling 24h Activity",
+      "business_capability": "24-hour status metrics.",
+      "current_trigger": "hourly :30.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB INTO DATABASE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "query_or_refresh",
+      "target_latency": "seconds/minutes",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "24h activity materialization"
+      ],
+      "acceptance_test": "Boundary/time-zone counts exact and performant at target volume. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Boundary/time-zone counts exact and performant at target volume. Production.",
+      "retired_at_review": false,
+      "notes": "run/activity history -> rolling metrics. | **ABSORB INTO DATABASE** indexed/materialized aggregate. | 24h activity materialization; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A041 Rolling 24h Activity",
+        "24-hour status metrics. AI Agent; hourly :30.",
+        "run/activity history -> rolling metrics.",
+        "**ABSORB INTO DATABASE** indexed/materialized aggregate.",
+        "24h activity materialization; no semantic.",
+        "Boundary/time-zone counts exact and performant at target volume. Production."
+      ],
+      "source_line": 67,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000042",
+      "legacy_short_id": "A042",
+      "legacy_name": "Status Publication & Notifications",
+      "business_capability": "Prepare publication/health notifications.",
+      "current_trigger": "hourly :30.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "CONSOLIDATE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "health_threshold",
+      "target_latency": "<1 minute",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "status snapshot/outbox/notification policy"
+      ],
+      "acceptance_test": "Degradation creates one deduped alert; recovery resolves it. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Degradation creates one deduped alert; recovery resolves it. Production.",
+      "retired_at_review": false,
+      "notes": "status sections/thresholds -> publication package/notifications. | **CONSOLIDATE.** deterministic status snapshot + threshold notification; event. | status snapshot/outbox/notification policy; adapter downstream; semantic no. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A042 Status Publication & Notifications",
+        "Prepare publication/health notifications. AI Agent; hourly :30.",
+        "status sections/thresholds -> publication package/notifications.",
+        "**CONSOLIDATE.** deterministic status snapshot + threshold notification; event.",
+        "status snapshot/outbox/notification policy; adapter downstream; semantic no.",
+        "Degradation creates one deduped alert; recovery resolves it. Production."
+      ],
+      "source_line": 68,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000043",
+      "legacy_short_id": "A043",
+      "legacy_name": "Status Versioning & Verification",
+      "business_capability": "Version/verify status output.",
+      "current_trigger": "daily/RUN NOW.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB/MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "package_created",
+      "target_latency": "on package creation",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "package version/hash/verification"
+      ],
+      "acceptance_test": "Same content no new version; altered bytes detected. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Same content no new version; altered bytes detected. Production.",
+      "retired_at_review": false,
+      "notes": "package/artifact -> version/check evidence. | **ABSORB/MODIFY.** content-addressed status package verification; on package creation. | package version/hash/verification; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A043 Status Versioning & Verification",
+        "Version/verify status output. AI Agent; daily/RUN NOW.",
+        "package/artifact -> version/check evidence.",
+        "**ABSORB/MODIFY.** content-addressed status package verification; on package creation.",
+        "package version/hash/verification; no semantic.",
+        "Same content no new version; altered bytes detected. Production."
+      ],
+      "source_line": 69,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000044",
+      "legacy_short_id": "A044",
+      "legacy_name": "Status HTML Materializer",
+      "business_capability": "Render canonical status HTML.",
+      "current_trigger": "hourly :05.",
+      "current_execution_class": "Application",
+      "2x_disposition": "KEEP",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "verified_status_package",
+      "target_latency": "<1 minute",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "resident_renderer",
+        "google_drive"
+      ],
+      "proposed_objects": [
+        "render job/artifact version"
+      ],
+      "acceptance_test": "Golden render, safe templating, exact-byte/hash readback, previous file preserved on failure. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Golden render, safe templating, exact-byte/hash readback, previous file preserved on failure. Production.",
+      "retired_at_review": false,
+      "notes": "verified status package/template -> canonical HTML. | **KEEP.** RESIDENT_DETERMINISTIC_PROVIDER; event-driven after package; <1m. | render job/artifact version; local/Drive renderer; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A044 Status HTML Materializer",
+        "Render canonical status HTML. Application; hourly :05.",
+        "verified status package/template -> canonical HTML.",
+        "**KEEP.** RESIDENT_DETERMINISTIC_PROVIDER; event-driven after package; <1m.",
+        "render job/artifact version; local/Drive renderer; no semantic.",
+        "Golden render, safe templating, exact-byte/hash readback, previous file preserved on failure. Production."
+      ],
+      "source_line": 70,
+      "subordinate_preservation": [
+        "A022 status derivations consolidate into database views, while A044 remains a distinct materialization boundary."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000045",
+      "legacy_short_id": "A045",
+      "legacy_name": "Dashboard A — Executive State",
+      "business_capability": "Produce task/project executive facts.",
+      "current_trigger": "04:00/16:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "CONSOLIDATE/MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "query_or_snapshot",
+      "target_latency": "query-time",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "dashboard executive view"
+      ],
+      "acceptance_test": "SQL output matches approved snapshot fields/freshness. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "SQL output matches approved snapshot fields/freshness. Production.",
+      "retired_at_review": false,
+      "notes": "Tasks/Projects -> producer snapshot. | **CONSOLIDATE/MODIFY.** DB executive-state view; semantic narrative only in A026/A004. | dashboard executive view; no adapter; semantic generally no. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A045 Dashboard A — Executive State",
+        "Produce task/project executive facts. AI Agent; 04:00/16:00.",
+        "Tasks/Projects -> producer snapshot.",
+        "**CONSOLIDATE/MODIFY.** DB executive-state view; semantic narrative only in A026/A004.",
+        "dashboard executive view; no adapter; semantic generally no.",
+        "SQL output matches approved snapshot fields/freshness. Production."
+      ],
+      "source_line": 71,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000046",
+      "legacy_short_id": "A046",
+      "legacy_name": "Dashboard B — Financial Accounts",
+      "business_capability": "Connected account snapshot.",
+      "current_trigger": "04:00/16:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP PROVIDER FUNCTION / MODIFY",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "account_delta_or_schedule",
+      "target_latency": "policy-specific; pending",
+      "semantic_required": "conditional",
+      "provider_adapter": [
+        "financial_connectors"
+      ],
+      "proposed_objects": [
+        "financial snapshot/account balance with as-of/provenance"
+      ],
+      "acceptance_test": "Missing account is explicit unknown; totals trace to provider IDs; no credential persistence. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Missing account is explicit unknown; totals trace to provider IDs; no credential persistence. Production.",
+      "retired_at_review": false,
+      "notes": "financial provider records -> bounded financial facts. | **KEEP PROVIDER FUNCTION / MODIFY.** deterministic financial adapter where API fields are deterministic; semantic exception review. | financial snapshot/account balance with as-of/provenance; finance adapter; semantic selective. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A046 Dashboard B — Financial Accounts",
+        "Connected account snapshot. AI Agent; 04:00/16:00.",
+        "financial provider records -> bounded financial facts.",
+        "**KEEP PROVIDER FUNCTION / MODIFY.** deterministic financial adapter where API fields are deterministic; semantic exception review.",
+        "financial snapshot/account balance with as-of/provenance; finance adapter; semantic selective.",
+        "Missing account is explicit unknown; totals trace to provider IDs; no credential persistence. Production."
+      ],
+      "source_line": 72,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000047",
+      "legacy_short_id": "A047",
+      "legacy_name": "Dashboard C — Toast Data",
+      "business_capability": "Dashboard Toast facts.",
+      "current_trigger": "04:00/16:00.",
+      "current_execution_class": "Application",
+      "2x_disposition": "CONSOLIDATE WITH A029 DATA ACQUISITION",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "toast_actuals_committed",
+      "target_latency": "query-time",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "POS views"
+      ],
+      "acceptance_test": "Same closed actuals feed staffing/dashboard; freshness displayed; no duplicate calls. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Same closed actuals feed staffing/dashboard; freshness displayed; no duplicate calls. Production.",
+      "retired_at_review": false,
+      "notes": "Toast -> bounded dashboard facts. | **CONSOLIDATE WITH A029 DATA ACQUISITION.** dashboard reads normalized Toast facts; no second provider fetch. | POS views; Toast adapter only A029; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A047 Dashboard C — Toast Data",
+        "Dashboard Toast facts. Application; 04:00/16:00.",
+        "Toast -> bounded dashboard facts.",
+        "**CONSOLIDATE WITH A029 DATA ACQUISITION.** dashboard reads normalized Toast facts; no second provider fetch.",
+        "POS views; Toast adapter only A029; no semantic.",
+        "Same closed actuals feed staffing/dashboard; freshness displayed; no duplicate calls. Production."
+      ],
+      "source_line": 73,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000048",
+      "legacy_short_id": "A048",
+      "legacy_name": "Dashboard D — Physical Cash",
+      "business_capability": "Cash-control facts.",
+      "current_trigger": "04:00/16:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP BUSINESS / MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "cash_evidence_event_or_schedule",
+      "target_latency": "policy-specific; pending",
+      "semantic_required": "conditional",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "cash location/balance/audit/evidence"
+      ],
+      "acceptance_test": "Unknown envelope remains unknown; no balancing invention; source age visible. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Unknown envelope remains unknown; no balancing invention; source age visible. Production.",
+      "retired_at_review": false,
+      "notes": "governed cash tasks/evidence -> balances, unknowns, audit age. | **KEEP BUSINESS / MODIFY.** typed cash ledger/audit state + semantic exception interpretation; event/schedule. | cash location/balance/audit/evidence; semantic selective. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A048 Dashboard D — Physical Cash",
+        "Cash-control facts. AI Agent; 04:00/16:00.",
+        "governed cash tasks/evidence -> balances, unknowns, audit age.",
+        "**KEEP BUSINESS / MODIFY.** typed cash ledger/audit state + semantic exception interpretation; event/schedule.",
+        "cash location/balance/audit/evidence; semantic selective.",
+        "Unknown envelope remains unknown; no balancing invention; source age visible. Production."
+      ],
+      "source_line": 74,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000049",
+      "legacy_short_id": "A049",
+      "legacy_name": "Dashboard E — Financial Forecast",
+      "business_capability": "Financial command forecast.",
+      "current_trigger": "04:00/16:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP SEMANTIC / MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "source_completion_or_schedule",
+      "target_latency": "policy-specific; pending",
+      "semantic_required": "yes",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "financial forecast snapshot/inputs"
+      ],
+      "acceptance_test": "Immutable inputs/output, degraded state on stale/missing source, no overwrite. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Immutable inputs/output, degraded state on stale/missing source, no overwrite. Production.",
+      "retired_at_review": false,
+      "notes": "financial/Toast/cash snapshots -> forecast/health. | **KEEP SEMANTIC / MODIFY.** SQL facts plus semantic forecast version; dependency completion/schedule. | financial forecast snapshot/inputs; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A049 Dashboard E — Financial Forecast",
+        "Financial command forecast. AI Agent; 04:00/16:00.",
+        "financial/Toast/cash snapshots -> forecast/health.",
+        "**KEEP SEMANTIC / MODIFY.** SQL facts plus semantic forecast version; dependency completion/schedule.",
+        "financial forecast snapshot/inputs; semantic yes.",
+        "Immutable inputs/output, degraded state on stale/missing source, no overwrite. Production."
+      ],
+      "source_line": 75,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000050",
+      "legacy_short_id": "A050",
+      "legacy_name": "Dashboard F — Personal State",
+      "business_capability": "Personal/executive facts.",
+      "current_trigger": "04:00/16:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP/MODIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "event_or_schedule",
+      "target_latency": "policy-specific; pending",
+      "semantic_required": "yes",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "sensitivity-scoped snapshot"
+      ],
+      "acceptance_test": "Authorization/sensitivity tests; stale/unknown explicit. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Authorization/sensitivity tests; stale/unknown explicit. Production.",
+      "retired_at_review": false,
+      "notes": "governed personal state + B -> snapshot. | **KEEP/MODIFY.** privacy-scoped view + semantic synthesis; event/schedule. | sensitivity-scoped snapshot; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A050 Dashboard F — Personal State",
+        "Personal/executive facts. AI Agent; 04:00/16:00.",
+        "governed personal state + B -> snapshot.",
+        "**KEEP/MODIFY.** privacy-scoped view + semantic synthesis; event/schedule.",
+        "sensitivity-scoped snapshot; semantic yes.",
+        "Authorization/sensitivity tests; stale/unknown explicit. Production."
+      ],
+      "source_line": 76,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000051",
+      "legacy_short_id": "A051",
+      "legacy_name": "Dashboard G — Data Health",
+      "business_capability": "Source availability/freshness/confidence.",
+      "current_trigger": "04:00/16:00.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "ABSORB INTO DATABASE",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "2x_trigger": "source_update_or_freshness_threshold",
+      "target_latency": "<1 minute",
+      "semantic_required": "no",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "v_dashboard_data_health"
+      ],
+      "acceptance_test": "Missing C yields partial/degraded, not false complete; newest source exact. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Missing C yields partial/degraded, not false complete; newest source exact. Production.",
+      "retired_at_review": false,
+      "notes": "A–F producer snapshots -> health. | **ABSORB INTO DATABASE.** deterministic source-health view; on source update/threshold. | `v_dashboard_data_health`; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A051 Dashboard G — Data Health",
+        "Source availability/freshness/confidence. AI Agent; 04:00/16:00.",
+        "A–F producer snapshots -> health.",
+        "**ABSORB INTO DATABASE.** deterministic source-health view; on source update/threshold.",
+        "`v_dashboard_data_health`; no semantic.",
+        "Missing C yields partial/degraded, not false complete; newest source exact. Production."
+      ],
+      "source_line": 77,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000052",
+      "legacy_short_id": "A052",
+      "legacy_name": "Canonical File Materializer",
+      "business_capability": "Render Life & Business Live/Sample canonical files.",
+      "current_trigger": "event-driven.",
+      "current_execution_class": "Application",
+      "2x_disposition": "KEEP",
+      "2x_execution_surface": [
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "verified_dashboard_package",
+      "target_latency": "<1 minute",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "resident_renderer",
+        "google_drive"
+      ],
+      "proposed_objects": [
+        "render job/package/artifact versions"
+      ],
+      "acceptance_test": "41/41 bindings, privacy/sample isolation, structural twin, exact-byte readback; failure preserves prior. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "41/41 bindings, privacy/sample isolation, structural twin, exact-byte readback; failure preserves prior. Production.",
+      "retired_at_review": false,
+      "notes": "verified A026 package + fixed renderer/template -> Drive files and exact validation. | **KEEP.** RESIDENT_DETERMINISTIC_PROVIDER; verified package event; <1m. | render job/package/artifact versions; local/Drive adapter; no semantic. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A052 Canonical File Materializer",
+        "Render Life & Business Live/Sample canonical files. Application; event-driven.",
+        "verified A026 package + fixed renderer/template -> Drive files and exact validation.",
+        "**KEEP.** RESIDENT_DETERMINISTIC_PROVIDER; verified package event; <1m.",
+        "render job/package/artifact versions; local/Drive adapter; no semantic.",
+        "41/41 bindings, privacy/sample isolation, structural twin, exact-byte readback; failure preserves prior. Production."
+      ],
+      "source_line": 78,
+      "subordinate_preservation": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000053",
+      "legacy_short_id": "A053",
+      "legacy_name": "Task Owner Review Semantic",
+      "business_capability": "Interpret immutable A023 work package and produce proposals.",
+      "current_trigger": "event-driven.",
+      "current_execution_class": "AI Agent",
+      "2x_disposition": "KEEP SEMANTIC STAGE / GENERALIZE",
+      "2x_execution_surface": [
+        "ONLINE_SEMANTIC"
+      ],
+      "2x_trigger": "verified_review_package_committed",
+      "target_latency": "<1 minute semantic pickup",
+      "semantic_required": "yes",
+      "provider_adapter": [],
+      "proposed_objects": [
+        "semantic work item/proposal/result schema"
+      ],
+      "acceptance_test": "Hash/schema/version checks; no direct Task mutation; recovery reuses proposal and does not reinterpret. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Hash/schema/version checks; no direct Task mutation; recovery reuses proposal and does not reinterpret. Production.",
+      "retired_at_review": false,
+      "notes": "verified package/source hashes/current Tasks -> versioned proposals; handoff A054. | **KEEP SEMANTIC STAGE / GENERALIZE.** ONLINE_SEMANTIC on committed package. | semantic work item/proposal/result schema; semantic yes. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A053 Task Owner Review Semantic",
+        "Interpret immutable A023 work package and produce proposals. AI Agent; event-driven.",
+        "verified package/source hashes/current Tasks -> versioned proposals; handoff A054.",
+        "**KEEP SEMANTIC STAGE / GENERALIZE.** ONLINE_SEMANTIC on committed package.",
+        "semantic work item/proposal/result schema; semantic yes.",
+        "Hash/schema/version checks; no direct Task mutation; recovery reuses proposal and does not reinterpret. Production."
+      ],
+      "source_line": 79,
+      "subordinate_preservation": [
+        "A023/A053/A054 remain three explicit stages—receipt/package, semantic proposal, deterministic commit/ACK—even if implemented by shared generic engines."
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000054",
+      "legacy_short_id": "A054",
+      "legacy_name": "Task Owner Review Commit & ACK",
+      "business_capability": "Validate proposals, mutate Tasks, checkpoint, ACK provider.",
+      "current_trigger": "event-driven.",
+      "current_execution_class": "Application",
+      "2x_disposition": "KEEP DETERMINISTIC STAGE / SIMPLIFY",
+      "2x_execution_surface": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "2x_trigger": "verified_proposal_committed",
+      "target_latency": "<5 seconds",
+      "semantic_required": "no",
+      "provider_adapter": [
+        "owner_review"
+      ],
+      "proposed_objects": [
+        "proposal commit operation",
+        "transaction result",
+        "provider command/ACK"
+      ],
+      "acceptance_test": "Sibling isolation, optimistic conflict, restart-safe mutation/history, ACK only after commit, provider success reconciliation. Production.",
+      "retirement_maturity": "production_verified",
+      "retirement_conditions": "Sibling isolation, optimistic conflict, restart-safe mutation/history, ACK only after commit, provider success reconciliation. Production.",
+      "retired_at_review": false,
+      "notes": "A053 proposal + current Task versions -> atomic changes/evidence/provider ACK. | **KEEP DETERMINISTIC STAGE / SIMPLIFY.** DB commit procedure + review-provider adapter; event; <5s. | proposal commit operation, transaction result, provider command/ACK; adapter yes; semantic no. Normalized stage surfaces/latencies are contract targets, not proof of implementation.",
+      "source_row": [
+        "A054 Task Owner Review Commit & ACK",
+        "Validate proposals, mutate Tasks, checkpoint, ACK provider. Application; event-driven.",
+        "A053 proposal + current Task versions -> atomic changes/evidence/provider ACK.",
+        "**KEEP DETERMINISTIC STAGE / SIMPLIFY.** DB commit procedure + review-provider adapter; event; <5s.",
+        "proposal commit operation, transaction result, provider command/ACK; adapter yes; semantic no.",
+        "Sibling isolation, optimistic conflict, restart-safe mutation/history, ACK only after commit, provider success reconciliation. Production."
+      ],
+      "source_line": 80,
+      "subordinate_preservation": [
+        "A023/A053/A054 remain three explicit stages—receipt/package, semantic proposal, deterministic commit/ACK—even if implemented by shared generic engines."
+      ]
+    }
+  ]
+}

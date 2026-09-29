@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/operation_error.schema.json",
+  "title": "operation_error",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "enum": [
+        "invalid_contract",
+        "unauthenticated",
+        "forbidden",
+        "stale_version",
+        "invalid_transition",
+        "gate_blocked",
+        "idempotency_conflict",
+        "expired_fence",
+        "unknown_outcome",
+        "internal_error"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "retryable": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "code",
+    "message",
+    "correlation_id",
+    "retryable"
+  ],
+  "additionalProperties": false
+}

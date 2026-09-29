@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/provider_command.schema.json",
+  "title": "provider_command",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "provider": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "account_scope": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "command_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "request_schema_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "request_artifact_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "request_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "outcome": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/provider_outcome"
+    },
+    "reconciliation_strategy": {
+      "type": "string",
+      "enum": [
+        "native_idempotency",
+        "provider_lookup",
+        "manual_only"
+      ]
+    },
+    "approval_request_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "provider",
+    "account_scope",
+    "command_type",
+    "idempotency_key",
+    "request_schema_id",
+    "request_artifact_uri",
+    "request_hash",
+    "correlation_id",
+    "causation_id",
+    "outcome",
+    "reconciliation_strategy",
+    "approval_request_id"
+  ],
+  "additionalProperties": false
+}

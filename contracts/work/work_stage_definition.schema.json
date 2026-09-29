@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/work_stage_definition.schema.json",
+  "title": "work_stage_definition",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "work_definition_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "stage_key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "kind": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/stage_kind"
+    },
+    "execution_surface": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/execution_surface"
+    },
+    "input_schema_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "result_schema_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "requires_approval": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "work_definition_id",
+    "stage_key",
+    "kind",
+    "execution_surface",
+    "input_schema_id",
+    "result_schema_id",
+    "requires_approval"
+  ],
+  "additionalProperties": false
+}

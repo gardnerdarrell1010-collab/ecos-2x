@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/provider_attempt.schema.json",
+  "title": "provider_attempt",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provider_command_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "attempt_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "request_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "provider_request_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "response_hash": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "error_class": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "transient_proven_no_effect",
+            "permanent",
+            "ambiguous"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "outcome": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/provider_outcome"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "provider_command_id",
+    "attempt_number",
+    "request_hash",
+    "started_at",
+    "completed_at",
+    "provider_request_id",
+    "response_hash",
+    "error_class",
+    "outcome"
+  ],
+  "additionalProperties": false
+}

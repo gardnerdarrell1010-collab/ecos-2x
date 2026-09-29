@@ -1,0 +1,780 @@
+{
+  "schema_version": "1.0.0",
+  "status": "designed",
+  "entities": [
+    {
+      "name": "task",
+      "schema": "https://contracts.ecos.invalid/v1/task.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "business_id",
+        "title",
+        "project_id",
+        "lifecycle_state",
+        "wait_reason",
+        "description"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "task_assignment",
+      "schema": "https://contracts.ecos.invalid/v1/task_assignment.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "task_id",
+        "party_id",
+        "role",
+        "effective_from",
+        "effective_to"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "task_schedule",
+      "schema": "https://contracts.ecos.invalid/v1/task_schedule.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "task_id",
+        "due_at",
+        "follow_up_at",
+        "planned_start_at",
+        "timezone",
+        "rrule",
+        "dst_gap_policy",
+        "dst_fold_policy",
+        "recurrence_anchor"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "task_dependency",
+      "schema": "https://contracts.ecos.invalid/v1/task_dependency.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "task_id",
+        "prerequisite_task_id",
+        "satisfaction_rule"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "approval_request",
+      "schema": "https://contracts.ecos.invalid/v1/approval_request.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "task_id",
+        "subject_type",
+        "subject_id",
+        "subject_hash",
+        "state",
+        "expires_at"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "approval_decision",
+      "schema": "https://contracts.ecos.invalid/v1/approval_decision.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "approval_request_id",
+        "decision",
+        "actor_id",
+        "reason_code",
+        "evidence",
+        "supersedes_decision_id"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "task_evidence",
+      "schema": "https://contracts.ecos.invalid/v1/task_evidence.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "task_id",
+        "evidence"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "work_definition",
+      "schema": "https://contracts.ecos.invalid/v1/work_definition.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "name",
+        "definition_version",
+        "enabled",
+        "fulfillment_kind",
+        "retry_policy_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "work_stage_definition",
+      "schema": "https://contracts.ecos.invalid/v1/work_stage_definition.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "work_definition_id",
+        "stage_key",
+        "kind",
+        "execution_surface",
+        "input_schema_id",
+        "result_schema_id",
+        "requires_approval"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "work_occurrence",
+      "schema": "https://contracts.ecos.invalid/v1/work_occurrence.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "work_definition_id",
+        "stage_definition_id",
+        "fulfillment_id",
+        "task_id",
+        "state",
+        "occurrence_key",
+        "due_at",
+        "retry_at",
+        "ready_override_at",
+        "priority_override",
+        "claim_version",
+        "attempt_count"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "work_dependency",
+      "schema": "https://contracts.ecos.invalid/v1/work_dependency.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "occurrence_id",
+        "prerequisite_occurrence_id",
+        "required_result_schema_id",
+        "required_result_hash"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "work_claim",
+      "schema": "https://contracts.ecos.invalid/v1/work_claim.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "occurrence_id",
+        "stage_definition_id",
+        "executor_instance_id",
+        "claim_version",
+        "fence_token",
+        "state",
+        "acquired_at",
+        "expires_at",
+        "renewed_at"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "execution_run",
+      "schema": "https://contracts.ecos.invalid/v1/execution_run.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "fence",
+        "state",
+        "selection_evidence",
+        "correlation_id",
+        "ended_at"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "stage_result",
+      "schema": "https://contracts.ecos.invalid/v1/stage_result.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "occurrence_id",
+        "stage_definition_id",
+        "execution_run_id",
+        "result_schema_id",
+        "content_hash",
+        "artifact_uri",
+        "verified_at",
+        "verified_by",
+        "source_references"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "retry_policy",
+      "schema": "https://contracts.ecos.invalid/v1/retry_policy.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "max_attempts",
+        "initial_delay_seconds",
+        "max_delay_seconds",
+        "backoff_multiplier",
+        "jitter_basis_points",
+        "retryable_error_classes"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "dead_letter_item",
+      "schema": "https://contracts.ecos.invalid/v1/dead_letter_item.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "occurrence_id",
+        "reason_code",
+        "last_run_id",
+        "reviewed_by",
+        "resolution_event_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "executor",
+      "schema": "https://contracts.ecos.invalid/v1/executor.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "name",
+        "surface",
+        "enabled"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "executor_instance",
+      "schema": "https://contracts.ecos.invalid/v1/executor_instance.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "executor_id",
+        "boot_id",
+        "availability",
+        "principal_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "capability",
+      "schema": "https://contracts.ecos.invalid/v1/capability.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "name",
+        "version",
+        "description"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "executor_capability",
+      "schema": "https://contracts.ecos.invalid/v1/executor_capability.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "executor_instance_id",
+        "capability_name",
+        "capability_version",
+        "attested_by",
+        "expires_at"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "stage_capability_requirement",
+      "schema": "https://contracts.ecos.invalid/v1/stage_capability_requirement.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "stage_definition_id",
+        "capability_name",
+        "minimum_version"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "heartbeat",
+      "schema": "https://contracts.ecos.invalid/v1/heartbeat.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "executor_instance_id",
+        "observed_at",
+        "received_at",
+        "valid_until",
+        "availability",
+        "evidence_hash"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "semantic_proposal",
+      "schema": "https://contracts.ecos.invalid/v1/semantic_proposal.schema.json",
+      "fields": [
+        "id",
+        "proposal_type",
+        "schema_version",
+        "created_at",
+        "correlation_id",
+        "source_references",
+        "expected_record_versions",
+        "items",
+        "content_hash"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "domain_event",
+      "schema": "https://contracts.ecos.invalid/v1/domain_event.schema.json",
+      "fields": [
+        "id",
+        "event_type",
+        "schema_version",
+        "aggregate_type",
+        "aggregate_id",
+        "correlation_id",
+        "causation_id",
+        "created_at",
+        "payload"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "execution_event",
+      "schema": "https://contracts.ecos.invalid/v1/execution_event.schema.json",
+      "fields": [
+        "id",
+        "event_type",
+        "schema_version",
+        "aggregate_type",
+        "aggregate_id",
+        "correlation_id",
+        "causation_id",
+        "created_at",
+        "payload"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "outbox_item",
+      "schema": "https://contracts.ecos.invalid/v1/outbox_item.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "domain_event_id",
+        "provider_command_id",
+        "destination",
+        "state",
+        "idempotency_key",
+        "available_at",
+        "attempt_count",
+        "lease_expires_at",
+        "correlation_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "provider_command",
+      "schema": "https://contracts.ecos.invalid/v1/provider_command.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "provider",
+        "account_scope",
+        "command_type",
+        "idempotency_key",
+        "request_schema_id",
+        "request_artifact_uri",
+        "request_hash",
+        "correlation_id",
+        "causation_id",
+        "outcome",
+        "reconciliation_strategy",
+        "approval_request_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "provider_attempt",
+      "schema": "https://contracts.ecos.invalid/v1/provider_attempt.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "provider_command_id",
+        "attempt_number",
+        "request_hash",
+        "started_at",
+        "completed_at",
+        "provider_request_id",
+        "response_hash",
+        "error_class",
+        "outcome"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "provider_result",
+      "schema": "https://contracts.ecos.invalid/v1/provider_result.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "provider_command_id",
+        "provider_attempt_id",
+        "outcome",
+        "provider_object_id",
+        "observed_at",
+        "evidence_hash",
+        "reconciled_outcome"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "provider_receipt",
+      "schema": "https://contracts.ecos.invalid/v1/provider_receipt.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "provider",
+        "account_scope",
+        "provider_event_id",
+        "dedupe_key",
+        "provider_object_id",
+        "provider_occurred_at",
+        "received_at",
+        "raw_artifact_uri",
+        "raw_content_hash",
+        "signature_verified",
+        "correlation_id"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "communication",
+      "schema": "https://contracts.ecos.invalid/v1/communication.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "receipt_id",
+        "channel",
+        "provider_thread_id",
+        "direction",
+        "sender_party_id",
+        "body_artifact_uri",
+        "body_hash"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "communication_processing",
+      "schema": "https://contracts.ecos.invalid/v1/communication_processing.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "communication_id",
+        "source_version",
+        "state",
+        "occurrence_id",
+        "proposal_id",
+        "committed_result_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "notification",
+      "schema": "https://contracts.ecos.invalid/v1/notification.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "business_reason_code",
+        "subject_type",
+        "subject_id",
+        "content_artifact_uri",
+        "content_hash",
+        "policy_version"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "delivery",
+      "schema": "https://contracts.ecos.invalid/v1/delivery.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "notification_id",
+        "recipient_party_id",
+        "channel",
+        "destination_reference",
+        "policy_key",
+        "state",
+        "approval_request_id",
+        "provider_command_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "delivery_attempt",
+      "schema": "https://contracts.ecos.invalid/v1/delivery_attempt.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "delivery_id",
+        "provider_attempt_id",
+        "provider_message_id",
+        "evidence_hash",
+        "provider_status_at"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "memory_scope",
+      "schema": "https://contracts.ecos.invalid/v1/memory_scope.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "scope_type",
+        "scope_id",
+        "sensitivity",
+        "authorized_role_names"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "memory_record",
+      "schema": "https://contracts.ecos.invalid/v1/memory_record.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "business_id",
+        "scope_id",
+        "memory_kind",
+        "active_head_version_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "memory_version",
+      "schema": "https://contracts.ecos.invalid/v1/memory_version.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "memory_record_id",
+        "version_number",
+        "supersedes_version_id",
+        "scope_id",
+        "statement",
+        "operational_meaning",
+        "provenance",
+        "effective_at",
+        "sensitivity",
+        "retention_policy_ref",
+        "authoritative_references",
+        "content_hash",
+        "compaction_run_id"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "memory_reference",
+      "schema": "https://contracts.ecos.invalid/v1/memory_reference.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "memory_version_id",
+        "source",
+        "relationship"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "memory_compaction_run",
+      "schema": "https://contracts.ecos.invalid/v1/memory_compaction_run.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "scope_id",
+        "input_version_ids",
+        "output_version_id",
+        "source_references",
+        "omitted_reference_ids",
+        "reason_codes",
+        "manifest_hash",
+        "verifier_id",
+        "contradictions_resolved"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "backup_record",
+      "schema": "https://contracts.ecos.invalid/v1/backup_record.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "kind",
+        "started_at",
+        "completed_at",
+        "artifact_uri",
+        "manifest_hash",
+        "encrypted",
+        "recovery_point_at",
+        "restore_test_id"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "restore_test",
+      "schema": "https://contracts.ecos.invalid/v1/restore_test.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "package_id",
+        "target_host_class",
+        "state",
+        "started_at",
+        "completed_at",
+        "checks",
+        "observed_rpo_seconds",
+        "observed_rto_seconds"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "raw_migration_batch",
+      "schema": "https://contracts.ecos.invalid/v1/raw_migration_batch.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "source_system",
+        "extracted_at",
+        "source_registry_version",
+        "artifact_uri",
+        "sha256",
+        "row_count",
+        "column_names",
+        "source_family"
+      ],
+      "mutable": false
+    },
+    {
+      "name": "quarantine_item",
+      "schema": "https://contracts.ecos.invalid/v1/quarantine_item.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "record_version",
+        "batch_id",
+        "source_locator",
+        "raw_hash",
+        "legacy_id",
+        "source_family",
+        "classification",
+        "state",
+        "reason_codes",
+        "identity_resolution_id",
+        "transformation_version",
+        "target_id"
+      ],
+      "mutable": true
+    },
+    {
+      "name": "legacy_identity",
+      "schema": "https://contracts.ecos.invalid/v1/legacy_identity.schema.json",
+      "fields": [
+        "id",
+        "schema_version",
+        "created_at",
+        "source_system",
+        "source_family",
+        "legacy_id",
+        "source_batch_id",
+        "source_locator",
+        "target_type",
+        "target_id",
+        "resolution_evidence_hash"
+      ],
+      "mutable": false
+    }
+  ]
+}

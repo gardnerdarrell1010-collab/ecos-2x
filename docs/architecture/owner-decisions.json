@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "decisions": [
+    {
+      "id": "OWNER-01",
+      "choice": "Production region and managed backup/PITR tier",
+      "status": "unresolved",
+      "phase0_default": "No provisioning; cost review required",
+      "blocks": "production hosting",
+      "approval_evidence": null
+    },
+    {
+      "id": "OWNER-02",
+      "choice": "RPO/RTO and retention periods",
+      "status": "unresolved",
+      "phase0_default": "Proposed operational RPO <=15m, export <=24h, RTO <=4h; daily35/monthly13/annual7 not authorized",
+      "blocks": "production recovery",
+      "approval_evidence": null
+    },
+    {
+      "id": "OWNER-03",
+      "choice": "Gmail standing send authority",
+      "status": "unresolved",
+      "phase0_default": "Draft and explicit approval only; no standing send authority inferred",
+      "blocks": "autonomous Gmail send",
+      "approval_evidence": null
+    },
+    {
+      "id": "OWNER-04",
+      "choice": "Emergency watchdog channel/provider and recipients",
+      "status": "unresolved",
+      "phase0_default": "No real alert channel configured",
+      "blocks": "live watchdog proof",
+      "approval_evidence": null
+    },
+    {
+      "id": "OWNER-05",
+      "choice": "Legal retention by data class",
+      "status": "unresolved",
+      "phase0_default": "No purge; use synthetic data only",
+      "blocks": "production retention",
+      "approval_evidence": null
+    },
+    {
+      "id": "OWNER-06",
+      "choice": "Cutover rollback window and success thresholds",
+      "status": "unresolved",
+      "phase0_default": "No cutover or dual writes",
+      "blocks": "cutover",
+      "approval_evidence": null
+    }
+  ]
+}

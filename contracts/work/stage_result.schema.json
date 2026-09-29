@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/stage_result.schema.json",
+  "title": "stage_result",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "occurrence_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "stage_definition_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "execution_run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "result_schema_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "artifact_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "verified_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verified_by": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "occurrence_id",
+    "stage_definition_id",
+    "execution_run_id",
+    "result_schema_id",
+    "content_hash",
+    "artifact_uri",
+    "verified_at",
+    "verified_by",
+    "source_references"
+  ],
+  "additionalProperties": false
+}

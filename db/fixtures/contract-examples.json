@@ -1,0 +1,1047 @@
+{
+  "synthetic_only": true,
+  "cases": [
+    {
+      "name": "independent_obligation",
+      "schema": "task",
+      "valid": true,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "record_version": 1,
+        "business_id": "SYNTHETIC-TASK-1",
+        "title": "Synthetic obligation",
+        "description": "Offline fixture",
+        "project_id": null,
+        "lifecycle_state": "open",
+        "wait_reason": "none"
+      }
+    },
+    {
+      "name": "runtime_leak_into_task",
+      "schema": "task",
+      "valid": false,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "record_version": 1,
+        "business_id": "SYNTHETIC-TASK-1",
+        "title": "Synthetic obligation",
+        "description": "Offline fixture",
+        "project_id": null,
+        "lifecycle_state": "open",
+        "wait_reason": "none",
+        "claim_version": 1
+      }
+    },
+    {
+      "name": "compound_lifecycle",
+      "schema": "task",
+      "valid": false,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "record_version": 1,
+        "business_id": "SYNTHETIC-TASK-1",
+        "title": "Synthetic obligation",
+        "description": "Offline fixture",
+        "project_id": null,
+        "lifecycle_state": "Completed Pending ACK",
+        "wait_reason": "none"
+      }
+    },
+    {
+      "name": "bad_timestamp",
+      "schema": "task",
+      "valid": false,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "yesterday",
+        "record_version": 1,
+        "business_id": "SYNTHETIC-TASK-1",
+        "title": "Synthetic obligation",
+        "description": "Offline fixture",
+        "project_id": null,
+        "lifecycle_state": "open",
+        "wait_reason": "none"
+      }
+    },
+    {
+      "name": "review_siblings",
+      "schema": "semantic_proposal",
+      "valid": true,
+      "payload": {
+        "id": "00000000-0000-4000-8000-0000000000c8",
+        "proposal_type": "synthetic_review",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "correlation_id": "00000000-0000-4000-8000-0000000000c9",
+        "source_references": [
+          {
+            "record_type": "task",
+            "record_id": "00000000-0000-4000-8000-000000000001",
+            "record_version": 1,
+            "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "authority": "structured_ecos"
+          },
+          {
+            "record_type": "task",
+            "record_id": "00000000-0000-4000-8000-000000000002",
+            "record_version": 1,
+            "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "authority": "structured_ecos"
+          }
+        ],
+        "expected_record_versions": [
+          {
+            "record_type": "task",
+            "record_id": "00000000-0000-4000-8000-000000000001",
+            "record_version": 1
+          },
+          {
+            "record_type": "task",
+            "record_id": "00000000-0000-4000-8000-000000000002",
+            "record_version": 1
+          }
+        ],
+        "items": [
+          {
+            "item_id": "00000000-0000-4000-8000-000000000065",
+            "depends_on_item_ids": [],
+            "source_references": [
+              {
+                "record_type": "task",
+                "record_id": "00000000-0000-4000-8000-000000000001",
+                "record_version": 1,
+                "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+                "authority": "structured_ecos"
+              }
+            ],
+            "expected_record_versions": [
+              {
+                "record_type": "task",
+                "record_id": "00000000-0000-4000-8000-000000000001",
+                "record_version": 1
+              }
+            ],
+            "proposed_operations": [
+              {
+                "operation": "task.transition",
+                "arguments": {
+                  "task_id": "00000000-0000-4000-8000-000000000001",
+                  "expected_version": 1,
+                  "target_state": "waiting",
+                  "wait_reason": "owner",
+                  "reason_code": "owner_input",
+                  "evidence": [
+                    {
+                      "source": {
+                        "record_type": "task",
+                        "record_id": "00000000-0000-4000-8000-000000000001",
+                        "record_version": 1,
+                        "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+                        "authority": "structured_ecos"
+                      },
+                      "assertion": "Synthetic evidence",
+                      "verification": "verified"
+                    }
+                  ]
+                }
+              }
+            ],
+            "evidence": [
+              {
+                "source": {
+                  "record_type": "task",
+                  "record_id": "00000000-0000-4000-8000-000000000001",
+                  "record_version": 1,
+                  "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+                  "authority": "structured_ecos"
+                },
+                "assertion": "Synthetic evidence",
+                "verification": "verified"
+              }
+            ],
+            "confidence_basis_points": 9000,
+            "unresolved_ambiguity": []
+          },
+          {
+            "item_id": "00000000-0000-4000-8000-000000000066",
+            "depends_on_item_ids": [],
+            "source_references": [
+              {
+                "record_type": "task",
+                "record_id": "00000000-0000-4000-8000-000000000002",
+                "record_version": 1,
+                "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+                "authority": "structured_ecos"
+              }
+            ],
+            "expected_record_versions": [
+              {
+                "record_type": "task",
+                "record_id": "00000000-0000-4000-8000-000000000002",
+                "record_version": 1
+              }
+            ],
+            "proposed_operations": [
+              {
+                "operation": "task.transition",
+                "arguments": {
+                  "task_id": "00000000-0000-4000-8000-000000000002",
+                  "expected_version": 1,
+                  "target_state": "waiting",
+                  "wait_reason": "owner",
+                  "reason_code": "owner_input",
+                  "evidence": [
+                    {
+                      "source": {
+                        "record_type": "task",
+                        "record_id": "00000000-0000-4000-8000-000000000002",
+                        "record_version": 1,
+                        "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+                        "authority": "structured_ecos"
+                      },
+                      "assertion": "Synthetic evidence",
+                      "verification": "verified"
+                    }
+                  ]
+                }
+              }
+            ],
+            "evidence": [
+              {
+                "source": {
+                  "record_type": "task",
+                  "record_id": "00000000-0000-4000-8000-000000000002",
+                  "record_version": 1,
+                  "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+                  "authority": "structured_ecos"
+                },
+                "assertion": "Synthetic evidence",
+                "verification": "verified"
+              }
+            ],
+            "confidence_basis_points": 9000,
+            "unresolved_ambiguity": []
+          }
+        ],
+        "content_hash": "f007a60cdf4eeecd0b984760a98bb1ca2c665f01716686ac9f44be3000bb119c"
+      }
+    },
+    {
+      "name": "self_contained_bootstrap",
+      "schema": "bootstrap_package",
+      "valid": true,
+      "payload": {
+        "package_id": "00000000-0000-4000-8000-0000000001f4",
+        "schema_version": "1.0.0",
+        "database_schema_version": "synthetic-phase0",
+        "generated_at": "2026-09-28T12:00:00+00:00",
+        "principal_id": "00000000-0000-4000-8000-0000000001f5",
+        "sensitivity_ceiling": "internal",
+        "governed_context": [
+          {
+            "record_type": "task",
+            "record_id": "00000000-0000-4000-8000-000000000001",
+            "record_version": 1,
+            "content_hash": "b5d59fc958cc6b59d790ccf73a3f79e3f47d00eb5a62b3db2d07e25a9c68aff9",
+            "authority": "structured_ecos"
+          }
+        ],
+        "context_records": [
+          {
+            "source": {
+              "record_type": "task",
+              "record_id": "00000000-0000-4000-8000-000000000001",
+              "record_version": 1,
+              "content_hash": "b5d59fc958cc6b59d790ccf73a3f79e3f47d00eb5a62b3db2d07e25a9c68aff9",
+              "authority": "structured_ecos"
+            },
+            "record_schema_id": "https://contracts.ecos.invalid/v1/task.schema.json",
+            "record": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "schema_version": "1.0.0",
+              "created_at": "2026-09-28T12:00:00+00:00",
+              "record_version": 1,
+              "business_id": "SYNTHETIC-TASK-1",
+              "title": "Synthetic obligation",
+              "description": "Offline fixture",
+              "project_id": null,
+              "lifecycle_state": "open",
+              "wait_reason": "none"
+            }
+          }
+        ],
+        "active_memory_heads": [],
+        "unresolved_exceptions": [],
+        "operation_schema_ids": [
+          "https://contracts.ecos.invalid/v1/task.transition-request.schema.json",
+          "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+        ],
+        "operation_bindings": [
+          {
+            "operation": "task.transition",
+            "path": "/v1/operations/task.transition",
+            "request_schema_id": "https://contracts.ecos.invalid/v1/task.transition-request.schema.json",
+            "response_schema_id": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+          }
+        ],
+        "schema_bundle": [
+          {
+            "schema_id": "https://contracts.ecos.invalid/v1/task.transition-request.schema.json",
+            "sha256": "a4a38b177782a268801755f3194cffc591f455e9fc1ebaf7c14a04d3287a11bd",
+            "document": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://contracts.ecos.invalid/v1/task.transition-request.schema.json",
+              "title": "task.transition-request",
+              "type": "object",
+              "properties": {
+                "schema_version": {
+                  "const": "1.0.0"
+                },
+                "context": {
+                  "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+                },
+                "arguments": {
+                  "type": "object",
+                  "properties": {
+                    "task_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "expected_version": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "target_state": {
+                      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_lifecycle"
+                    },
+                    "wait_reason": {
+                      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_wait_reason"
+                    },
+                    "reason_code": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+                    },
+                    "evidence": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://contracts.ecos.invalid/v1/evidence.schema.json"
+                      },
+                      "minItems": 0,
+                      "uniqueItems": false
+                    }
+                  },
+                  "required": [
+                    "task_id",
+                    "expected_version",
+                    "target_state",
+                    "wait_reason",
+                    "reason_code",
+                    "evidence"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "schema_version",
+                "context",
+                "arguments"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "schema_id": "https://contracts.ecos.invalid/v1/request_context.schema.json",
+            "sha256": "1028ee0c45b319734d8446ecc3e328e69b05968978684f9b2cdec6677c90f453",
+            "document": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://contracts.ecos.invalid/v1/request_context.schema.json",
+              "title": "request_context",
+              "type": "object",
+              "properties": {
+                "principal_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "executor_instance_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "correlation_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "causation_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "idempotency_key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "principal_id",
+                "executor_instance_id",
+                "correlation_id",
+                "causation_id",
+                "idempotency_key"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "schema_id": "https://contracts.ecos.invalid/v1/vocabulary.schema.json",
+            "sha256": "a2aee5ca13a3b2e97b20844b5e9ed73f8f3b688bd8828b391c560564dc1015b1",
+            "document": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://contracts.ecos.invalid/v1/vocabulary.schema.json",
+              "$defs": {
+                "task_lifecycle": {
+                  "type": "string",
+                  "enum": [
+                    "draft",
+                    "open",
+                    "waiting",
+                    "completed",
+                    "cancelled"
+                  ]
+                },
+                "task_wait_reason": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "dependency",
+                    "owner",
+                    "external",
+                    "approval",
+                    "scheduled"
+                  ]
+                },
+                "approval": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "approved",
+                    "rejected",
+                    "changes_requested",
+                    "expired",
+                    "revoked"
+                  ]
+                },
+                "work_occurrence": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "ready",
+                    "claimed",
+                    "running",
+                    "succeeded",
+                    "retry_wait",
+                    "failed",
+                    "dead_lettered",
+                    "cancelled"
+                  ]
+                },
+                "delivery": {
+                  "type": "string",
+                  "enum": [
+                    "planned",
+                    "ready",
+                    "held",
+                    "sending",
+                    "delivered",
+                    "failed",
+                    "acknowledged",
+                    "cancelled"
+                  ]
+                },
+                "provider_outcome": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "accepted",
+                    "succeeded",
+                    "failed",
+                    "unknown_outcome",
+                    "reconciled"
+                  ]
+                },
+                "maturity": {
+                  "type": "string",
+                  "enum": [
+                    "designed",
+                    "built",
+                    "end_to_end_verified",
+                    "shadow_verified",
+                    "production_verified"
+                  ]
+                },
+                "claim": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "released",
+                    "expired",
+                    "revoked"
+                  ]
+                },
+                "outbox": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "claimed",
+                    "delivered",
+                    "retry_wait",
+                    "dead_lettered",
+                    "cancelled"
+                  ]
+                },
+                "execution_run": {
+                  "type": "string",
+                  "enum": [
+                    "started",
+                    "succeeded",
+                    "failed",
+                    "abandoned",
+                    "cancelled"
+                  ]
+                },
+                "proposal": {
+                  "type": "string",
+                  "enum": [
+                    "created",
+                    "validated",
+                    "partially_committed",
+                    "committed",
+                    "rejected",
+                    "conflicted"
+                  ]
+                },
+                "proposal_item": {
+                  "type": "string",
+                  "enum": [
+                    "valid",
+                    "committed",
+                    "invalid",
+                    "stale",
+                    "conflicting",
+                    "ambiguous",
+                    "blocked"
+                  ]
+                },
+                "communication_processing": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "ready",
+                    "running",
+                    "succeeded",
+                    "retry_wait",
+                    "failed",
+                    "dead_lettered"
+                  ]
+                },
+                "availability": {
+                  "type": "string",
+                  "enum": [
+                    "available",
+                    "degraded",
+                    "unavailable",
+                    "unknown"
+                  ]
+                },
+                "sensitivity": {
+                  "type": "string",
+                  "enum": [
+                    "public",
+                    "internal",
+                    "confidential",
+                    "restricted"
+                  ]
+                },
+                "quarantine": {
+                  "type": "string",
+                  "enum": [
+                    "received",
+                    "invalid",
+                    "identity_unresolved",
+                    "validated",
+                    "transformed",
+                    "promoted",
+                    "excluded"
+                  ]
+                },
+                "migration_classification": {
+                  "type": "string",
+                  "enum": [
+                    "MIGRATE",
+                    "MIGRATE_CURRENT_STATE",
+                    "ARCHIVE_REFERENCE",
+                    "REBUILD",
+                    "RETIRE"
+                  ]
+                },
+                "backup_kind": {
+                  "type": "string",
+                  "enum": [
+                    "managed_pitr",
+                    "logical_postgresql",
+                    "portable_ecos_export"
+                  ]
+                },
+                "restore_state": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "running",
+                    "passed",
+                    "failed"
+                  ]
+                },
+                "stage_kind": {
+                  "type": "string",
+                  "enum": [
+                    "human",
+                    "deterministic",
+                    "semantic",
+                    "provider",
+                    "approval"
+                  ]
+                },
+                "execution_surface": {
+                  "type": "string",
+                  "enum": [
+                    "DATABASE_DETERMINISTIC",
+                    "RESIDENT_DETERMINISTIC_PROVIDER",
+                    "ONLINE_SEMANTIC",
+                    "INTERACTIVE_ADA"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "schema_id": "https://contracts.ecos.invalid/v1/evidence.schema.json",
+            "sha256": "1a2062f44362296c1d75daa655eb26ea6467d95b3c4e0aeb13bb611ed9510723",
+            "document": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://contracts.ecos.invalid/v1/evidence.schema.json",
+              "title": "evidence",
+              "type": "object",
+              "properties": {
+                "source": {
+                  "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+                },
+                "assertion": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 10000
+                },
+                "verification": {
+                  "type": "string",
+                  "enum": [
+                    "verified",
+                    "unverified",
+                    "conflicting"
+                  ]
+                }
+              },
+              "required": [
+                "source",
+                "assertion",
+                "verification"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "schema_id": "https://contracts.ecos.invalid/v1/source_reference.schema.json",
+            "sha256": "35c2c39247b8830a456b96bdc416cbced4deee7d6b20e46886677b0e6baa989b",
+            "document": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://contracts.ecos.invalid/v1/source_reference.schema.json",
+              "title": "source_reference",
+              "type": "object",
+              "properties": {
+                "record_type": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+                },
+                "record_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "record_version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "content_hash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "authority": {
+                  "type": "string",
+                  "enum": [
+                    "structured_ecos",
+                    "provider",
+                    "governed_memory",
+                    "conversation_evidence"
+                  ]
+                }
+              },
+              "required": [
+                "record_type",
+                "record_id",
+                "record_version",
+                "content_hash",
+                "authority"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "schema_id": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+            "sha256": "b82843674b7227e81b7ddb710c0555d5016424bb04d51aa4ee6b6b9eac840824",
+            "document": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+              "title": "operation_result",
+              "type": "object",
+              "properties": {
+                "schema_version": {
+                  "const": "1.0.0"
+                },
+                "operation_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "correlation_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "committed",
+                    "replayed",
+                    "no_candidate"
+                  ]
+                },
+                "event_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "minItems": 0,
+                  "uniqueItems": false
+                },
+                "record_versions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "record_type": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+                      },
+                      "record_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "record_version": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    },
+                    "required": [
+                      "record_type",
+                      "record_id",
+                      "record_version"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "uniqueItems": false
+                },
+                "result_hash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "schema_version",
+                "operation_id",
+                "correlation_id",
+                "status",
+                "event_ids",
+                "record_versions",
+                "result_hash"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "schema_id": "https://contracts.ecos.invalid/v1/task.schema.json",
+            "sha256": "99b1a73ed9aa006b4bb988c4c3451ab8d16c9abf5a556e088553a66a55850594",
+            "document": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://contracts.ecos.invalid/v1/task.schema.json",
+              "title": "task",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "schema_version": {
+                  "const": "1.0.0"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "record_version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "business_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 10000
+                },
+                "project_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "lifecycle_state": {
+                  "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_lifecycle"
+                },
+                "wait_reason": {
+                  "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_wait_reason"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 10000
+                }
+              },
+              "required": [
+                "id",
+                "schema_version",
+                "created_at",
+                "record_version",
+                "business_id",
+                "title",
+                "project_id",
+                "lifecycle_state",
+                "wait_reason",
+                "description"
+              ],
+              "additionalProperties": false,
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "lifecycle_state": {
+                        "const": "waiting"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "wait_reason": {
+                        "not": {
+                          "const": "none"
+                        }
+                      }
+                    }
+                  },
+                  "else": {
+                    "properties": {
+                      "wait_reason": {
+                        "const": "none"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "capability_vocabulary": [
+          "db.governed_operations"
+        ],
+        "relevant_work": [],
+        "content_hash": "486650adc0a90b6fa8fb713b760f8041d52218b666846646ce0058639f1c7ccd"
+      }
+    },
+    {
+      "name": "synthetic_domain_event",
+      "schema": "domain_event",
+      "valid": true,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "event_type": "task.transitioned",
+        "schema_version": "1.0.0",
+        "aggregate_type": "task",
+        "aggregate_id": "00000000-0000-4000-8000-000000000001",
+        "correlation_id": "00000000-0000-4000-8000-000000000001",
+        "causation_id": null,
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "payload": {
+          "operation": "task.transition",
+          "arguments": {
+            "task_id": "00000000-0000-4000-8000-000000000001",
+            "expected_version": 1,
+            "target_state": "draft",
+            "wait_reason": "none",
+            "reason_code": "synthetic",
+            "evidence": []
+          },
+          "record_version": 1
+        }
+      }
+    },
+    {
+      "name": "synthetic_provider_receipt",
+      "schema": "provider_receipt",
+      "valid": true,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "provider": "synthetic",
+        "account_scope": "synthetic",
+        "provider_event_id": null,
+        "dedupe_key": "synthetic",
+        "provider_object_id": null,
+        "provider_occurred_at": "2026-09-28T12:00:00+00:00",
+        "received_at": "2026-09-28T12:00:00+00:00",
+        "raw_artifact_uri": "synthetic",
+        "raw_content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "signature_verified": false,
+        "correlation_id": "00000000-0000-4000-8000-000000000001"
+      }
+    },
+    {
+      "name": "synthetic_provider_command",
+      "schema": "provider_command",
+      "valid": true,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "record_version": 1,
+        "provider": "synthetic",
+        "account_scope": "synthetic",
+        "command_type": "synthetic",
+        "idempotency_key": "synthetic",
+        "request_schema_id": "synthetic",
+        "request_artifact_uri": "synthetic",
+        "request_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "correlation_id": "00000000-0000-4000-8000-000000000001",
+        "causation_id": "00000000-0000-4000-8000-000000000001",
+        "outcome": "pending",
+        "reconciliation_strategy": "native_idempotency",
+        "approval_request_id": null
+      }
+    },
+    {
+      "name": "synthetic_work_occurrence",
+      "schema": "work_occurrence",
+      "valid": true,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "record_version": 1,
+        "work_definition_id": "00000000-0000-4000-8000-000000000001",
+        "stage_definition_id": "00000000-0000-4000-8000-000000000001",
+        "fulfillment_id": "00000000-0000-4000-8000-000000000001",
+        "task_id": null,
+        "state": "pending",
+        "occurrence_key": "synthetic",
+        "due_at": "2026-09-28T12:00:00+00:00",
+        "retry_at": null,
+        "ready_override_at": null,
+        "priority_override": null,
+        "claim_version": 0,
+        "attempt_count": 0
+      }
+    },
+    {
+      "name": "synthetic_memory_version",
+      "schema": "memory_version",
+      "valid": true,
+      "payload": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "schema_version": "1.0.0",
+        "created_at": "2026-09-28T12:00:00+00:00",
+        "memory_record_id": "00000000-0000-4000-8000-000000000001",
+        "version_number": 1,
+        "supersedes_version_id": null,
+        "scope_id": "00000000-0000-4000-8000-000000000001",
+        "statement": "synthetic",
+        "operational_meaning": "synthetic",
+        "provenance": [
+          {
+            "record_type": "synthetic",
+            "record_id": "00000000-0000-4000-8000-000000000001",
+            "record_version": 1,
+            "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "authority": "structured_ecos"
+          }
+        ],
+        "effective_at": "2026-09-28T12:00:00+00:00",
+        "sensitivity": "public",
+        "retention_policy_ref": "synthetic",
+        "authoritative_references": [
+          {
+            "record_type": "synthetic",
+            "record_id": "00000000-0000-4000-8000-000000000001",
+            "record_version": 1,
+            "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "authority": "structured_ecos"
+          }
+        ],
+        "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "compaction_run_id": null
+      }
+    }
+  ]
+}

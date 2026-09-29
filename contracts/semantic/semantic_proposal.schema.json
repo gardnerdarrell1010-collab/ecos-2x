@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/semantic_proposal.schema.json",
+  "title": "semantic_proposal",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "proposal_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "expected_record_versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "record_type": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+          },
+          "record_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "record_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "record_type",
+          "record_id",
+          "record_version"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/proposal_item.schema.json"
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "id",
+    "proposal_type",
+    "schema_version",
+    "created_at",
+    "correlation_id",
+    "source_references",
+    "expected_record_versions",
+    "items",
+    "content_hash"
+  ],
+  "additionalProperties": false
+}

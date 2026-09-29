@@ -1,0 +1,1 @@
+"""contract acceptance checks."""

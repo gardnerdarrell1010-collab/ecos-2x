@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/legacy_identity.schema.json",
+  "title": "legacy_identity",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_system": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "source_family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "legacy_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "source_batch_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source_locator": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "target_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "target_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "resolution_evidence_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "source_system",
+    "source_family",
+    "legacy_id",
+    "source_batch_id",
+    "source_locator",
+    "target_type",
+    "target_id",
+    "resolution_evidence_hash"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/evidence.schema.json",
+  "title": "evidence",
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+    },
+    "assertion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "verification": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "unverified",
+        "conflicting"
+      ]
+    }
+  },
+  "required": [
+    "source",
+    "assertion",
+    "verification"
+  ],
+  "additionalProperties": false
+}

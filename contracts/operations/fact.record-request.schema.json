@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/fact.record-request.schema.json",
+  "title": "fact.record-request",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "subject_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "source_references": {
+          "type": "array",
+          "items": {
+            "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+          },
+          "minItems": 1,
+          "uniqueItems": false
+        },
+        "sensitivity": {
+          "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/sensitivity"
+        }
+      },
+      "required": [
+        "subject_id",
+        "statement",
+        "source_references",
+        "sensitivity"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

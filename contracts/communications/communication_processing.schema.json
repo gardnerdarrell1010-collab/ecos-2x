@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/communication_processing.schema.json",
+  "title": "communication_processing",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "communication_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "state": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/communication_processing"
+    },
+    "occurrence_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "proposal_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "committed_result_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "communication_id",
+    "source_version",
+    "state",
+    "occurrence_id",
+    "proposal_id",
+    "committed_result_id"
+  ],
+  "additionalProperties": false
+}

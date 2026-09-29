@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/restore_test.schema.json",
+  "title": "restore_test",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "package_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "target_host_class": {
+      "type": "string",
+      "enum": [
+        "standard_postgresql",
+        "managed_postgresql"
+      ]
+    },
+    "state": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/restore_state"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "check_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "evidence_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "check_id",
+          "passed",
+          "evidence_hash"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "observed_rpo_seconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "observed_rto_seconds": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "package_id",
+    "target_host_class",
+    "state",
+    "started_at",
+    "completed_at",
+    "checks",
+    "observed_rpo_seconds",
+    "observed_rto_seconds"
+  ],
+  "additionalProperties": false
+}

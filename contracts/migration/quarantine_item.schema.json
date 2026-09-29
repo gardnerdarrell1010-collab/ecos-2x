@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/quarantine_item.schema.json",
+  "title": "quarantine_item",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "batch_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source_locator": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "raw_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "legacy_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "classification": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/migration_classification"
+    },
+    "state": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/quarantine"
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "identity_resolution_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "transformation_version": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "target_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "batch_id",
+    "source_locator",
+    "raw_hash",
+    "legacy_id",
+    "source_family",
+    "classification",
+    "state",
+    "reason_codes",
+    "identity_resolution_id",
+    "transformation_version",
+    "target_id"
+  ],
+  "additionalProperties": false
+}

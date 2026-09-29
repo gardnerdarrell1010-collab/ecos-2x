@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ecos-2x-contracts"
+version = "0.0.1"
+description = "Offline ECOS 2.x Phase 0 contracts and acceptance harness"
+requires-python = ">=3.12"
+dependencies = ["jsonschema==4.26.0", "referencing==0.37.0", "rfc3339-validator==0.1.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/domain_event.schema.json",
+  "title": "domain_event",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "task.transitioned",
+        "task.evidence_attached",
+        "fact.recorded"
+      ]
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "aggregate_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "aggregate_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "operation": {
+              "const": "task.transition"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "task_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "expected_version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "target_state": {
+                  "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_lifecycle"
+                },
+                "wait_reason": {
+                  "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/task_wait_reason"
+                },
+                "reason_code": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+                },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "https://contracts.ecos.invalid/v1/evidence.schema.json"
+                  },
+                  "minItems": 0,
+                  "uniqueItems": false
+                }
+              },
+              "required": [
+                "task_id",
+                "expected_version",
+                "target_state",
+                "wait_reason",
+                "reason_code",
+                "evidence"
+              ],
+              "additionalProperties": false
+            },
+            "record_version": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "operation",
+            "arguments",
+            "record_version"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "operation": {
+              "const": "task.evidence.attach"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "task_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "expected_version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "evidence": {
+                  "$ref": "https://contracts.ecos.invalid/v1/evidence.schema.json"
+                }
+              },
+              "required": [
+                "task_id",
+                "expected_version",
+                "evidence"
+              ],
+              "additionalProperties": false
+            },
+            "record_version": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "operation",
+            "arguments",
+            "record_version"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "operation": {
+              "const": "fact.record"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "subject_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "statement": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 10000
+                },
+                "source_references": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": false
+                },
+                "sensitivity": {
+                  "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/sensitivity"
+                }
+              },
+              "required": [
+                "subject_id",
+                "statement",
+                "source_references",
+                "sensitivity"
+              ],
+              "additionalProperties": false
+            },
+            "record_version": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "operation",
+            "arguments",
+            "record_version"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "event_type",
+    "schema_version",
+    "aggregate_type",
+    "aggregate_id",
+    "correlation_id",
+    "causation_id",
+    "created_at",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "task.transitioned"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "aggregate_type": {
+            "const": "task"
+          },
+          "payload": {
+            "properties": {
+              "operation": {
+                "const": "task.transition"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "task.evidence_attached"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "aggregate_type": {
+            "const": "task"
+          },
+          "payload": {
+            "properties": {
+              "operation": {
+                "const": "task.evidence.attach"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "fact.recorded"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "aggregate_type": {
+            "const": "fact"
+          },
+          "payload": {
+            "properties": {
+              "operation": {
+                "const": "fact.record"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

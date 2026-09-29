@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/approval_decision.schema.json",
+  "title": "approval_decision",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approval_request_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "rejected",
+        "changes_requested",
+        "expired",
+        "revoked"
+      ]
+    },
+    "actor_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/evidence.schema.json"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "supersedes_decision_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "approval_request_id",
+    "decision",
+    "actor_id",
+    "reason_code",
+    "evidence",
+    "supersedes_decision_id"
+  ],
+  "additionalProperties": false
+}

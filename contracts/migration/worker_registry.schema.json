@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/worker_registry.schema.json",
+  "title": "worker_registry",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "review_date": {
+      "const": "2026-09-28"
+    },
+    "usage": {
+      "const": "migration_and_acceptance_only"
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "workers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "legacy_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "business_capability": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "current_trigger": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "current_execution_class": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "2x_disposition": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "2x_trigger": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "target_latency": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "acceptance_test": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "legacy_worker_id": {
+            "type": "string",
+            "pattern": "^TASK-AUTO-0000[0-5][0-9](-B)?$"
+          },
+          "legacy_short_id": {
+            "type": "string",
+            "pattern": "^A[0-9]{3}(-B)?$"
+          },
+          "2x_execution_surface": {
+            "type": "array",
+            "items": {
+              "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/execution_surface"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "semantic_required": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "no",
+              "conditional",
+              "upstream_only",
+              "not_applicable"
+            ]
+          },
+          "provider_adapter": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "proposed_objects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            "minItems": 1,
+            "uniqueItems": false
+          },
+          "retirement_maturity": {
+            "type": "string",
+            "enum": [
+              "production_verified",
+              "capability_retired_pending_authority_confirmation"
+            ]
+          },
+          "retirement_conditions": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "retired_at_review": {
+            "type": "boolean"
+          },
+          "source_row": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            "minItems": 6,
+            "uniqueItems": false
+          },
+          "source_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "subordinate_preservation": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            "minItems": 0,
+            "uniqueItems": false
+          }
+        },
+        "required": [
+          "legacy_name",
+          "business_capability",
+          "current_trigger",
+          "current_execution_class",
+          "2x_disposition",
+          "2x_trigger",
+          "target_latency",
+          "acceptance_test",
+          "notes",
+          "legacy_worker_id",
+          "legacy_short_id",
+          "2x_execution_surface",
+          "semantic_required",
+          "provider_adapter",
+          "proposed_objects",
+          "retirement_maturity",
+          "retirement_conditions",
+          "retired_at_review",
+          "source_row",
+          "source_line",
+          "subordinate_preservation"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 55,
+      "uniqueItems": false,
+      "maxItems": 55
+    }
+  },
+  "required": [
+    "schema_version",
+    "review_date",
+    "usage",
+    "source_sha256",
+    "workers"
+  ],
+  "additionalProperties": false
+}

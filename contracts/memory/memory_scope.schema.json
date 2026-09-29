@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/memory_scope.schema.json",
+  "title": "memory_scope",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "scope_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "scope_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sensitivity": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/sensitivity"
+    },
+    "authorized_role_names": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "scope_type",
+    "scope_id",
+    "sensitivity",
+    "authorized_role_names"
+  ],
+  "additionalProperties": false
+}

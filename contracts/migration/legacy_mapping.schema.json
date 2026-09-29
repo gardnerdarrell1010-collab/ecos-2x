@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/legacy_mapping.schema.json",
+  "title": "legacy_mapping",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "review_date": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "classifications": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/migration_classification"
+      },
+      "minItems": 5,
+      "uniqueItems": true
+    },
+    "source_authority_revalidation": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_family": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "classification": {
+            "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/migration_classification"
+          },
+          "target_objects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "rule": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "identity_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "promotion_gate": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "raw_preservation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        },
+        "required": [
+          "source_family",
+          "classification",
+          "target_objects",
+          "rule",
+          "identity_key",
+          "promotion_gate",
+          "raw_preservation"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 26,
+      "uniqueItems": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "review_date",
+    "classifications",
+    "source_authority_revalidation",
+    "families"
+  ],
+  "additionalProperties": false
+}

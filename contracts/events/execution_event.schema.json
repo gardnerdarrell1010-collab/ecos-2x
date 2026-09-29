@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/execution_event.schema.json",
+  "title": "execution_event",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "execution.started",
+        "execution.succeeded",
+        "execution.failed",
+        "execution.abandoned",
+        "execution.cancelled"
+      ]
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "aggregate_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "aggregate_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "execution_run_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "occurrence_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "state": {
+          "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/execution_run"
+        },
+        "reason_code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+        },
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "evidence_hash": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "execution_run_id",
+        "occurrence_id",
+        "state",
+        "reason_code",
+        "fence",
+        "evidence_hash"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "event_type",
+    "schema_version",
+    "aggregate_type",
+    "aggregate_id",
+    "correlation_id",
+    "causation_id",
+    "created_at",
+    "payload"
+  ],
+  "additionalProperties": false
+}

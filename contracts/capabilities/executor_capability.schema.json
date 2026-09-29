@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/executor_capability.schema.json",
+  "title": "executor_capability",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "executor_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "capability_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "capability_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "attested_by": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "executor_instance_id",
+    "capability_name",
+    "capability_version",
+    "attested_by",
+    "expires_at"
+  ],
+  "additionalProperties": false
+}

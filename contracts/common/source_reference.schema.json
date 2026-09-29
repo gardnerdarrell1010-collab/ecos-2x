@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/source_reference.schema.json",
+  "title": "source_reference",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "record_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "authority": {
+      "type": "string",
+      "enum": [
+        "structured_ecos",
+        "provider",
+        "governed_memory",
+        "conversation_evidence"
+      ]
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "record_version",
+    "content_hash",
+    "authority"
+  ],
+  "additionalProperties": false
+}

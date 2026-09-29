@@ -1,0 +1,804 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "ECOS governed operations",
+    "version": "1.0.0",
+    "description": "Contract only; no API server is provisioned by Phase 0."
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/operations/task.transition": {
+      "post": {
+        "operationId": "task_transition",
+        "summary": "Governed task.transition",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/task.transition-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/task.evidence.attach": {
+      "post": {
+        "operationId": "task_evidence_attach",
+        "summary": "Governed task.evidence.attach",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/task.evidence.attach-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/fact.record": {
+      "post": {
+        "operationId": "fact_record",
+        "summary": "Governed fact.record",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/fact.record-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/work.claim": {
+      "post": {
+        "operationId": "work_claim",
+        "summary": "Governed work.claim",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/work.claim-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/claim_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/work.renew": {
+      "post": {
+        "operationId": "work_renew",
+        "summary": "Governed work.renew",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/work.renew-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/claim_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/work.complete": {
+      "post": {
+        "operationId": "work_complete",
+        "summary": "Governed work.complete",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/work.complete-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/proposal.commit": {
+      "post": {
+        "operationId": "proposal_commit",
+        "summary": "Governed proposal.commit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/proposal.commit-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/proposal_commit_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/provider.result.record": {
+      "post": {
+        "operationId": "provider_result_record",
+        "summary": "Governed provider.result.record",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/provider.result.record-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/memory.activate": {
+      "post": {
+        "operationId": "memory_activate",
+        "summary": "Governed memory.activate",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/memory.activate-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/operations/approval.decide": {
+      "post": {
+        "operationId": "approval_decide",
+        "summary": "Governed approval.decide",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://contracts.ecos.invalid/v1/approval.decide-request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Committed or replayed result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_result.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract violation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or gate failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.ecos.invalid/v1/operation_error.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

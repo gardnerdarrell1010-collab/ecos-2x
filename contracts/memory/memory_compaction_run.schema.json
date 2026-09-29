@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/memory_compaction_run.schema.json",
+  "title": "memory_compaction_run",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "input_version_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "output_version_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "omitted_reference_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "manifest_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "verifier_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "contradictions_resolved": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "scope_id",
+    "input_version_ids",
+    "output_version_id",
+    "source_references",
+    "omitted_reference_ids",
+    "reason_codes",
+    "manifest_hash",
+    "verifier_id",
+    "contradictions_resolved"
+  ],
+  "additionalProperties": false
+}

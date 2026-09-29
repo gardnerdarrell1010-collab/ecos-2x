@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+  "title": "operation_result",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "operation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "committed",
+        "replayed",
+        "no_candidate"
+      ]
+    },
+    "event_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "record_versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "record_type": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+          },
+          "record_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "record_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "record_type",
+          "record_id",
+          "record_version"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "operation_id",
+    "correlation_id",
+    "status",
+    "event_ids",
+    "record_versions",
+    "result_hash"
+  ],
+  "additionalProperties": false
+}

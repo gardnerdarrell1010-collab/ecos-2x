@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/work_claim.schema.json",
+  "title": "work_claim",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurrence_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "stage_definition_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "executor_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "claim_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "fence_token": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "state": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/claim"
+    },
+    "acquired_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "renewed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "record_version",
+    "occurrence_id",
+    "stage_definition_id",
+    "executor_instance_id",
+    "claim_version",
+    "fence_token",
+    "state",
+    "acquired_at",
+    "expires_at",
+    "renewed_at"
+  ],
+  "additionalProperties": false
+}

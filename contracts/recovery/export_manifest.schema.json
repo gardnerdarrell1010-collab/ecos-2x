@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/export_manifest.schema.json",
+  "title": "export_manifest",
+  "type": "object",
+  "properties": {
+    "package_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "database_schema_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "migration_head": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "postgresql_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "tool_versions": {
+      "type": "object",
+      "properties": {
+        "pg_dump": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "exporter": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        }
+      },
+      "required": [
+        "pg_dump",
+        "exporter"
+      ],
+      "additionalProperties": false
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[\\\\:]).+$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "record_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "schema",
+              "data",
+              "contracts",
+              "memory",
+              "provider_inventory",
+              "restore_instructions",
+              "verification_queries",
+              "migration",
+              "configuration"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "size_bytes",
+          "sha256",
+          "record_count",
+          "role"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "memory_head_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "restore_instructions_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "verification_queries_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "secret_reference_names": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "plaintext_secrets_included": {
+      "const": false
+    },
+    "storage_control": {
+      "const": "darrell_controlled"
+    }
+  },
+  "required": [
+    "package_id",
+    "schema_version",
+    "created_at",
+    "database_schema_version",
+    "migration_head",
+    "postgresql_version",
+    "tool_versions",
+    "files",
+    "memory_head_ids",
+    "restore_instructions_path",
+    "verification_queries_path",
+    "secret_reference_names",
+    "plaintext_secrets_included",
+    "storage_control"
+  ],
+  "additionalProperties": false
+}

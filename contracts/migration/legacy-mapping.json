@@ -1,0 +1,377 @@
+{
+  "schema_version": "1.0.0",
+  "review_date": "2026-09-28",
+  "classifications": [
+    "MIGRATE",
+    "MIGRATE_CURRENT_STATE",
+    "ARCHIVE_REFERENCE",
+    "REBUILD",
+    "RETIRE"
+  ],
+  "source_authority_revalidation": "Before any extraction, read live System Bootstrap first and current registry; Phase 0 did not reread production",
+  "families": [
+    {
+      "source_family": "Contacts",
+      "classification": "MIGRATE",
+      "target_objects": [
+        "party",
+        "person",
+        "party_identifier"
+      ],
+      "rule": "Validate identity; reconcile collisions before promotion",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Organizations",
+      "classification": "MIGRATE",
+      "target_objects": [
+        "party",
+        "organization",
+        "party_identifier"
+      ],
+      "rule": "Validate organization identity and provider references",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Relationships",
+      "classification": "MIGRATE",
+      "target_objects": [
+        "party_relationship"
+      ],
+      "rule": "Validate both endpoints and effective interval; quarantine malformed edges",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Projects",
+      "classification": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "project"
+      ],
+      "rule": "Preserve current governed project state; archive history",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Tasks",
+      "classification": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "task",
+        "task_assignment",
+        "task_schedule",
+        "task_dependency",
+        "approval_request",
+        "task_evidence"
+      ],
+      "rule": "Separate obligation from runtime; nullable project; discard persisted rank/leases; type-check drift",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Communications",
+      "classification": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "provider_receipt",
+        "communication",
+        "communication_processing"
+      ],
+      "rule": "Preserve exact provider evidence; split attempts; archive excess payload by approved retention",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Notification Queue",
+      "classification": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "notification"
+      ],
+      "rule": "Duplicate IDs require source locators and identity resolution",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Notification Deliveries",
+      "classification": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "delivery",
+        "delivery_attempt",
+        "provider_command"
+      ],
+      "rule": "No inferred sent status; reconcile provider evidence before any retry",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Artifacts",
+      "classification": "MIGRATE",
+      "target_objects": [
+        "artifact",
+        "artifact_version"
+      ],
+      "rule": "Retain stable external URI/provider IDs/hash and provenance",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Authoritative Files",
+      "classification": "MIGRATE",
+      "target_objects": [
+        "artifact",
+        "artifact_version",
+        "publication_target"
+      ],
+      "rule": "Preserve external file authority and canonical-version evidence",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Facts",
+      "classification": "MIGRATE",
+      "target_objects": [
+        "fact"
+      ],
+      "rule": "Typed subject/provenance/effective time; unsupported assertions quarantined",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Settings",
+      "classification": "REBUILD",
+      "target_objects": [
+        "typed_configuration"
+      ],
+      "rule": "Preserve approved semantics; reject free-text type ambiguity",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Validation Lists",
+      "classification": "REBUILD",
+      "target_objects": [
+        "controlled_vocabulary"
+      ],
+      "rule": "Map only approved values; unknown lifecycle strings require explicit disposition",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Workflow Dependencies",
+      "classification": "REBUILD",
+      "target_objects": [
+        "work_dependency",
+        "task_dependency"
+      ],
+      "rule": "Classify business versus runtime edge; reject cycles",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Task Loop",
+      "classification": "REBUILD",
+      "target_objects": [
+        "work_definition",
+        "work_stage_definition",
+        "task_schedule",
+        "capability"
+      ],
+      "rule": "Preserve 55 business capabilities using disposition registry; no row-per-service port",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Run Control",
+      "classification": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "legacy_run_evidence",
+        "execution_event"
+      ],
+      "rule": "115 duplicate Run IDs at review; only curated verified evidence can promote, never launcher noise",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Staging Records",
+      "classification": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "quarantine_item",
+        "semantic_proposal",
+        "provider_receipt"
+      ],
+      "rule": "Migrate unresolved items only after hash/schema/identity proof",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Integrity Checks",
+      "classification": "REBUILD",
+      "target_objects": [
+        "integrity_finding",
+        "assertion_catalog"
+      ],
+      "rule": "Constraints, flow health and semantic audit replace sheet completion claims",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Ingestion State",
+      "classification": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "provider_checkpoint"
+      ],
+      "rule": "Only checkpoints verified against provider boundaries promote",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Forecast Data Audit",
+      "classification": "REBUILD",
+      "target_objects": [
+        "forecast_source_snapshot"
+      ],
+      "rule": "Preserve useful source evidence; rebuild typed accountability",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Forecast Performance",
+      "classification": "REBUILD",
+      "target_objects": [
+        "forecast_snapshot",
+        "forecast_actual_reconciliation"
+      ],
+      "rule": "Review had zero populated rows; never infer historical accountability",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "AI Memory",
+      "classification": "MIGRATE",
+      "target_objects": [
+        "memory_record",
+        "memory_version",
+        "memory_scope",
+        "memory_reference",
+        "memory_compaction_run"
+      ],
+      "rule": "Immutable history, active heads, explicit supersession; review-time MEM-ECOS-000036 v94 only",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Recovery Map",
+      "classification": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "backup_record",
+        "export_package",
+        "restore_test"
+      ],
+      "rule": "Retain recovery evidence; replace mechanisms with portable recovery",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Ingestion Log",
+      "classification": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "legacy_ingestion_evidence"
+      ],
+      "rule": "Curate checkpoint proof; retain raw evidence outside hot state by approved policy",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Activity Log",
+      "classification": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "legacy_activity_evidence"
+      ],
+      "rule": "Preserve selected audit evidence; do not reinterpret narrative as success",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Exceptions",
+      "classification": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "exception_case",
+        "integrity_finding"
+      ],
+      "rule": "Keep unresolved exception/owner action with evidence and sensitivity",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "System Bootstrap",
+      "classification": "REBUILD",
+      "target_objects": [
+        "bootstrap_package"
+      ],
+      "rule": "Rebuild deterministic retrieval from current structured authority",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Sheet Registry",
+      "classification": "REBUILD",
+      "target_objects": [
+        "schema_registry",
+        "migration_mapping"
+      ],
+      "rule": "Translate record-family authority; archive sheet layout references",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Command Registry",
+      "classification": "REBUILD",
+      "target_objects": [
+        "operation_registry"
+      ],
+      "rule": "Explicit allowlisted operations with auth/version/idempotency semantics",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    },
+    {
+      "source_family": "Data Dictionary",
+      "classification": "REBUILD",
+      "target_objects": [
+        "schema_registry"
+      ],
+      "rule": "Canonical SQL/JSON Schema vocabulary replaces column positions",
+      "identity_key": "source_system + family + batch_id + source_locator; legacy ID is nonunique evidence",
+      "promotion_gate": "typed validation + explicit identity resolution + transformation version + reconciliation report",
+      "raw_preservation": "immutable access-controlled batch outside Git"
+    }
+  ]
+}

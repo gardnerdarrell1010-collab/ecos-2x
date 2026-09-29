@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0.0",
+  "states": {
+    "task_lifecycle": [
+      "draft",
+      "open",
+      "waiting",
+      "completed",
+      "cancelled"
+    ],
+    "task_wait_reason": [
+      "none",
+      "dependency",
+      "owner",
+      "external",
+      "approval",
+      "scheduled"
+    ],
+    "approval": [
+      "pending",
+      "approved",
+      "rejected",
+      "changes_requested",
+      "expired",
+      "revoked"
+    ],
+    "work_occurrence": [
+      "pending",
+      "ready",
+      "claimed",
+      "running",
+      "succeeded",
+      "retry_wait",
+      "failed",
+      "dead_lettered",
+      "cancelled"
+    ],
+    "delivery": [
+      "planned",
+      "ready",
+      "held",
+      "sending",
+      "delivered",
+      "failed",
+      "acknowledged",
+      "cancelled"
+    ],
+    "provider_outcome": [
+      "pending",
+      "accepted",
+      "succeeded",
+      "failed",
+      "unknown_outcome",
+      "reconciled"
+    ],
+    "maturity": [
+      "designed",
+      "built",
+      "end_to_end_verified",
+      "shadow_verified",
+      "production_verified"
+    ],
+    "claim": [
+      "active",
+      "released",
+      "expired",
+      "revoked"
+    ],
+    "outbox": [
+      "pending",
+      "claimed",
+      "delivered",
+      "retry_wait",
+      "dead_lettered",
+      "cancelled"
+    ],
+    "execution_run": [
+      "started",
+      "succeeded",
+      "failed",
+      "abandoned",
+      "cancelled"
+    ],
+    "proposal": [
+      "created",
+      "validated",
+      "partially_committed",
+      "committed",
+      "rejected",
+      "conflicted"
+    ],
+    "proposal_item": [
+      "valid",
+      "committed",
+      "invalid",
+      "stale",
+      "conflicting",
+      "ambiguous",
+      "blocked"
+    ],
+    "communication_processing": [
+      "pending",
+      "ready",
+      "running",
+      "succeeded",
+      "retry_wait",
+      "failed",
+      "dead_lettered"
+    ],
+    "availability": [
+      "available",
+      "degraded",
+      "unavailable",
+      "unknown"
+    ],
+    "sensitivity": [
+      "public",
+      "internal",
+      "confidential",
+      "restricted"
+    ],
+    "quarantine": [
+      "received",
+      "invalid",
+      "identity_unresolved",
+      "validated",
+      "transformed",
+      "promoted",
+      "excluded"
+    ],
+    "migration_classification": [
+      "MIGRATE",
+      "MIGRATE_CURRENT_STATE",
+      "ARCHIVE_REFERENCE",
+      "REBUILD",
+      "RETIRE"
+    ],
+    "backup_kind": [
+      "managed_pitr",
+      "logical_postgresql",
+      "portable_ecos_export"
+    ],
+    "restore_state": [
+      "pending",
+      "running",
+      "passed",
+      "failed"
+    ],
+    "stage_kind": [
+      "human",
+      "deterministic",
+      "semantic",
+      "provider",
+      "approval"
+    ],
+    "execution_surface": [
+      "DATABASE_DETERMINISTIC",
+      "RESIDENT_DETERMINISTIC_PROVIDER",
+      "ONLINE_SEMANTIC",
+      "INTERACTIVE_ADA"
+    ]
+  }
+}

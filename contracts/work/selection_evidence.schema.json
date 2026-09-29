@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/selection_evidence.schema.json",
+  "title": "selection_evidence",
+  "type": "object",
+  "properties": {
+    "policy_version": {
+      "const": "lexicographic-v1"
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "record_type": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+          },
+          "record_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "record_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "record_type",
+          "record_id",
+          "record_version"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "eligible": {
+      "type": "boolean"
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
+    "priority_override": {
+      "type": "integer",
+      "minimum": -100,
+      "maximum": 100
+    },
+    "immediate_ready": {
+      "type": "boolean"
+    },
+    "sla_breach_seconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deadline_pressure_seconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "business_impact": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "recurrence_relative_age_basis_points": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "occurrence_id": {
+      "type": "string",
+      "format": "uuid"
+    }
+  },
+  "required": [
+    "policy_version",
+    "evaluated_at",
+    "source_versions",
+    "eligible",
+    "reason_codes",
+    "priority_override",
+    "immediate_ready",
+    "sla_breach_seconds",
+    "deadline_pressure_seconds",
+    "business_impact",
+    "recurrence_relative_age_basis_points",
+    "created_at",
+    "occurrence_id"
+  ],
+  "additionalProperties": false
+}

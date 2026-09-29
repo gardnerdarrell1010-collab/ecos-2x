@@ -1,0 +1,213 @@
+{
+  "schema_version": "1.0.0",
+  "gates": [
+    {
+      "id": "C-01",
+      "required_phase": 1,
+      "assertion": "100 concurrent PostgreSQL contenders yield exactly one live claim/run and owner",
+      "acceptance_reference": "tests/concurrency/acceptance.py:assert_hundred_contenders",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "C-02",
+      "required_phase": 1,
+      "assertion": "Expired/stale fence rejects renew and complete without mutation; new claim has larger version",
+      "acceptance_reference": "tests/concurrency/acceptance.py:assert_lease_recovery",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "C-03",
+      "required_phase": 1,
+      "assertion": "Dead executor lease expires; recovery resumes only unfinished stages",
+      "acceptance_reference": "tests/concurrency/acceptance.py:assert_lease_recovery",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "C-04",
+      "required_phase": 1,
+      "assertion": "Capability mismatch excludes only the incompatible executor/work pair",
+      "acceptance_reference": "tests/contract/test_behavior.py",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "C-05",
+      "required_phase": 1,
+      "assertion": "Every stage boundary preserves verified result hashes across crash",
+      "acceptance_reference": "db/tests/phase1_assertions.sql",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "C-06",
+      "required_phase": 1,
+      "assertion": "Approval expiry/revocation and maintenance win racing claims/effects",
+      "acceptance_reference": "db/functions/claim_work.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "C-07",
+      "required_phase": 1,
+      "assertion": "No claim or run survives rollback of its transaction alone",
+      "acceptance_reference": "db/tests/phase1_assertions.sql",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "API-01",
+      "required_phase": 1,
+      "assertion": "Every registered operation enforces authorization and sensitivity scope",
+      "acceptance_reference": "docs/operations/API.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "API-02",
+      "required_phase": 1,
+      "assertion": "Same idempotency key/hash replays; different bytes conflict without duplicate effects",
+      "acceptance_reference": "docs/operations/API.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "API-03",
+      "required_phase": 1,
+      "assertion": "Expected version conflict is atomic with audit and outbox",
+      "acceptance_reference": "docs/operations/API.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "EV-01",
+      "required_phase": 1,
+      "assertion": "Commit then consumer crash retains durable outbox and later executes once logically",
+      "acceptance_reference": "docs/operations/EVENTS_AND_PROVIDERS.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "EV-02",
+      "required_phase": 1,
+      "assertion": "Provider success then persistence failure reconciles without blind resend",
+      "acceptance_reference": "tests/contract/test_behavior.py",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "EV-03",
+      "required_phase": 1,
+      "assertion": "Duplicate and out-of-order webhook events cannot repeat effects or regress success",
+      "acceptance_reference": "docs/operations/EVENTS_AND_PROVIDERS.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "SEM-01",
+      "required_phase": 1,
+      "assertion": "Invalid/stale/conflicting proposal siblings are isolated; dependent siblings blocked",
+      "acceptance_reference": "tests/contract/test_behavior.py",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "SEM-02",
+      "required_phase": 1,
+      "assertion": "Restart reuses verified proposal/committed item evidence without reinterpretation",
+      "acceptance_reference": "tests/contract/test_behavior.py",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "TASK-01",
+      "required_phase": 1,
+      "assertion": "Independent task; staged human/semantic/provider/approval fulfillment without duplicate obligation",
+      "acceptance_reference": "docs/architecture/MODEL.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "TASK-02",
+      "required_phase": 1,
+      "assertion": "Concurrent dependency cycle creation rejected; recurrence handles DST gaps/folds and updates",
+      "acceptance_reference": "docs/architecture/MODEL.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "MEM-01",
+      "required_phase": 1,
+      "assertion": "Memory activation compare-and-swap yields one head; previous versions immutable",
+      "acceptance_reference": "docs/operations/MEMORY.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "MIG-01",
+      "required_phase": 1,
+      "assertion": "Clean PostgreSQL install, repeat migration, drift rejection, rollback and forward correction",
+      "acceptance_reference": "scripts/migrations.py",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "REST-01",
+      "required_phase": 1,
+      "assertion": "Corrupt package rejected; clean standard PostgreSQL restore verifies counts/hashes/API synthetic claim",
+      "acceptance_reference": "docs/recovery/RESTORE.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "PORT-01",
+      "required_phase": 2,
+      "assertion": "Replacement AI with bootstrap package alone completes governed synthetic operation",
+      "acceptance_reference": "docs/operations/MEMORY.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "SURFACE-01",
+      "required_phase": 2,
+      "assertion": "Online Ada transaction/readback/audit and HOME-01 use same operations contract",
+      "acceptance_reference": "docs/PHASE1_MANIFEST.json",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "INTEGRITY-01",
+      "required_phase": 2,
+      "assertion": "Deterministic reversible repair detects seeded defect and proves readback",
+      "acceptance_reference": "db/views/contracts.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "WATCH-01",
+      "required_phase": 2,
+      "assertion": "Withheld heartbeat triggers real independent alert; external monitor sees DB-host outage",
+      "acceptance_reference": "docs/operations/WATCHDOG.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "SHADOW-01",
+      "required_phase": 3,
+      "assertion": "Dashboard degraded-source behavior, 41/41 renderer bindings and forecast parity proven",
+      "acceptance_reference": "contracts/migration/worker-dispositions.json",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    },
+    {
+      "id": "MIG-02",
+      "required_phase": 4,
+      "assertion": "Typed import/quarantine resolves duplicates/drift with zero unclassified errors",
+      "acceptance_reference": "docs/migration/QUARANTINE.md",
+      "status": "pending_integration",
+      "reason": "No Phase 1 PostgreSQL implementation or authorized live environment in Phase 0"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/memory_version.schema.json",
+  "title": "memory_version",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "memory_record_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "version_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "supersedes_version_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "scope_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "operational_meaning": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sensitivity": {
+      "$ref": "https://contracts.ecos.invalid/v1/vocabulary.schema.json#/$defs/sensitivity"
+    },
+    "retention_policy_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "authoritative_references": {
+      "type": "array",
+      "items": {
+        "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "compaction_run_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "memory_record_id",
+    "version_number",
+    "supersedes_version_id",
+    "scope_id",
+    "statement",
+    "operational_meaning",
+    "provenance",
+    "effective_at",
+    "sensitivity",
+    "retention_policy_ref",
+    "authoritative_references",
+    "content_hash",
+    "compaction_run_id"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "routing_source": "stage_capability_requirement",
+  "hybrid_is_surface": false,
+  "capabilities": [
+    {
+      "name": "db.governed_operations",
+      "version": 1,
+      "surface": "DATABASE_DETERMINISTIC",
+      "description": "Validate/commit business state, audit and outbox"
+    },
+    {
+      "name": "db.claims",
+      "version": 1,
+      "surface": "DATABASE_DETERMINISTIC",
+      "description": "Atomic claims, fences, renewals and recovery"
+    },
+    {
+      "name": "db.features",
+      "version": 1,
+      "surface": "DATABASE_DETERMINISTIC",
+      "description": "Deterministic projections and feature computation"
+    },
+    {
+      "name": "semantic.interpret",
+      "version": 1,
+      "surface": "ONLINE_SEMANTIC",
+      "description": "Interpret source evidence into versioned proposals"
+    },
+    {
+      "name": "semantic.draft",
+      "version": 1,
+      "surface": "ONLINE_SEMANTIC",
+      "description": "Draft governed content with source references"
+    },
+    {
+      "name": "semantic.forecast",
+      "version": 1,
+      "surface": "ONLINE_SEMANTIC",
+      "description": "Explain and propose forecasts using frozen inputs"
+    },
+    {
+      "name": "semantic.memory_compact",
+      "version": 1,
+      "surface": "ONLINE_SEMANTIC",
+      "description": "Propose continuity versions with manifest"
+    },
+    {
+      "name": "human.review",
+      "version": 1,
+      "surface": "INTERACTIVE_ADA",
+      "description": "Present human decisions through governed operations"
+    },
+    {
+      "name": "provider.gmail",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Gmail receipt/draft/approved transport and reconciliation"
+    },
+    {
+      "name": "provider.drive",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Drive materialization and hash verification"
+    },
+    {
+      "name": "provider.toast",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Acquire closed actuals with checkpoint evidence"
+    },
+    {
+      "name": "provider.twilio",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "SMS transport and reconciliation"
+    },
+    {
+      "name": "provider.calendar",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Calendar references and delta ingestion"
+    },
+    {
+      "name": "provider.finance",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Read account facts with as-of provenance"
+    },
+    {
+      "name": "provider.publication",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Publish approved artifact versions"
+    },
+    {
+      "name": "provider.owner_review",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Receive review packages and ACK after commit proof"
+    },
+    {
+      "name": "local.render",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Safe templates, sample isolation, exact byte readback"
+    },
+    {
+      "name": "recovery.export",
+      "version": 1,
+      "surface": "RESIDENT_DETERMINISTIC_PROVIDER",
+      "description": "Create independent logical/portable packages"
+    }
+  ],
+  "availability_policy": {
+    "source": "server-received heartbeat + boot identity + capability attestations",
+    "stale_heartbeat": "ineligible pair; preserve verified work",
+    "heartbeat_interval_seconds": 30,
+    "heartbeat_ttl_seconds": 90,
+    "status": "development defaults; production tuning pending"
+  }
+}
