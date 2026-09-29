@@ -1,20 +1,33 @@
 {
   "status": "STOPPED_REGRESSION",
   "baseline_commit": "c5731953a29256c013597cb04b938dff41f56de0",
-  "resulting_head": "fb32cfacd86ed1a5773556369242f479b741c33c",
+  "resulting_head": "2ffb3f8eb74cd5df75ac6cd83ecabb7ff7d9f432",
   "mechanisms": {
-    "executor_registry": "DRAFT_UNVERIFIED",
-    "heartbeat_stale_detection": "DRAFT_UNVERIFIED",
-    "capability_routing": "REGRESSION_FAILED",
+    "executor_registry": "FOCUSED_SYNTHETIC_CHECK_PASSED; complete acceptance deferred",
+    "heartbeat_stale_detection": "fresh heartbeat and delayed rejection passed; stale sweep deferred",
+    "capability_routing": "incompatible pair rejected; compatible work.next fails package assembly",
     "resource_governance": "DRAFT_UNVERIFIED",
-    "work_package": "DRAFT_UNVERIFIED",
-    "event_dependency_release": "DRAFT_UNVERIFIED",
+    "work_package": "FAILED_42702",
+    "event_dependency_release": "Phase 1 dependency suite passed; Phase 2 wakeup acceptance deferred",
     "recovery_sweep": "DRAFT_UNVERIFIED",
     "vertical_slices": "DRAFT_TESTS_NOT_REACHED",
     "shadow_comparison": "NOT_EXECUTED"
   },
   "acceptance": false,
-  "phase3_recommendation": "Do not start Phase 3. Resume Phase 2 only with authorization to repair the stopped candidate regression, then complete every remaining acceptance gate.",
+  "phase3_recommendation": "Do not start Phase 3. Authorize diagnosis-based work_package repair separately, then rerun clean rebuild and all remaining acceptance before persistent application.",
   "evidence": "docs/PHASE2_VERIFICATION.json",
-  "push_status": "BLOCKED_AUTO_REVIEW: destination authorization not established; no push executed"
+  "push_status": "Exact origin approved and pre-repair remote 519f4a7 verified; new commits pending push at document generation. Final handoff records verified remote state.",
+  "resulting_head_scope": "Bounded implementation repair commit. The subsequent evidence commit is reported as NewHEAD in the handoff.",
+  "pre_repair_head": "519f4a7a5a918950bcd74da984d76e8b2fb7f5fe",
+  "regression_defect": "42725 repaired by migration 21; new independent 42702 stops Phase 2",
+  "persistent_migration_head": 18,
+  "migrations_applied_persistent": [],
+  "authority_state": [
+    "PRE_CUTOVER",
+    "NON_AUTHORITATIVE"
+  ],
+  "provider_effects": false,
+  "remaining_blockers": [
+    "Migration 20 work_package has PL/pgSQL r variable / SQL alias ambiguity (42702), preventing compatible work.next. New repair requires owner authorization."
+  ]
 }

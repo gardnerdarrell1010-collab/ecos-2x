@@ -1,60 +1,107 @@
 {
   "schema_version": "1.0.0",
-  "verified_at": "2026-09-29T10:58:01.590885-07:00",
+  "verified_at": "2026-09-29T18:14:02.902865+00:00",
   "phase2_status": "STOPPED_REGRESSION",
   "baseline_commit": "c5731953a29256c013597cb04b938dff41f56de0",
   "branch": "codex/phase-2-control-plane",
-  "resulting_head": "fb32cfacd86ed1a5773556369242f479b741c33c",
-  "resulting_head_scope": "Candidate implementation commit to be recorded after commit; final evidence commit is reported in final handoff.",
+  "resulting_head": "2ffb3f8eb74cd5df75ac6cd83ecabb7ff7d9f432",
+  "resulting_head_scope": "Bounded implementation repair commit. The subsequent evidence commit is reported as NewHEAD in the handoff.",
   "persistent_migration_head": 18,
   "migrations_created": [
     "000019_control_plane_contracts.sql",
-    "000020_execution_control_plane.sql"
+    "000020_execution_control_plane.sql",
+    "000021_resource_reservation_expression.sql"
   ],
   "migrations_applied_persistent": [],
   "migrations_applied_disposable": [
     19,
-    20
+    20,
+    21
   ],
   "disposable_rebuild": "passed",
   "disposable_repeat_chain": "passed",
   "disposable_postgresql": "17.11",
   "candidate_phase1_regression": {
-    "status": "failed",
-    "suite_attempts": 1,
-    "failure": "work.claim returns internal_error [42725]",
-    "correlation_id": "8f0da50a-6606-4ae7-9fcf-4fc90482ca26",
-    "completed_suite_checks": 0,
-    "note": "31-check transaction aborted at first claim assertion; earlier assertions are not an accepted suite result"
+    "status": "31 transactional checks passed",
+    "checks": [
+      "task_transition_audit_outbox",
+      "idempotency_and_failure_atomicity",
+      "executor_direct_mutation_denied",
+      "evidence_and_fact_operations",
+      "atomic_notification_delivery_command",
+      "outbox_lease_recovery",
+      "unknown_outcome_reconciliation_and_duplicate_result",
+      "capability_pair_filter",
+      "claim_renewal",
+      "expired_claim_fencing_repair",
+      "immutable_completion_and_dependency_release",
+      "proposal_commit_hash_and_restart",
+      "memory_activation_supersession",
+      "bootstrap_database_package",
+      "stale_heartbeat_emergency_intent",
+      "typed_quarantine_four_defects",
+      "principal_and_role_replay_denial",
+      "proposal_stale_sibling_and_dependent_isolation",
+      "memory_cas_and_immutability",
+      "approval_expiry_revocation_maintenance_gates",
+      "dependency_cycle_rejected",
+      "dst_gap_and_fold_policies",
+      "claim_run_rollback_and_stage_preservation",
+      "all_ten_operations_principal_authorization",
+      "memory_read_role_and_sensitivity_scope",
+      "out_of_order_provider_result_preserves_success",
+      "recurrence_identity_and_schedule_update",
+      "delayed_heartbeat_cannot_revive_executor",
+      "five_stage_single_task_crash_recovery_preserves_hashes",
+      "revoked_scope_blocks_idempotent_replay",
+      "proposal_conflicting_invalid_ambiguous_isolation"
+    ],
+    "offline_passed": 51,
+    "offline_historical_integration_placeholders_skipped": 26,
+    "accepted_phase1_evidence_validator": "passed",
+    "new_15_session_races": "not reached after Phase 2 stop",
+    "complete_acceptance": "incomplete; do not equate 31-check suite with all acceptance gates"
   },
   "phase2_integration": {
-    "attempted": 0,
-    "passed": 0,
-    "failed": 0,
-    "status": "not reached after regression stop"
+    "status": "failed at first compatible work.next",
+    "passed": 4,
+    "failed": 1,
+    "checks_passed": [
+      "executor_registration_with_attested_capabilities",
+      "heartbeat_freshness_and_running_count",
+      "delayed_heartbeat_rejected",
+      "incompatible_capability_no_claim"
+    ],
+    "failed_check": "capability_compatible_atomic_claim",
+    "expected": "CLAIMED response with matching occurrence, durable claim/run and bounded work_package",
+    "observed": "internal_error [42702]",
+    "raw_error": "column reference \"r\" is ambiguous",
+    "source": "ecos_meta.work_package(jsonb,jsonb), retry_policy to_jsonb(r)",
+    "deferred": "all subsequent Phase 2 checks and concurrency"
   },
   "concurrency": "not reached; no new 15-session acceptance",
   "mechanisms": {
-    "executor_registry": "DRAFT_UNVERIFIED",
-    "heartbeat_stale_detection": "DRAFT_UNVERIFIED",
-    "capability_routing": "REGRESSION_FAILED",
+    "executor_registry": "FOCUSED_SYNTHETIC_CHECK_PASSED; complete acceptance deferred",
+    "heartbeat_stale_detection": "fresh heartbeat and delayed rejection passed; stale sweep deferred",
+    "capability_routing": "incompatible pair rejected; compatible work.next fails package assembly",
     "resource_governance": "DRAFT_UNVERIFIED",
-    "work_package": "DRAFT_UNVERIFIED",
-    "event_dependency_release": "DRAFT_UNVERIFIED",
+    "work_package": "FAILED_42702",
+    "event_dependency_release": "Phase 1 dependency suite passed; Phase 2 wakeup acceptance deferred",
     "recovery_sweep": "DRAFT_UNVERIFIED",
     "vertical_slices": "DRAFT_TESTS_NOT_REACHED",
     "shadow_comparison": "NOT_EXECUTED"
   },
   "security_advisor": {
     "persistent_findings": 0,
-    "candidate_verified": false
+    "candidate_verified": false,
+    "note": "Fresh hosted advisor at unchanged migration 18; candidate full security acceptance deferred"
   },
   "secret_scan": {
     "status": "passed",
-    "files_checked": 270,
+    "files_checked": 280,
     "findings": [],
-    "scope": "tracked and nonignored untracked repository files; credential-pattern scan; no canonical secret retrieved in this session",
-    "exact_secret_comparison": "not performed; secret was not needed or retrieved"
+    "scope": "tracked and nonignored untracked files; credential patterns; no persistent secret retrieved",
+    "exact_secret_comparison": "not performed; canonical secret not retrieved"
   },
   "portability": {
     "standard_postgresql_rebuild": "passed on 17.11",
@@ -71,9 +118,9 @@
     "production_verified": false,
     "candidate_accepted": false
   },
-  "stop_condition": "User instruction: STOP affected work if Phase 1 regression breaks materially.",
+  "stop_condition": "Owner instruction: if any Phase 1 regression or material Phase 2 defect remains, STOP and diagnose without stacking repairs.",
   "blockers": [
-    "Candidate breaks governed work.claim with SQLSTATE 42725. Implementation stopped; candidate must not be installed or merged."
+    "Migration 20 work_package has PL/pgSQL r variable / SQL alias ambiguity (42702), preventing compatible work.next. New repair requires owner authorization."
   ],
   "deferred": [
     "Phase 2 integration checks and 15-session regressions",
@@ -88,8 +135,68 @@
     "Persistent migration and hosted Phase 1/Phase 2 acceptance"
   ],
   "disposable_cleanup": {
-    "attempt_001": "Exact pg_ctl directory/PID 41224 verified; clean fast stop succeeded after startup output-handle timeout.",
-    "attempt_002": "Harness finally stopped disposable server."
+    "historical": "Original attempt evidence preserved unchanged",
+    "repair_attempt_001": "new disposable server stopped in finally",
+    "repair_attempt_002": "new diagnostic disposable server stopped in finally"
   },
-  "push_status": "BLOCKED_AUTO_REVIEW: destination authorization not established; no push executed"
+  "push_status": "Exact origin approved and pre-repair remote 519f4a7 verified; new commits pending push at document generation. Final handoff records verified remote state.",
+  "pre_repair_head": "519f4a7a5a918950bcd74da984d76e8b2fb7f5fe",
+  "historical_stop_preserved_at": "519f4a7a5a918950bcd74da984d76e8b2fb7f5fe",
+  "original_regression": {
+    "classification": "PHASE2_IMPLEMENTATION_DEFECT",
+    "sqlstate": "42725",
+    "introducing_commit": "fb32cfacd86ed1a5773556369242f479b741c33c",
+    "migration": 20,
+    "repair_migration": 21,
+    "status": "corrected; all 31 Phase 1 SQL checks pass",
+    "before_evidence": "docs/evidence/phase2/attempt-002.json",
+    "after_evidence": "docs/evidence/phase2/repair-021-attempt-001.json"
+  },
+  "new_regression": {
+    "classification": "PHASE2_IMPLEMENTATION_DEFECT",
+    "sqlstate": "42702",
+    "introducing_commit": "fb32cfacd86ed1a5773556369242f479b741c33c",
+    "migration": 20,
+    "root_cause": "Unused PL/pgSQL r jsonb variable conflicts with retry_policy table alias r in to_jsonb(r).",
+    "phase1_baseline": "not present; work_package is introduced by migration 20",
+    "smallest_repair": "Future append-only migration replacing only work_package with the unused r jsonb declaration removed; no repair applied in this run.",
+    "requires_owner_authorization": true,
+    "phase1_contract_or_architecture_change": false,
+    "data_integrity": "Failure rolls back claim, run, attempt count, reservations and package; measured claim/run/package counts zero, occurrence ready attempt_count 0 record_version 1.",
+    "security_portability": "Availability defect on standard PostgreSQL; no observed authorization bypass or persistent corruption. Do not change global plpgsql.variable_conflict to mask it."
+  },
+  "repair_evidence": [
+    "docs/evidence/phase2/repair-021-attempt-001.json",
+    "docs/evidence/phase2/repair-021-attempt-002.json",
+    "docs/evidence/phase2/repair-021-diagnosis.json",
+    "docs/evidence/phase2/repair-021-bounded-diff.json",
+    "docs/evidence/phase2/repair-021-persistent-readback.json",
+    "docs/evidence/phase2/repair-021-security-advisor.json",
+    "docs/evidence/phase2/repair-021-offline-checks.json"
+  ],
+  "required_specific_proofs": {
+    "capability_pair_filter": "PASS Phase 1",
+    "valid_claim": "PASS Phase 1 work.claim; FAIL Phase 2 work.next",
+    "capability_rejection": "PASS both Phase 1 and early Phase 2",
+    "attempt_limit_removal": "PASS empty/only attempt_limit/mixed reason cases",
+    "claim_fencing": "PASS Phase 1",
+    "resource_reservation": "DEFERRED at new stop",
+    "renewal": "PASS Phase 1",
+    "expiry_recovery": "PASS Phase 1; new recovery.sweep deferred",
+    "completion": "PASS Phase 1; Phase 2 slice deferred",
+    "resource_release": "DEFERRED",
+    "no_duplicate_claim": "Failed work.next left zero claims; new 15-session contention not reached"
+  },
+  "schema_object_drift": {
+    "status": "passed",
+    "migrations_1_through_20_byte_unchanged": true,
+    "migration21_only_function_change": "reserve_resources JSONB extraction parentheses",
+    "migration21_sha256": "3d3a5a48224c111af93be6fcbad12b25ef6cb14fba27e5a9f5ecfa9f3a3a9761",
+    "migration21_statement_scope": [
+      "SET LOCAL ROLE ecos_owner",
+      "CREATE OR REPLACE FUNCTION ecos_meta.reserve_resources()",
+      "RESET ROLE"
+    ],
+    "schema_object_drift": "Static migration scope verified; full candidate runtime catalog/security acceptance deferred after new stop"
+  }
 }

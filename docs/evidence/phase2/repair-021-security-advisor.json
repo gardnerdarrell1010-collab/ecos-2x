@@ -1,0 +1,12 @@
+{
+  "scope": "Persistent migration-18 database only; candidate security acceptance incomplete after regression stop",
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"result\":{\"lints\":[]}}"
+      }
+    ],
+    "isError": false
+  }
+}

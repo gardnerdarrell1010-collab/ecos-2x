@@ -1,0 +1,79 @@
+{
+  "diagnostic_only": true,
+  "persistent_access": false,
+  "phase2_completed_checks": [
+    "executor_registration_with_attested_capabilities",
+    "heartbeat_freshness_and_running_count",
+    "delayed_heartbeat_rejected",
+    "incompatible_capability_no_claim"
+  ],
+  "migration_head": 21,
+  "identity": {
+    "singleton": true,
+    "architecture_version": "2.x",
+    "schema_version": "1.0.0",
+    "environment": "development",
+    "authority": "non_production",
+    "provider_effects_enabled": false
+  },
+  "attempt_limit_cases": [
+    [
+      [],
+      [],
+      false
+    ],
+    [
+      [
+        "attempt_limit"
+      ],
+      [],
+      false
+    ],
+    [
+      [
+        "attempt_limit",
+        "capability"
+      ],
+      [
+        "capability"
+      ],
+      true
+    ]
+  ],
+  "repair_function_definition": "CREATE OR REPLACE FUNCTION ecos_meta.reserve_resources()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\ndeclare r record; s jsonb;\nbegin\n for r in select * from ecos.stage_resource_requirement where stage_definition_id=new.stage_definition_id order by provider,metric loop\n  perform 1 from ecos.resource_budget where provider=r.provider and metric=r.metric for update;\n end loop;\n s:=ecos_meta.selection(new.occurrence_id,new.executor_instance_id,clock_timestamp());\n if ((s->'reason_codes')-'attempt_limit')<>'[]'::jsonb then raise exception 'gate_blocked' using errcode='23514'; end if;\n return new;\nend $function$\n",
+  "failed_operation": "work.next",
+  "observed_result": {
+    "code": "internal_error",
+    "message": "internal_error [42702]",
+    "retryable": false,
+    "correlation_id": "f68403a1-1f1a-43a0-a475-44eb00e94f0e"
+  },
+  "failing_test_source_line": 54,
+  "after_governed_failure": {
+    "occurrence": [
+      "ready",
+      0,
+      1
+    ],
+    "claims": 0,
+    "runs": 0,
+    "packages": 0
+  },
+  "raw_exception": {
+    "type": "AmbiguousColumn",
+    "sqlstate": "42702",
+    "message": "column reference \"r\" is ambiguous\nLINE 9:  'retry_policy',(select to_jsonb(r) from ecos.work_definitio...\n                                         ^\nDETAIL:  It could refer to either a PL/pgSQL variable or a table column.\nQUERY:  payload:=jsonb_build_object('occurrence',to_jsonb(w),'stage',to_jsonb(s),\n 'task',case when t.id is null then null else jsonb_build_object('id',t.id,'title',t.title,'record_version',t.record_version,'lifecycle_state',t.lifecycle_state) end,\n 'operation',(select document from ecos_meta.operation_contract where name=wc.operation),\n 'capability_requirements',(select coalesce(jsonb_agg(jsonb_build_object('name',capability_name,'minimum_version',minimum_version)),'[]') from ecos.stage_capability_requirement where stage_definition_id=s.id),\n 'source_references',wc.source_references,'memory_references',wc.memory_references,'input',wc.input,\n 'deadline_sla',(select to_jsonb(p) from ecos.work_priority p where occurrence_id=w.id),\n 'approval_context',(select coalesce(jsonb_agg(to_jsonb(a)),'[]') from ecos.work_approval a where occurrence_id=w.id),\n 'correlation_id',ctx->'correlation_id','fence',f,'context_version',wc.record_version,\n 'retry_policy',(select to_jsonb(r) from ecos.work_definition d join ecos.retry_policy r on r.id=d.retry_policy_id where d.id=w.work_definition_id),\n 'idempotency',jsonb_build_object('scope','principal + operation + key','occurrence_key',w.occurrence_key))\nCONTEXT:  PL/pgSQL function ecos_meta.work_package(jsonb,jsonb) line 12 at assignment\nPL/pgSQL function ecos_meta.apply_operation(text,jsonb,jsonb) line 25 at assignment",
+    "detail": "It could refer to either a PL/pgSQL variable or a table column.",
+    "context": "PL/pgSQL function ecos_meta.work_package(jsonb,jsonb) line 12 at assignment\nPL/pgSQL function ecos_meta.apply_operation(text,jsonb,jsonb) line 25 at assignment"
+  },
+  "after_raw_diagnostic_rollback": {
+    "occurrence": [
+      "ready",
+      0,
+      1
+    ],
+    "claims": 0,
+    "runs": 0,
+    "packages": 0
+  }
+}

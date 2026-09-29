@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "migrations_1_through_20_byte_unchanged": true,
+  "migration21_only_function_change": "reserve_resources JSONB extraction parentheses",
+  "migration21_sha256": "3d3a5a48224c111af93be6fcbad12b25ef6cb14fba27e5a9f5ecfa9f3a3a9761",
+  "migration21_statement_scope": [
+    "SET LOCAL ROLE ecos_owner",
+    "CREATE OR REPLACE FUNCTION ecos_meta.reserve_resources()",
+    "RESET ROLE"
+  ],
+  "schema_object_drift": "Static migration scope verified; full candidate runtime catalog/security acceptance deferred after new stop"
+}
