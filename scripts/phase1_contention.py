@@ -60,7 +60,7 @@ def main():
                 raise ValueError("Executor binding already in use; no fixture changes made")
             prepared = True  # Cleanup also covers an indeterminate seed COMMIT.
             owner = db.execute("select current_user").fetchone()[0]
-            member = db.execute("select pg_has_role(current_user,'executor','MEMBER')").fetchone()[0]
+            member = db.execute("select pg_has_role(current_user,'executor','SET')").fetchone()[0]
             if not member:
                 db.execute(sql.SQL("grant executor to {}").format(sql.Identifier(owner)))
                 membership_added = True
