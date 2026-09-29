@@ -1,0 +1,5 @@
+select jsonb_build_object(
+ 'relations',(select jsonb_agg(jsonb_build_array(n.nspname,c.relname,c.relkind) order by n.nspname,c.relname) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('ecos','ecos_meta','ecos_migration') and c.relkind in ('r','v','S')),
+ 'functions',(select jsonb_agg(jsonb_build_array(n.nspname,p.proname,pg_get_function_identity_arguments(p.oid),md5(replace(pg_get_functiondef(p.oid),chr(13),''))) order by n.nspname,p.proname,pg_get_function_identity_arguments(p.oid)) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname in ('ecos','ecos_meta','ecos_migration')),
+ 'views',(select jsonb_agg(jsonb_build_array(schemaname,viewname,md5(replace(definition,chr(13),''))) order by schemaname,viewname) from pg_views where schemaname in ('ecos','ecos_meta','ecos_migration')),
+ 'ledger',(select jsonb_agg(jsonb_build_object('version',version,'name',name,'sha256',sha256) order by version) from ecos_meta.schema_migration)) as catalog;

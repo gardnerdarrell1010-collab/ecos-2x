@@ -1,0 +1,23 @@
+{
+  "observed_at": "2026-09-29T18:36:09.381153+00:00",
+  "workbook_id": "1LF0isNKZBgEbr8E_pzekSWJ8-iXGfGn3e3xteKuivu0",
+  "scope": "Two sampled time-admission predicates only, not full queue eligibility or global shadow parity",
+  "read_only": true,
+  "raw_rows_persisted": false,
+  "samples": [
+    {
+      "sample": "A025_time_gate",
+      "source_range": "Task Loop!Q26:AN26",
+      "enabled": true,
+      "due": true,
+      "source_values_sha256": "74f926cc47ab82f68f2c3fd81efea1a9294a617d6429212eae67e970a7724d70"
+    },
+    {
+      "sample": "A027_time_gate",
+      "source_range": "Task Loop!Q28:AN28",
+      "enabled": true,
+      "due": false,
+      "source_values_sha256": "2c307488bc25bb3259c439485b636aa63ca48e0f94793d3cd7f9331fb8411a09"
+    }
+  ]
+}

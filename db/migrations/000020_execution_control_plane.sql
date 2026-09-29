@@ -154,7 +154,7 @@ begin
   perform 1 from ecos.resource_budget where provider=r.provider and metric=r.metric for update;
  end loop;
  s:=ecos_meta.selection(new.occurrence_id,new.executor_instance_id,clock_timestamp());
- if (s->'reason_codes'-'attempt_limit')<>'[]'::jsonb then raise exception 'gate_blocked' using errcode='23514'; end if;
+ if ((s->'reason_codes')-'attempt_limit')<>'[]'::jsonb then raise exception 'gate_blocked' using errcode='23514'; end if;
  return new;
 end $$;
 create trigger reserve_resources before insert on ecos.work_claim for each row execute function ecos_meta.reserve_resources();
@@ -185,7 +185,7 @@ end $$;
 create trigger release_dependents after insert on ecos.stage_result for each row execute function ecos_meta.release_dependents();
 
 create function ecos_meta.work_package(ctx jsonb,f jsonb) returns jsonb language plpgsql set search_path=pg_catalog set timezone='UTC' as $$
-declare c ecos.work_claim; w ecos.work_occurrence; t ecos.task; wc ecos.work_context; s ecos.work_stage_definition; refs jsonb; r jsonb; payload jsonb; bytes_ bigint;
+declare c ecos.work_claim; w ecos.work_occurrence; t ecos.task; wc ecos.work_context; s ecos.work_stage_definition; refs jsonb; payload jsonb; bytes_ bigint;
 begin
  c:=ecos_meta.check_fence(ctx,f); select * into w from ecos.work_occurrence where id=c.occurrence_id;
  select * into wc from ecos.work_context where occurrence_id=w.id;
@@ -235,7 +235,7 @@ end $$;
 
 alter function ecos_meta.apply_operation(text,jsonb,jsonb) rename to apply_operation_phase1;
 create function ecos_meta.apply_operation(op text,ctx jsonb,args jsonb) returns jsonb language plpgsql set search_path=pg_catalog set timezone='UTC' as $$
-declare data_ jsonb:='{}'; status_ text:='committed'; inst uuid:=(ctx->>'executor_instance_id')::uuid; principal uuid:=(ctx->>'principal_id')::uuid; corr uuid:=(ctx->>'correlation_id')::uuid; s text; pol ecos_meta.executor_policy; count_ int; c ecos.work_claim; run_ ecos.execution_run; retry_ ecos.retry_policy; until_ timestamptz; w record; n int:=0; p jsonb; prior ecos.proposal_submission; oid uuid; pressure_ text;
+declare data_ jsonb:='{}'; status_ text:='committed'; inst uuid:=(ctx->>'executor_instance_id')::uuid; principal uuid:=(ctx->>'principal_id')::uuid; corr uuid:=(ctx->>'correlation_id')::uuid; s text; pol ecos_meta.executor_policy; count_ int; c ecos.work_claim; run_ ecos.execution_run; retry_ ecos.retry_policy; until_ timestamptz; w record; n int:=0; proposal_ jsonb; prior ecos.proposal_submission; pressure_ text;
 begin
  if op='executor.register' then
   perform pg_advisory_xact_lock(684026,200);
@@ -272,19 +272,19 @@ begin
   perform ecos_meta.execution_event(run_.id,case when op='work.fail' then 'failed' else 'cancelled' end,args->>'reason');
   data_:=jsonb_build_object('occurrence_id',c.occurrence_id,'retry_at',until_);
  elsif op='semantic.proposal.submit' then
-  c:=ecos_meta.check_fence(ctx,args->'fence'); p:=args->'proposal';
-  if not exists(select 1 from ecos.work_stage_definition where id=c.stage_definition_id and kind='semantic') or p->>'correlation_id'<>corr::text or ecos_meta.content_hash(p)<>p->>'content_hash' then raise exception 'invalid_contract' using errcode='22023'; end if;
-  select * into prior from ecos.proposal_submission where proposal_id=(p->>'id')::uuid;
-  if found then if prior.content_hash<>p->>'content_hash' or prior.principal_id<>principal or prior.occurrence_id<>c.occurrence_id then raise exception 'idempotency_conflict' using errcode='23505'; end if;
-  else insert into ecos.proposal_submission values((p->>'id')::uuid,c.occurrence_id,principal,p,p->>'content_hash',clock_timestamp()); end if;
-  data_:=jsonb_build_object('proposal_id',p->'id','content_hash',p->'content_hash');
+  c:=ecos_meta.check_fence(ctx,args->'fence'); proposal_:=args->'proposal';
+  if not exists(select 1 from ecos.work_stage_definition where id=c.stage_definition_id and kind='semantic') or proposal_->>'correlation_id'<>corr::text or ecos_meta.content_hash(proposal_)<>proposal_->>'content_hash' then raise exception 'invalid_contract' using errcode='22023'; end if;
+  select * into prior from ecos.proposal_submission where proposal_id=(proposal_->>'id')::uuid;
+  if found then if prior.content_hash<>proposal_->>'content_hash' or prior.principal_id<>principal or prior.occurrence_id<>c.occurrence_id then raise exception 'idempotency_conflict' using errcode='23505'; end if;
+  else insert into ecos.proposal_submission values((proposal_->>'id')::uuid,c.occurrence_id,principal,proposal_,proposal_->>'content_hash',clock_timestamp()); end if;
+  data_:=jsonb_build_object('proposal_id',proposal_->'id','content_hash',proposal_->'content_hash');
  elsif op='resource.observe' then
   if (args->>'observed_at')::timestamptz>clock_timestamp()+interval '5 seconds' then raise exception 'invalid_contract' using errcode='22023'; end if;
   insert into ecos.resource_usage_window(provider,metric,observed_at,value,evidence_hash,principal_id) values(args->>'provider',args->>'metric',(args->>'observed_at')::timestamptz,(args->>'value')::bigint,args->>'evidence_hash',principal);
   pressure_:=ecos_meta.resource_pressure(args->>'provider',args->>'metric',clock_timestamp()); data_:=jsonb_build_object('pressure',pressure_);
  elsif op='recovery.sweep' then
   -- Safety net only: bounded, object-scoped work; no global scoring or provider calls.
-  for w in select o.id from ecos.work_occurrence o join ecos_meta.object_grant g on g.record_type='work_occurrence' and g.record_id=o.id and g.principal_id=principal where o.state in ('claimed','running') and exists(select 1 from ecos.work_claim c where c.occurrence_id=o.id and c.state='active' and c.expires_at<=clock_timestamp()) order by o.id for update of o skip locked limit (args->>'limit')::int loop
+  for w in select o.id from ecos.work_occurrence o join ecos_meta.object_grant g on g.record_type='work_occurrence' and g.record_id=o.id and g.principal_id=principal where o.state in ('claimed','running') and exists(select 1 from ecos.work_claim claim_ where claim_.occurrence_id=o.id and claim_.state='active' and claim_.expires_at<=clock_timestamp()) order by o.id for update of o skip locked limit (args->>'limit')::int loop
    perform ecos_meta.repair_expired_claim(w.id,corr); n:=n+1;
   end loop;
   for w in select o.id from ecos.work_occurrence o join ecos_meta.object_grant g on g.record_type='work_occurrence' and g.record_id=o.id and g.principal_id=principal where o.state in ('pending','ready','retry_wait') and o.due_at<=clock_timestamp() and (o.retry_at is null or o.retry_at<=clock_timestamp()) and not exists(select 1 from ecos.work_wakeup x where x.occurrence_id=o.id and x.consumed_at is null) and not exists(select 1 from ecos.work_dependency d where d.occurrence_id=o.id and not exists(select 1 from ecos.stage_result r where r.occurrence_id=d.prerequisite_occurrence_id and r.result_schema_id=d.required_result_schema_id and (d.required_result_hash is null or d.required_result_hash=r.content_hash))) order by o.id limit (args->>'limit')::int loop
@@ -307,6 +307,7 @@ create view ecos.v_resource_pressure with(security_invoker=true) as
  select m.*,b.hard_limit,b.elevated_limit,b.window_seconds,b.source quota_source,b.verification,b.effective_at,ecos_meta.resource_pressure(m.provider,m.metric,statement_timestamp()) pressure
  from ecos.resource_metric m join ecos.resource_budget b using(provider,metric);
 create view ecos.v_current_claims with(security_invoker=true) as select c.*,statement_timestamp()-c.acquired_at age from ecos.work_claim c where state='active';
+create or replace view ecos.v_work_readiness with(security_invoker=true) as select w.id occurrence_id,i.id executor_instance_id,ecos_meta.selection(w.id,i.id,statement_timestamp()) selection_evidence from ecos.work_occurrence w cross join ecos.executor_instance i;
 create view ecos.v_ready_work with(security_invoker=true) as select * from ecos.v_work_readiness where (selection_evidence->>'eligible')::boolean;
 create view ecos.v_blocked_work with(security_invoker=true) as select * from ecos.v_work_readiness where not (selection_evidence->>'eligible')::boolean;
 create view ecos.v_recent_failures with(security_invoker=true) as select id,occurrence_id,executor_instance_id,state,created_at,ended_at from ecos.execution_run where state in ('failed','abandoned') and created_at>statement_timestamp()-interval '24 hours';
@@ -324,6 +325,44 @@ create function ecos.control_plane_health() returns jsonb language sql security 
  'max_connections',current_setting('max_connections')::int,
  'visible_lock_waits',(select count(*) from pg_stat_activity where datname=current_database() and wait_event_type='Lock'),
  'pool_utilization',null,'query_latency',null,'unavailable_metrics','["pool_utilization","query_latency","host_cpu","host_bandwidth"]'::jsonb) $$;
+
+-- New package operations preserve Phase 1's authorization-before-idempotent-replay rule.
+create function ecos_meta.require_package_scope(principal uuid,package_ jsonb) returns void language plpgsql set search_path=pg_catalog as $$
+begin
+ perform ecos_meta.require_access(principal,'work_occurrence',(package_->'occurrence'->>'id')::uuid);
+ if package_->'task'->>'id' is not null then perform ecos_meta.require_access(principal,'task',(package_->'task'->>'id')::uuid); end if;
+ perform ecos_meta.verify_sources(principal,coalesce(package_->'source_references','[]')||coalesce(package_->'memory_references','[]'));
+end $$;
+create or replace function ecos.operate(operation text,request jsonb) returns jsonb language plpgsql security definer set search_path=pg_catalog set timezone='UTC' as $$
+declare p ecos_meta.principal_binding; ctx jsonb; args jsonb; hash_ text; prior ecos_meta.operation_receipt; result_ jsonb; response_name text; err text; detail_ text; code_ text; corr uuid;
+begin
+ ctx:=request->'context'; args:=request->'arguments'; corr:=(ctx->>'correlation_id')::uuid;
+ if octet_length(request::text)>1048576 then raise exception 'invalid_contract' using errcode='22023'; end if;
+ if not exists(select 1 from ecos_meta.operation_contract where name=operation) then raise exception 'invalid_contract' using errcode='22023'; end if;
+ perform ecos_meta.assert_contract(operation||'-request',request);
+ p:=ecos_meta.current_principal(); if not coalesce(ecos_meta.operation_authorized(operation,p.role_name),false) then raise exception 'forbidden' using errcode='42501'; end if;
+ if p.principal_id::text<>ctx->>'principal_id' or p.executor_instance_id::text is distinct from ctx->>'executor_instance_id' then raise exception 'forbidden' using errcode='42501'; end if;
+ if not exists(select 1 from ecos_meta.principal_operation po where po.principal_id=p.principal_id and po.operation=operate.operation) then raise exception 'forbidden' using errcode='42501'; end if;
+ if not exists(select 1 from ecos_meta.database_identity where environment='development' and authority='non_production' and not provider_effects_enabled) then raise exception 'gate_blocked' using errcode='23514'; end if;
+ perform ecos_meta.require_operation_scope(operation,args,p.principal_id);
+ hash_:=ecos_meta.content_hash(request);
+ perform pg_advisory_xact_lock(hashtextextended(p.principal_id::text||':'||operation||':'||(ctx->>'idempotency_key'),0));
+ select * into prior from ecos_meta.operation_receipt r where r.principal_id=p.principal_id and r.operation=operate.operation and r.idempotency_key=ctx->>'idempotency_key';
+ if found then if prior.request_hash<>hash_ then raise exception 'idempotency_conflict' using errcode='23505'; end if; if operation='work.claim' and prior.result->'claim'<>'null'::jsonb then perform ecos_meta.require_access(p.principal_id,'work_occurrence',(prior.result->'claim'->>'occurrence_id')::uuid); end if; if operation='work.next' and prior.result->>'status'='CLAIMED' then perform ecos_meta.require_package_scope(p.principal_id,prior.result->'data'->'work_package'); elsif operation='work.package' then perform ecos_meta.require_package_scope(p.principal_id,prior.result->'data'); end if; return prior.result; end if;
+ if operation in ('approval.decide','task.transition','task.evidence.attach','proposal.commit') then perform pg_advisory_xact_lock(684026,20); else perform pg_advisory_xact_lock_shared(684026,20); end if;
+ perform 1 from ecos_meta.control for share;
+ if exists(select 1 from ecos_meta.control where maintenance) then raise exception 'gate_blocked' using errcode='23514'; end if;
+ if operation='proposal.commit' then result_:=ecos_meta.commit_proposal(ctx,args->'proposal'); else result_:=ecos_meta.apply_operation(operation,ctx,args); end if;
+ select split_part(split_part(document->>'response_schema','/v1/',2),'.schema.json',1) into response_name from ecos_meta.operation_contract where name=operation;
+ perform ecos_meta.assert_contract(response_name,result_);
+ insert into ecos_meta.operation_receipt values(p.principal_id,operation,ctx->>'idempotency_key',hash_,result_,clock_timestamp());
+ insert into ecos_meta.operation_audit(operation,principal_id,correlation_id,causation_id,request_hash,result_hash) values(operation,p.principal_id,corr,(ctx->>'causation_id')::uuid,hash_,ecos_meta.content_hash(result_));
+ return result_;
+exception when others then
+ get stacked diagnostics err=message_text,detail_=pg_exception_detail;
+ code_:=case when err in ('invalid_contract','unauthenticated','forbidden','stale_version','invalid_transition','gate_blocked','idempotency_conflict','expired_fence','unknown_outcome') then err when sqlstate in ('22023','22P02','22007','22008') then 'invalid_contract' when sqlstate='42501' then 'forbidden' when sqlstate='23505' then 'idempotency_conflict' when sqlstate='40001' then 'stale_version' when sqlstate in ('23514','23503') then 'gate_blocked' else 'internal_error' end;
+ return jsonb_build_object('code',code_,'message',code_||case when code_='internal_error' then ' ['||sqlstate||']' else '' end||case when detail_ like 'contract:%' then ' ('||detail_||')' else '' end,'correlation_id',coalesce(corr,gen_random_uuid()),'retryable',false);
+end $$;
 
 revoke all on all functions in schema ecos_meta from public;
 revoke all on function ecos.control_plane_health() from public;

@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "accepted_migrations_1_to_18": "byte-identical",
+  "candidate_head": 20,
+  "tested_ledger_matches_files": true,
+  "files_scanned": 295,
+  "secret_pattern_findings": [],
+  "canonical_secret_retrieved": false,
+  "exact_secret_comparison": "not needed; no persistent credentials retrieved",
+  "patterns": [
+    "private_key",
+    "github_token",
+    "openai_key",
+    "aws_access_key",
+    "database_url_password",
+    "supabase_key"
+  ]
+}

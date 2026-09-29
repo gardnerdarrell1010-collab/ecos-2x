@@ -6,14 +6,27 @@ No hosted credentials or production providers are used.
 """
 import argparse
 from datetime import datetime,timezone,timedelta
-import getpass,hashlib,json,os,secrets,socket,subprocess,tempfile
+import getpass,hashlib,json,os,secrets,socket,subprocess,tempfile,traceback
 from pathlib import Path
 import psycopg
 from psycopg.types.json import Jsonb
 from migrations import inventory,render
 from phase1_recovery_completion import run_sql_suite
-from phase1_live_completion import Fixture,contend,uid
+from phase1_live_completion import Fixture as Phase1Fixture,contend,uid
 ROOT=Path(__file__).resolve().parents[1]
+
+class Fixture(Phase1Fixture):
+    def cleanup(self):
+        with self.target.connect() as db:
+            # Fixture-only teardown. Preserve immutable runs/events and end residual
+            # test claims; this is not an executor mutation interface.
+            db.execute("update ecos.work_claim set state='revoked',record_version=record_version+1 where executor_instance_id=%s and state='active'",(self.inst,))
+            db.execute("update ecos.execution_run set state='cancelled',ended_at=clock_timestamp(),record_version=record_version+1 where executor_instance_id=%s and state='started'",(self.inst,))
+            db.execute("update ecos.work_occurrence set state='cancelled',record_version=record_version+1 where work_definition_id=%s and state not in ('succeeded','cancelled','dead_lettered','failed')",(self.definition,))
+            db.execute('delete from ecos_meta.principal_binding where principal_id=%s',(self.p,))
+            db.execute('update ecos.executor set enabled=false,record_version=record_version+1 where id=%s',(self.ex,))
+            for role in self.added_roles:
+                db.execute(psycopg.sql.SQL('revoke {} from postgres').format(psycopg.sql.Identifier(role)))
 
 class LocalTarget:
     def __init__(self,password,port):self.password=password;self.port=port
@@ -21,7 +34,7 @@ class LocalTarget:
 
 def tests(target):
     f=Fixture(target);f.seed();checks=[]
-    def mark(name):checks.append(name)
+    def mark(name):checks.append(name);print('PASS '+name,flush=True)
     def admin(q,args=()):
         with target.connect() as db:
             cur=db.execute(q,args)
@@ -83,9 +96,9 @@ def tests(target):
         r=claim();assert r['data']['claim']['occurrence_id']==second;good('work.complete',f.result_arguments(r['data']));mark('lost_transient_wakeup_recovered')
         # Loss recovery preserves immutable results and rejects the abandoned fence.
         lost=work();r=claim();old=fence(r)
-        admin("update ecos.work_claim set expires_at=clock_timestamp()-interval '1 second',record_version=record_version+1 where id=%s",(old['claim_id'],))
+        admin("update ecos.work_claim set acquired_at=clock_timestamp()-interval '2 minutes',expires_at=clock_timestamp()-interval '1 second',record_version=record_version+1 where id=%s",(old['claim_id'],))
         good('recovery.sweep',{'limit':100},'operations_api');assert admin('select count(*) from ecos.repair_action a join ecos.integrity_finding i on i.id=a.finding_id where i.entity_id=%s',(lost,))[0][0]==1
-        assert op('work.release',{'fence':old,'reason':'stale'}).get('code')=='stale_version'
+        assert op('work.release',{'fence':old,'reason':'stale'}).get('code')=='expired_fence'
         r=claim();assert fence(r)['claim_version']>old['claim_version'];good('work.complete',f.result_arguments(r['data']));mark('executor_loss_expired_fence_repair_readback')
         # A latest old observation cannot claim freshness.
         admin("insert into ecos.heartbeat(executor_instance_id,observed_at,received_at,valid_until,availability,evidence_hash) values(%s,clock_timestamp()-interval '1 hour',clock_timestamp(),clock_timestamp()-interval '59 minutes','available',%s)",(f.inst,'a'*64))
@@ -161,20 +174,32 @@ def main():
             db.autocommit=True
             report['postgresql']=db.execute('select version()').fetchone()[0]
             chain=render(inventory(ROOT/'db/migrations')).replace('\\set ON_ERROR_STOP on\n','',1)
-            db.execute(chain,prepare=False);report['migration_rebuild']='passed'
+            db.execute(render(inventory(ROOT/'db/migrations')[:18]).replace('\\set ON_ERROR_STOP on\n','',1),prepare=False)
+            from phase2_apply_plan import migration_sql
+            db.execute(migration_sql(),prepare=False);report['migration_rebuild']='passed'
+            report['guarded_persistent_transport_preflight']='passed'
             db.execute(chain,prepare=False);report['migration_repeat']='passed'
             report['phase1_regression']=run_sql_suite(db)
+            cursor=db.execute((ROOT/'db/tests/phase2_smoke.sql').read_text(),prepare=False)
+            smoke=[]
+            while True:
+                if cursor.description:smoke+=cursor.fetchall()
+                if not cursor.nextset():break
+            report['persistent_smoke_preflight']=smoke
+            report['catalog']=db.execute((ROOT/'db/tests/phase2_catalog_readback.sql').read_text()).fetchone()[0]
         report['phase2_checks']=tests(target)
+        from phase2_acceptance import additional
+        report['additional_acceptance']=additional(target,Fixture)
         f=Fixture(target);f.seed()
         try:report['concurrency']={'same_work':contend(f,1),'different_work':contend(f,15)}
         finally:f.cleanup()
         assert all(x['status']=='passed' for x in report['concurrency'].values())
         report['status']='passed'
     except Exception as exc:
-        report['error_type']=type(exc).__name__;report['error']=str(exc).replace(password,'[REDACTED]')[:2000]
+        report['traceback']=traceback.format_exc().replace(password,'[REDACTED]');report['error_type']=type(exc).__name__;report['error']=str(exc).replace(password,'[REDACTED]')[:2000]
     finally:
         if running:native('pg_ctl',['-D',data,'-m','fast','-w','stop']);report['disposable_server_stopped']=True
         args.report.parent.mkdir(parents=True,exist_ok=True);args.report.write_text(json.dumps(report,indent=2,default=str)+'\n',encoding='utf-8',newline='\n')
-    print(json.dumps({k:v for k,v in report.items() if k not in ('concurrency',)},default=str))
+    print(json.dumps({k:v for k,v in report.items() if k not in ('concurrency','catalog','additional_acceptance')},default=str))
     return 0 if report['status']=='passed' else 1
 if __name__=='__main__':raise SystemExit(main())

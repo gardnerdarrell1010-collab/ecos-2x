@@ -18,8 +18,7 @@
         },
         "reason": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 200
+          "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
         },
         "until": {
           "type": "string",
