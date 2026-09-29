@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "verified_at": "2026-09-29T17:08:04.309902+00:00",
   "baseline_commit": "375f3f61374aeaa52d28dc79fb80d14362c1e8f8",
-  "resulting_commit": null,
+  "resulting_commit": "a5d5f372e68a4bb14902df26a51d07563b201da0",
   "resulting_commit_scope": "Completion implementation commit; subsequent evidence-only commit and final remote HEAD appear in handoff.",
   "branch": "codex/phase-1-postgres-foundation",
   "supabase_project": {
@@ -477,8 +477,8 @@
     }
   },
   "git": {
-    "completion_implementation_commit": "22102337fa676a8ce357d4d6ea1bfabe975468ce",
-    "completion_prior_head": "29998d90806efd7f91d98ce1d0c7c8c9a4deb421"
+    "completion_implementation_commit": "a5d5f372e68a4bb14902df26a51d07563b201da0",
+    "completion_prior_head": "22fe95da6d973320ae9c295217f1186b35fe07b8"
   },
   "capacity_basis": {
     "designed_maximum_executors": 10,
