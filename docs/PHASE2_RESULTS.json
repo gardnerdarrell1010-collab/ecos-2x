@@ -1,0 +1,20 @@
+{
+  "status": "STOPPED_REGRESSION",
+  "baseline_commit": "c5731953a29256c013597cb04b938dff41f56de0",
+  "resulting_head": "fb32cfacd86ed1a5773556369242f479b741c33c",
+  "mechanisms": {
+    "executor_registry": "DRAFT_UNVERIFIED",
+    "heartbeat_stale_detection": "DRAFT_UNVERIFIED",
+    "capability_routing": "REGRESSION_FAILED",
+    "resource_governance": "DRAFT_UNVERIFIED",
+    "work_package": "DRAFT_UNVERIFIED",
+    "event_dependency_release": "DRAFT_UNVERIFIED",
+    "recovery_sweep": "DRAFT_UNVERIFIED",
+    "vertical_slices": "DRAFT_TESTS_NOT_REACHED",
+    "shadow_comparison": "NOT_EXECUTED"
+  },
+  "acceptance": false,
+  "phase3_recommendation": "Do not start Phase 3. Resume Phase 2 only with authorization to repair the stopped candidate regression, then complete every remaining acceptance gate.",
+  "evidence": "docs/PHASE2_VERIFICATION.json",
+  "push_status": "BLOCKED_AUTO_REVIEW: destination authorization not established; no push executed"
+}

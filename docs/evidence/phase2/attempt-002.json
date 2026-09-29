@@ -1,0 +1,14 @@
+{
+  "started_at": "2026-09-29T17:52:59.253348+00:00",
+  "status": "failed",
+  "provider_side_effects": false,
+  "ecos_1x_writes": false,
+  "authority_switch": false,
+  "runtime_directory": "C:\\Users\\info\\AppData\\Local\\Temp\\ecos-phase2-test-8cnmuocd",
+  "postgresql": "PostgreSQL 17.11 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit",
+  "migration_rebuild": "passed",
+  "migration_repeat": "passed",
+  "error_type": "AssertFailure",
+  "error": "claim: {\"code\": \"internal_error\", \"message\": \"internal_error [42725]\", \"retryable\": false, \"correlation_id\": \"8f0da50a-6606-4ae7-9fcf-4fc90482ca26\"}\nCONTEXT:  PL/pgSQL function inline_code_block line 78 at ASSERT",
+  "disposable_server_stopped": true
+}

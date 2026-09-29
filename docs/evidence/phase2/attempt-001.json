@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-09-29T17:50:00.208102+00:00",
+  "status": "failed",
+  "provider_side_effects": false,
+  "ecos_1x_writes": false,
+  "authority_switch": false,
+  "runtime_directory": "C:\\Users\\info\\AppData\\Local\\Temp\\ecos-phase2-test-sd_xt2ka",
+  "error_type": "TimeoutExpired",
+  "error": "Command '['C:\\\\Users\\\\info\\\\AppData\\\\Local\\\\Temp\\\\ecos-phase1-pg17\\\\binaries\\\\pgsql\\\\bin\\\\pg_ctl.exe', '-D', 'C:\\\\Users\\\\info\\\\AppData\\\\Local\\\\Temp\\\\ecos-phase2-test-sd_xt2ka\\\\data', '-l', 'C:\\\\Users\\\\info\\\\AppData\\\\Local\\\\Temp\\\\ecos-phase2-test-sd_xt2ka\\\\server.log', '-o', '-h 127.0.0.1 -p 55433 -c ssl=on -c max_connections=25 -c log_statement=none -c log_min_error_statement=panic', '-w', 'start']' timed out after 120 seconds"
+}

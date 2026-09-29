@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-09-29T17:58:01.589884+00:00",
+  "project": "loonpojawpfagzobxoko",
+  "project_name": "ECOS 2.x Development",
+  "region": "us-west-1",
+  "postgresql_major": 17,
+  "migration_head": 18,
+  "migration_name": "000018_replay_authorization_scope.sql",
+  "migration_sha256": "a2b56a7ff378784e652154f664e54cbe286709051359ae8ac90a9ffd5dfa3e70",
+  "environment": "development",
+  "authority": "non_production",
+  "provider_effects_enabled": false,
+  "phase2_executor_presence_exists": false,
+  "principal_bindings": 0,
+  "source": "fresh authenticated Supabase read-only SQL after stop"
+}

@@ -1,0 +1,23 @@
+{
+  "repository": "C:\\ECOS\\ecos-2x",
+  "expected_commit": "c5731953a29256c013597cb04b938dff41f56de0",
+  "initial_branch": "main",
+  "initial_working_tree": "clean",
+  "local_main": "c5731953a29256c013597cb04b938dff41f56de0",
+  "local_origin_main": "c5731953a29256c013597cb04b938dff41f56de0",
+  "remote_main": "c5731953a29256c013597cb04b938dff41f56de0",
+  "accepted_tag": "ecos-2x-phase1-accepted",
+  "tag_commit": "c5731953a29256c013597cb04b938dff41f56de0",
+  "remote_annotated_tag_object": "60ccb7f1d018b07e0003eb7f686ee1c1503ed6cc",
+  "phase1_evidence_integrity": "passed",
+  "phase1_release_gate": "PASSED",
+  "phase1_pending": [],
+  "baseline_offline_tests": {
+    "run": 77,
+    "passed": 51,
+    "skipped": 26,
+    "failed": 0
+  },
+  "bootstrap": "ECOS Loaded - Degraded: core authoritative records read; launcher enumeration unavailable",
+  "ecos_1x_writes": false
+}
