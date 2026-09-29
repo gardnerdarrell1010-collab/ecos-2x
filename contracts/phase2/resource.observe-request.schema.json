@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/resource.observe-request.schema.json",
+  "title": "resource.observe-request",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "metric": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "provider",
+        "metric",
+        "observed_at",
+        "value",
+        "evidence_hash"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

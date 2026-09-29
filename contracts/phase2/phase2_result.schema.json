@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+  "title": "phase2_result",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "correlation_id",
+    "status",
+    "data"
+  ],
+  "additionalProperties": false
+}

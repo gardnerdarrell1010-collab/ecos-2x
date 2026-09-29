@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/executor.register-request.schema.json",
+  "title": "executor.register-request",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "runtime": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "software_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "evidence_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "host",
+        "runtime",
+        "software_version",
+        "evidence_hash"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

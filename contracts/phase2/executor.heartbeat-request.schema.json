@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/executor.heartbeat-request.schema.json",
+  "title": "executor.heartbeat-request",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reported_running": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "load_basis_points": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        }
+      },
+      "required": [
+        "observed_at",
+        "evidence_hash",
+        "reported_running",
+        "load_basis_points"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}
