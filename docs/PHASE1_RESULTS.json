@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0.0",
+  "manifest": "docs/PHASE1_MANIFEST.json",
+  "observed_at": "2026-09-29 09:25:40 UTC",
+  "gates": [
+    {
+      "id": "C-01",
+      "required_phase": 1,
+      "assertion": "100 concurrent PostgreSQL contenders yield exactly one live claim/run and owner",
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "No authorized direct development connection for 100 simultaneous independent server sessions. Concrete harness retained; not executed."
+    },
+    {
+      "id": "C-02",
+      "required_phase": 1,
+      "assertion": "Expired/stale fence rejects renew and complete without mutation; new claim has larger version",
+      "status": "passed",
+      "evidence_checks": [
+        "expired_claim_fencing_repair"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "C-03",
+      "required_phase": 1,
+      "assertion": "Dead executor lease expires; recovery resumes only unfinished stages",
+      "status": "passed",
+      "evidence_checks": [
+        "five_stage_single_task_crash_recovery_preserves_hashes"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "C-04",
+      "required_phase": 1,
+      "assertion": "Capability mismatch excludes only the incompatible executor/work pair",
+      "status": "passed",
+      "evidence_checks": [
+        "capability_pair_filter"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "C-05",
+      "required_phase": 1,
+      "assertion": "Every stage boundary preserves verified result hashes across crash",
+      "status": "passed",
+      "evidence_checks": [
+        "five_stage_single_task_crash_recovery_preserves_hashes"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "C-06",
+      "required_phase": 1,
+      "assertion": "Approval expiry/revocation and maintenance win racing claims/effects",
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "Sequential approval expiry/revocation and maintenance checks passed. Racing claims/effects require independent sessions; no direct development connection."
+    },
+    {
+      "id": "C-07",
+      "required_phase": 1,
+      "assertion": "No claim or run survives rollback of its transaction alone",
+      "status": "passed",
+      "evidence_checks": [
+        "claim_run_rollback_and_stage_preservation"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "API-01",
+      "required_phase": 1,
+      "assertion": "Every registered operation enforces authorization and sensitivity scope",
+      "status": "passed",
+      "evidence_checks": [
+        "all_ten_operations_principal_authorization",
+        "memory_read_role_and_sensitivity_scope",
+        "executor_direct_mutation_denied",
+        "revoked_scope_blocks_idempotent_replay"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "API-02",
+      "required_phase": 1,
+      "assertion": "Same idempotency key/hash replays; different bytes conflict without duplicate effects",
+      "status": "passed",
+      "evidence_checks": [
+        "idempotency_and_failure_atomicity"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "API-03",
+      "required_phase": 1,
+      "assertion": "Expected version conflict is atomic with audit and outbox",
+      "status": "passed",
+      "evidence_checks": [
+        "idempotency_and_failure_atomicity",
+        "task_transition_audit_outbox"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "EV-01",
+      "required_phase": 1,
+      "assertion": "Commit then consumer crash retains durable outbox and later executes once logically",
+      "status": "passed",
+      "evidence_checks": [
+        "durabilitySeed",
+        "durabilityClaim1",
+        "durabilityClaim2",
+        "durabilityReconcile"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "EV-02",
+      "required_phase": 1,
+      "assertion": "Provider success then persistence failure reconciles without blind resend",
+      "status": "passed",
+      "evidence_checks": [
+        "durabilityUnknown",
+        "durabilityReconcile",
+        "unknown_outcome_reconciliation_and_duplicate_result"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "EV-03",
+      "required_phase": 1,
+      "assertion": "Duplicate and out-of-order webhook events cannot repeat effects or regress success",
+      "status": "passed",
+      "evidence_checks": [
+        "out_of_order_provider_result_preserves_success",
+        "unknown_outcome_reconciliation_and_duplicate_result"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "SEM-01",
+      "required_phase": 1,
+      "assertion": "Invalid/stale/conflicting proposal siblings are isolated; dependent siblings blocked",
+      "status": "passed",
+      "evidence_checks": [
+        "proposal_stale_sibling_and_dependent_isolation",
+        "proposal_conflicting_invalid_ambiguous_isolation",
+        "proposal_commit_hash_and_restart"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "SEM-02",
+      "required_phase": 1,
+      "assertion": "Restart reuses verified proposal/committed item evidence without reinterpretation",
+      "status": "passed",
+      "evidence_checks": [
+        "proposal_commit_hash_and_restart"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "TASK-01",
+      "required_phase": 1,
+      "assertion": "Independent task; staged human/semantic/provider/approval fulfillment without duplicate obligation",
+      "status": "passed",
+      "evidence_checks": [
+        "five_stage_single_task_crash_recovery_preserves_hashes"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "TASK-02",
+      "required_phase": 1,
+      "assertion": "Concurrent dependency cycle creation rejected; recurrence handles DST gaps/folds and updates",
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "Sequential cycle rejection, DST gap/fold and schedule-version reconciliation passed. Concurrent cycle creation requires independent sessions."
+    },
+    {
+      "id": "MEM-01",
+      "required_phase": 1,
+      "assertion": "Memory activation compare-and-swap yields one head; previous versions immutable",
+      "status": "passed",
+      "evidence_checks": [
+        "memory_activation_supersession",
+        "memory_cas_and_immutability"
+      ],
+      "reason": "Observed against authorized development PostgreSQL; synthetic fixtures only."
+    },
+    {
+      "id": "MIG-01",
+      "required_phase": 1,
+      "assertion": "Clean PostgreSQL install, repeat migration, drift rejection, rollback and forward correction",
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "Initial clean development install, repeat application, deliberate checksum-drift rejection and forward corrections observed. Final 18-migration chain has not been rebuilt from zero on a clean authorized target."
+    },
+    {
+      "id": "REST-01",
+      "required_phase": 1,
+      "assertion": "Corrupt package rejected; clean standard PostgreSQL restore verifies counts/hashes/API synthetic claim",
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "No authorized direct export connection or clean standard PostgreSQL restore target/client installation. Corruption validators pass offline; full dump/restore/rebuild was not executed."
+    },
+    {
+      "id": "PORT-01",
+      "required_phase": 2,
+      "assertion": "Replacement AI with bootstrap package alone completes governed synthetic operation",
+      "status": "deferred",
+      "evidence_checks": [],
+      "reason": "Deferred by committed Phase 1 manifest to Phase 2"
+    },
+    {
+      "id": "SURFACE-01",
+      "required_phase": 2,
+      "assertion": "Online Ada transaction/readback/audit and HOME-01 use same operations contract",
+      "status": "deferred",
+      "evidence_checks": [],
+      "reason": "Deferred by committed Phase 1 manifest to Phase 2"
+    },
+    {
+      "id": "INTEGRITY-01",
+      "required_phase": 2,
+      "assertion": "Deterministic reversible repair detects seeded defect and proves readback",
+      "status": "deferred",
+      "evidence_checks": [],
+      "reason": "Deferred by committed Phase 1 manifest to Phase 2"
+    },
+    {
+      "id": "WATCH-01",
+      "required_phase": 2,
+      "assertion": "Withheld heartbeat triggers real independent alert; external monitor sees DB-host outage",
+      "status": "deferred",
+      "evidence_checks": [],
+      "reason": "Deferred by committed Phase 1 manifest to Phase 2"
+    },
+    {
+      "id": "SHADOW-01",
+      "required_phase": 3,
+      "assertion": "Dashboard degraded-source behavior, 41/41 renderer bindings and forecast parity proven",
+      "status": "deferred",
+      "evidence_checks": [],
+      "reason": "Deferred by committed Phase 1 manifest to Phase 3"
+    },
+    {
+      "id": "MIG-02",
+      "required_phase": 4,
+      "assertion": "Typed import/quarantine resolves duplicates/drift with zero unclassified errors",
+      "status": "deferred",
+      "evidence_checks": [],
+      "reason": "Deferred by committed Phase 1 manifest to Phase 4"
+    }
+  ],
+  "phase1_passed": 15,
+  "phase1_pending": 5,
+  "later_deferred": 6,
+  "release_gate": "BLOCKED"
+}

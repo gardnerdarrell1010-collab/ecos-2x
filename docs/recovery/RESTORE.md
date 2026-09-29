@@ -44,3 +44,7 @@ synthetic package integrity/path safety; it has not performed a database restore
 An independent copy must survive primary-host/account loss. Document key escrow and secret
 recovery references outside Git; restore encrypted payloads only in the authorized test target.
 Cutover/failback remain separate decisions; recovering a copy does not grant write authority.
+
+## Phase 1 implementation note
+
+Phase 1 REST-01 is pending: no authorized direct export connection, clean PostgreSQL restore target or local server was supplied. No second database was created. Package corruption checks remain offline evidence only; do not infer a successful restore.

@@ -1,3 +1,17 @@
+# Current Phase 1 status
+
+Database foundation: **BUILT**. Specific demonstrated database paths: **END-TO-END VERIFIED**.
+Phase 1 release acceptance is **incomplete**: 15 of 20 required gates pass; 5 remain pending.
+No global shadow or production verification is claimed. Current implementation, coverage,
+remaining gates and evidence are in [PHASE1_IMPLEMENTATION.md](PHASE1_IMPLEMENTATION.md),
+[PHASE1_RESULTS.json](PHASE1_RESULTS.json), and [PHASE1_VERIFICATION.json](PHASE1_VERIFICATION.json).
+Core migrations 000002-000018 implement the typed model, all ten contracted operations,
+governed claims/proposals/outbox/memory, scoped roles and synthetic repair/health/quarantine.
+
+The text below is the historical Phase 0 handoff, retained without rewriting its evidence.
+
+---
+
 # Phase 0 delivery status
 
 Repository: `C:\ECOS\ecos-2x`, isolated Git branch `main`.

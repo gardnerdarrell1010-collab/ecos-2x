@@ -20,3 +20,7 @@ production provisioning, cutover, provider effects or the unresolved owner choic
 14. [Watchdogs](ADR-014.md)
 15. [Quarantine](ADR-015.md)
 16. [Maturity](ADR-016.md)
+
+## Phase 1 implementation note
+
+Phase 1 implementation notes: ../PHASE1_IMPLEMENTATION.md and ../PHASE1_SECURITY_PORTABILITY.md. ADR decisions and Phase 0 evidence remain historical. Typed model, role boundary, PostgreSQL operations, stage fencing, provider reconciliation, memory heads, bootstrap and migration ledger are BUILT; full concurrency/rebuild/restore acceptance remains pending.
