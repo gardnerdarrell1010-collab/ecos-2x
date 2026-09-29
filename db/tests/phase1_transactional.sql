@@ -126,7 +126,7 @@ begin
  perform set_config('role','operations_api',true); package:=ecos.bootstrap_package(); perform set_config('role','postgres',true); assert jsonb_array_length(package->'active_memory_heads')=1,'bootstrap memory'; assert ecos_meta.content_hash(package)=package->>'content_hash','bootstrap hash';
  results:=results||'["memory_activation_supersession","bootstrap_database_package"]'::jsonb;
  insert into ecos.heartbeat(executor_instance_id,observed_at,received_at,valid_until,availability,evidence_hash) values(inst,clock_timestamp()-interval '2 minutes',clock_timestamp(),clock_timestamp()-interval '1 second','available',repeat('f',64));
- assert (select availability='unavailable' from ecos.v_node_health where executor_instance_id=inst),'stale heartbeat'; perform ecos_meta.watchdog((ctx->>'correlation_id')::uuid); assert (select count(*)=1+coalesce((baseline->>'emergency_intent')::bigint,0) from ecos.emergency_intent),'independent emergency intent';
+ assert (select availability='unavailable' from ecos.v_node_health where executor_instance_id=inst),'stale heartbeat'; perform ecos_meta.watchdog((ctx->>'correlation_id')::uuid); assert (select count(*)=1 from ecos.emergency_intent where executor_instance_id=inst and correlation_id=(ctx->>'correlation_id')::uuid),'independent emergency intent';
  results:=results||'"stale_heartbeat_emergency_intent"'::jsonb;
  insert into ecos_migration.raw_migration_batch(id,source_system,extracted_at,source_registry_version,artifact_uri,sha256,row_count,column_names,source_family) values(batch,'synthetic',clock_timestamp(),'fixture-v1','synthetic:raw',repeat('a',64),4,'["legacy_id","state","title","project_id"]','task');
  perform ecos_migration.quarantine_row(batch,'1','{"legacy_id":"SYNTHETIC-DUP","state":"compound invalid","title":"One","project_id":null}');
@@ -198,7 +198,7 @@ begin
   raise exception using errcode='ZX001',message='synthetic transaction abort';
  exception when sqlstate 'ZX001' then null; end;
  assert (select count(*)=n from ecos.execution_run),'run survived rollback'; assert not exists(select 1 from ecos.work_claim where occurrence_id=nextoid),'claim survived rollback';
- assert (select count(*)=1 and min(content_hash)=repeat('d',64) from ecos.stage_result),'completed evidence lost';
+ assert (select count(*)=1 and min(content_hash)=repeat('d',64) from ecos.stage_result where occurrence_id=oid),'completed evidence lost';
  results:=results||'"claim_run_rollback_and_stage_preservation"'::jsonb;
 
 

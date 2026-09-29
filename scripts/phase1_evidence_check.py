@@ -17,11 +17,46 @@ def main():
         if hashlib.sha256((ROOT/'db/migrations'/migration['name']).read_bytes()).hexdigest()!=migration['sha256']:
             raise ValueError('Database migration checksum mismatch: '+migration['name'])
     known=set(observed['transactional']['passed_checks'])|set(observed['durability'])
+    completion={k:json.loads((ROOT/p).read_text()) for k,p in verification.get('completion_evidence',{}).items()}
+    if completion:
+        races=completion['races']; recovery=completion['recovery']
+        if races['status']=='passed' and races['fixture_cleanup']=='passed':
+            assert {r['race'] for r in races['c06']}=={'maintenance','revocation_effect','expiry'}
+            for r in races['c06']:
+                assert r['status']=='passed' and r['writer_pid']!=r['contender_pid']
+                assert r['writer_pid'] in r['observed_blockers'] and r['stage_result_count']==0
+            known.add('independent_gate_races')
+            cycle=races['task02']
+            assert cycle['status']=='passed' and cycle['rejection_sqlstate']=='23514'
+            assert cycle['writer_pid']!=cycle['contender_pid'] and cycle['writer_pid'] in cycle['observed_blockers']
+            assert len(cycle['final_edges'])==1
+            known.add('concurrent_dependency_cycle')
+        if recovery['status']=='passed':
+            assert recovery['disposable_server_stopped'] and not recovery.get('schema_differences')
+            mig=recovery['mig01'];rest=recovery['rest01']
+            assert mig['status']==rest['status']=='passed' and mig['repeat_chain']=='passed'
+            assert len(mig['transactional_checks'])==len(rest['transactional_checks'])==31
+            assert mig['schema_inventory']==rest['source_schema_inventory']==rest['restored_schema_inventory']
+            assert rest['source_data_inventory']==rest['restored_data_inventory']
+            assert len(rest['source_data_inventory'])==74 and rest['corrupt_manifest_rejected']
+            for version,name,digest in mig['migration_order']:
+                assert hashlib.sha256((ROOT/'db/migrations'/name).read_bytes()).hexdigest()==digest
+            known.update(['clean_canonical_rebuild','portable_export_restore'])
+        final=completion['final-readback']
+        assert final['ssl'] and final['database_identity']==['development','non_production',False]
+        assert final['cleanup']==[0,0,False,False,False]
+        assert not final['secret_scan']['password_matches'] and not final['secret_scan']['password_in_git_diff']
+        assert set(final['transactional_checks'])==set(observed['transactional']['passed_checks'])
+        contract=json.loads((ROOT/results['acceptance_override']).read_text())
+        assert contract['independent_sessions']==20 and contract['test_a']['valid_losers']==19
+        # No successful C-01 evidence exists yet. Never turn a connection attempt
+        # into acceptance; add strict A/B observation verification when it exists.
+        assert next(g for g in results['gates'] if g['id']=='C-01')['status']=='pending'
     for gate in results['gates']:
         if gate['status']=='passed' and (not gate['evidence_checks'] or not set(gate['evidence_checks'])<=known):
             raise ValueError('Gate has no observed check: '+gate['id'])
     pending=[g['id'] for g in results['gates'] if g['required_phase']==1 and g['status']!='passed']
+    assert results['phase1_pending']==len(pending)
     print(json.dumps({'source_and_database_checksums':'passed','live_named_checks':len(observed['transactional']['passed_checks']),'phase1_pending':pending,'release_gate':'BLOCKED' if pending else 'PASSED'},indent=2))
     return 2 if pending and args.require_complete else 0
-if __name__=='__main__':
-    raise SystemExit(main())
+if __name__=='__main__':raise SystemExit(main())

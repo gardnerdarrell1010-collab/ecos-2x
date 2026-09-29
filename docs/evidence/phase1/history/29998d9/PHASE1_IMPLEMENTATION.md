@@ -2,7 +2,7 @@
 
 The database foundation is BUILT on ECOS 2.x Development (`loonpojawpfagzobxoko`),
 PostgreSQL 17.6, DEVELOPMENT / SHADOW ONLY. ECOS 1.x remains production authority.
-Phase 1 acceptance is incomplete: 19 catalog gates passed, 1 remains pending and 6
+Phase 1 acceptance is incomplete: 15 catalog gates passed, 5 remain pending and 6
 belong to later phases. See [results](PHASE1_RESULTS.json) and [verification](PHASE1_VERIFICATION.json).
 The original Phase 0 verification, baseline snapshots, catalog and manifest are preserved.
 
@@ -63,48 +63,49 @@ heartbeat and active-memory probes use indexes. Empty/tiny ready-work, claim and
 relations can prefer sequential scans. Relevant partial/FK indexes exist; these probes
 are not performance or volume acceptance.
 
-## Completion acceptance
+## Remaining Phase 1 gates
 
-C-06 and TASK-02 passed actual independent-session races. MIG-01 rebuilt all 18
-canonical migrations on clean PostgreSQL 17.11, repeated the chain, and matched the
-development schema. REST-01 restored a PostgreSQL-native custom dump, matched all
-74 table counts/hashes and schema objects, and passed governed claim/completion.
-Remote development, clean rebuild and restored database each passed 31 SQL checks.
-Four independent race checks passed. Offline: 51 passed, 26 historical placeholders
-skipped, zero failures. Historical evidence is retained in evidence/phase1/history/29998d9.
+| Gate | Remaining evidence |
+|---|---|
+| C-01 | 100 simultaneous independent PostgreSQL sessions, exactly one winner |
+| C-06 | Real racing approval/maintenance changes versus claims/effects |
+| TASK-02 | Concurrent dependency-cycle rejection; sequential DST/update checks pass |
+| MIG-01 | Clean rebuild of the final full canonical chain on an authorized empty target |
+| REST-01 | Logical export and clean standard PostgreSQL restore, counts/hashes/API claim |
 
-C-01 alone is pending under the formal owner-approved 20-session correction in
-[the decision](decisions/2026-09-29-phase1-concurrency.md). Test A reached 15 backend
-sessions; five connections failed before the start barrier. No claims ran and no
-winner/loser result is inferred. Test B was not run. No capacity setting was changed.
+HOME-01 has no authorized direct connection and no PostgreSQL server/restore target.
+The owner explicitly authorized leaving these connection-dependent checks pending.
+No second database/project, password, server, or authentication change was created.
+The Phase 1 release gate remains blocked. Do not merge or advance to Phase 2 acceptance.
 
-The connection is Supabase Shared Pooler Session Mode with SSL. The canonical secret
-reference is Google Drive file ID `1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf`; its value is
-read only into runtime memory. See security documentation for the temporary download
-reference disclosure in the tool trace, separately from the clean repository scan.
-The isolated recovery server used loopback port 55432, installed no service, and is
-stopped. Recovery packages remain ignored in `.local/phase1-completion`; the final
-package path, manifest and hashes are in completion-recovery.json. They contain
-synthetic development data only and are not a second authoritative database.
+PORT-01, SURFACE-01, INTEGRITY-01, WATCH-01, SHADOW-01 and MIG-02 are deferred exactly
+as the manifest states. Seeded repair/health/quarantine checks here do not constitute those
+later complete gates. Overall ECOS 2.x remains DESIGNED; only demonstrated database paths
+are END-TO-END VERIFIED. Nothing is SHADOW VERIFIED or PRODUCTION VERIFIED.
 
-## Reproduction and remaining action
+## Reproduction and next action
 
-Run `python scripts/check.py` for offline checks and
-`python scripts/phase1_evidence_check.py --require-complete` for evidence integrity
-and release acceptance (exit 2 while C-01 is pending). Current live entrypoint:
-`python scripts/phase1_live_completion.py --gates concurrency --secret-materialization
-<verified-governed-artifact-path> --report <report-path>`. No password belongs in arguments.
-The harness fixes 20 sessions, verifies independent backend PIDs and uses common start
-and precommit barriers. It retains immutable synthetic evidence and removes fixture access.
+Run `python scripts/check.py` for offline checks. To render an authorized Supabase tool
+payload without executing it, run `python scripts/supabase_migration_payload.py --project-ref
+loonpojawpfagzobxoko`. Apply through the connected Supabase migration tool only after checking
+identity and the live ledger. The tool adapter removes psql transaction directives because
+the host wraps migrations. The portable renderer remains `python scripts/migrations.py render`.
+Never edit an applied migration or rerun the historical generator to replace it; its `--check`
+mode only verifies the initial recipe.
 
-`scripts/phase1_recovery_completion.py --help` describes explicit client/runtime paths.
-It uses canonical migrations, native snapshot export, manifest verification and restore
-into a new private disposable runtime directory. Supply a fresh directory for each run.
-Schema hashing normalizes line endings; row hashing fixes UTC and C sort collation.
-The corrected health/result assertions are scoped to their own synthetic fixtures.
+The owner can configure a development-only `ECOS_DEV_DSN` or libpq service reference using
+the project's Connect settings, without sharing secrets in chat or Git. The harness needs
+100 backend sessions and an authorized fixture/migration login; a session pooler may be used
+only if it actually provides 100 distinct server sessions. Client dependency installation is
+separate: `python -m pip install -r requirements-phase1.lock` (not performed during this work).
+Then run `python scripts/phase1_contention.py --project-ref loonpojawpfagzobxoko --report
+test-results/phase1-contention.json`. It checks project host/user, PostgreSQL version and
+nonproduction identity, opens all sessions before its barrier, and proves distinct PIDs.
+It retains synthetic evidence, removes its binding and disables the fixture executor.
+Failure or insufficient session capacity cannot be reported as a passed gate.
 
-Owner resolution of the 20-session capacity prerequisite is required. Do not lower the
-sample or change pool/compute/network settings implicitly. Complete C-01 before Phase 1
-acceptance or merge. No merge was performed and Phase 2 was not started. The six later
-gates remain deferred by the original manifest. Global maturity remains DESIGNED;
-foundation BUILT and demonstrated database paths END-TO-END VERIFIED.
+REST-01 still needs an explicitly authorized clean restore target and PostgreSQL client
+tools, following [the existing restore contract](recovery/RESTORE.md). No target is assumed.
+Complete these Phase 1 gates and obtain Ada/owner review before considering Phase 2.
+
+Use `python scripts/phase1_evidence_check.py --require-complete` to verify source/database checksums and the current companion release gate. It returns 2 while the five required gates remain pending.

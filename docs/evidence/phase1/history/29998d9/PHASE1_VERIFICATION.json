@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0.0",
-  "verified_at": "2026-09-29T16:51:18.234226+00:00",
+  "verified_at": "2026-09-29 09:25:40 UTC",
   "baseline_commit": "375f3f61374aeaa52d28dc79fb80d14362c1e8f8",
-  "resulting_commit": null,
-  "resulting_commit_scope": "Completion implementation commit; subsequent evidence-only commit and final remote HEAD appear in handoff.",
+  "resulting_commit": "f7a29db48157bc5cf24e2414deef5893b6c5fbec",
+  "resulting_commit_scope": "Implementation commit, populated after commit; subsequent evidence-only commit and final remote HEAD are reported in the handoff.",
   "branch": "codex/phase-1-postgres-foundation",
   "supabase_project": {
     "name": "ECOS 2.x Development",
@@ -40,16 +40,7 @@
     "query_plans": 7,
     "independent_bootstrap_verifier": 1,
     "deliberate_drift_rejection": 1,
-    "repeat_final_chain": 1,
-    "completion": {
-      "offline": 77,
-      "remote_sql_checks": 31,
-      "rebuild_sql_checks": 31,
-      "restore_sql_checks": 31,
-      "independent_race_checks": 4,
-      "concurrency_test_a_attempts": 2,
-      "concurrency_test_b": 0
-    }
+    "repeat_final_chain": 1
   },
   "tests_passed": {
     "offline": 51,
@@ -86,14 +77,7 @@
       "five_stage_single_task_crash_recovery_preserves_hashes",
       "revoked_scope_blocks_idempotent_replay",
       "proposal_conflicting_invalid_ambiguous_isolation"
-    ],
-    "completion": {
-      "offline": 51,
-      "remote_sql_checks": 31,
-      "rebuild_sql_checks": 31,
-      "restore_sql_checks": 31,
-      "independent_race_checks": 4
-    }
+    ]
   },
   "tests_failed": 0,
   "failed_attempts_before_correction": [
@@ -106,7 +90,11 @@
   "tests_pending_deferred": {
     "offline_integration_placeholders_not_executed_by_default": 26,
     "phase1": {
-      "C-01": "Twenty sessions required under owner-approved correction. Fifteen independent backend sessions reached the start barrier; five failed while connecting. No claim operations ran; Test B not run. Required simultaneous session capacity unavailable in this attempt; no pool settings changed."
+      "C-01": "No authorized direct development connection for 100 simultaneous independent server sessions. Concrete harness retained; not executed.",
+      "C-06": "Sequential approval expiry/revocation and maintenance checks passed. Racing claims/effects require independent sessions; no direct development connection.",
+      "TASK-02": "Sequential cycle rejection, DST gap/fold and schedule-version reconciliation passed. Concurrent cycle creation requires independent sessions.",
+      "MIG-01": "Initial clean development install, repeat application, deliberate checksum-drift rejection and forward corrections observed. Final 18-migration chain has not been rebuilt from zero on a clean authorized target.",
+      "REST-01": "No authorized direct export connection or clean standard PostgreSQL restore target/client installation. Corruption validators pass offline; full dump/restore/rebuild was not executed."
     },
     "later": [
       {
@@ -164,7 +152,6 @@
     "C-03",
     "C-04",
     "C-05",
-    "C-06",
     "C-07",
     "API-01",
     "API-02",
@@ -175,10 +162,7 @@
     "SEM-01",
     "SEM-02",
     "TASK-01",
-    "TASK-02",
-    "MEM-01",
-    "MIG-01",
-    "REST-01"
+    "MEM-01"
   ],
   "phase1_acceptance_passed": false,
   "security_advisor_findings": {
@@ -203,15 +187,18 @@
     "required_extensions": [],
     "minimum_postgresql_major": 17,
     "host_adapter": "Supabase SQL/apply_migration transport and host migration ledger; replace with standard PostgreSQL client and canonical renderer.",
-    "clean_standard_postgresql_restore_verified": true,
-    "comparison_normalization": "CRLF to LF for schema definitions; UTC and explicit C collation for sorted JSON row digests."
+    "clean_standard_postgresql_restore_verified": false
   },
   "provider_calls_executed": false,
   "production_data_migrated": false,
   "ecos_1x_writes": false,
   "production_authority_switched": false,
   "unresolved_blockers": [
-    "Twenty sessions required under owner-approved correction. Fifteen independent backend sessions reached the start barrier; five failed while connecting. No claim operations ran; Test B not run. Required simultaneous session capacity unavailable in this attempt; no pool settings changed."
+    "No authorized direct development connection for 100 simultaneous independent server sessions. Concrete harness retained; not executed.",
+    "Sequential approval expiry/revocation and maintenance checks passed. Racing claims/effects require independent sessions; no direct development connection.",
+    "Sequential cycle rejection, DST gap/fold and schedule-version reconciliation passed. Concurrent cycle creation requires independent sessions.",
+    "Initial clean development install, repeat application, deliberate checksum-drift rejection and forward corrections observed. Final 18-migration chain has not been rebuilt from zero on a clean authorized target.",
+    "No authorized direct export connection or clean standard PostgreSQL restore target/client installation. Corruption validators pass offline; full dump/restore/rebuild was not executed."
   ],
   "maturity": {
     "database_implementation": "BUILT",
@@ -245,7 +232,7 @@
     "db/tests/phase1_durability_reconcile_observed.sql": "58a6249ed68e6d5e88a25a65ebb84b3c67e443e4e069c3f698af0e91c206f9df",
     "db/tests/phase1_durability_seed.sql": "ef27460c33064902014c8e10c6c46cf274d480ebdb1ff460b9dc5eac7b9636c1",
     "db/tests/phase1_query_plans.sql": "f16af5cae993362952699aa45015f48a6259b154a5e93219833dfab53501ea0b",
-    "db/tests/phase1_transactional.sql": "a160f3eec3a75be33d657e043f967e25f92a300b4d8cb21403cea1eec3b61963",
+    "db/tests/phase1_transactional.sql": "dd92019ce795fcb39ec4426b9b2d70ec3b6489b55850b07c8c71361864d62f23",
     "scripts/build_contracts.py": "5ba0c5ea8de9fea9dd2e494f8e1b06f66f46fc84a17f13faf46a76dea9b1e0d9",
     "scripts/build_fixtures.py": "e8976284364cf38da4e733068f19325eb5d36cd7515888b1700b5deb3e3747ab",
     "scripts/build_foundation_data.py": "3f03ec0f51d938928541c0a0ba8f5b75f5425fd2204f86ffda9e56a5c4db2827",
@@ -253,28 +240,11 @@
     "scripts/build_worker_registry.py": "186dfdea87adb5064694839d8c047b7baec3c1445ee72e05a13313eff907f295",
     "scripts/check.py": "2bd81c110a0ebed6033a0c2a3f6a5ccdb6b2de9a569cea805ff5d10e07cc216f",
     "scripts/migrations.py": "4a322e9602c1f425dc3c0784f3516e89938c6d150ae51139902e5d69600c3c7e",
-    "scripts/phase1_contention.py": "92dc7f38d0def43255fc654367a084b0982aad8f8cc734b04d6ede189c7227d4",
-    "scripts/phase1_evidence_check.py": "645f34b2b18b20a83fc7938e25eaa17359e695f90591fad984630d1c6231ddef",
+    "scripts/phase1_contention.py": "f851ba1d4c5c80a96016d3813940eb125e63e48110520cee6290f4d31744847f",
+    "scripts/phase1_evidence_check.py": "e199b93eaa37805c50c01561bb22ea5a939cef9b7d15350ad7b364758dd8f713",
     "scripts/supabase_migration_payload.py": "2f4502c4680f7c2b467b9c8d782e594e227d8e5995ca3a0b8582b6aa3764527d",
     "scripts/__init__.py": "881c97d48076a86026b6a76e7b56efc6ebab3ea596d06efecf152f284d2d098a",
-    "contracts/integrity/integrity_finding.schema.json": "d4e0b05d78ce7156cfda1d5035f937291985e5200234ebdc80d1fc6aacff3ebc",
-    "scripts/phase1_live_completion.py": "06a44b9f2df8dd62908b70d5bbc0cef598b13315a499117184c19c99b4169b44",
-    "scripts/phase1_recovery_completion.py": "c768afc512f065315ac3cca9900b5ee5085b3f434cf9d78e2d7bcd6816936ccc",
-    "contracts/acceptance/phase1-concurrency.json": "9c482f391e43255826f680abc2decc2654e29f286e0d15e319129b048f599e34",
-    "requirements-phase1.lock": "b2b09bcad3824b5d1453eea5daa6547f250720379f270b3e457f2c5ebc8470df",
-    "docs/evidence/phase1/completion-advisors.json": "4f592f250eae75ad6732afe09921f3eb728d33df25fefc31c0902baa75310f75",
-    "docs/evidence/phase1/completion-attempt-001.json": "48178c104734d09555a288bfe51810be155e5d0a7ba11b4c467c33561d6b1abe",
-    "docs/evidence/phase1/completion-attempt-002.json": "617612957ab6f5ed579eefe9b5b5cac9a4679f1883dfc20161131c41e0542ad7",
-    "docs/evidence/phase1/completion-concurrency.json": "617612957ab6f5ed579eefe9b5b5cac9a4679f1883dfc20161131c41e0542ad7",
-    "docs/evidence/phase1/completion-final-readback.json": "25cc62dda95163cf6c6c6eeb5bfc2776b7c22fecaf1036076bcc7c9fa875f3d6",
-    "docs/evidence/phase1/completion-offline.json": "a7a707f56d7e34e96404c2f6a7312cc4bfa70ee4be8e67c225dd66c8e8c3b013",
-    "docs/evidence/phase1/completion-races.json": "8870fa28e846376d5684cb92296717d446706c9db5dddb574dcd628cd55fb0a5",
-    "docs/evidence/phase1/completion-recovery-attempt-001.json": "eafe77176a48ed0bee35d2b9d28af8adf9751f73ea7a412846eea4440968901a",
-    "docs/evidence/phase1/completion-recovery-attempt-002.json": "fdcf0ad5ce5cc05769f7094bddc5801002270dcc948977b34f108ec4e17b17a8",
-    "docs/evidence/phase1/completion-recovery-attempt-003.json": "a119767bd34849142f502983bafd0a2c8c5de5ec0b457295f53428a9adeefcdf",
-    "docs/evidence/phase1/completion-recovery-attempt-004.json": "eb1b2d78a432124c8f474f73cf54f3455eaa2c946e412a4385571c854d85814d",
-    "docs/evidence/phase1/completion-recovery-attempt-005.json": "2e602ac5a6ec919f16d1d753071185cf84923180bf1d096b127ce84c055117b9",
-    "docs/evidence/phase1/completion-recovery.json": "2fc9b1e1c85346549eb840a40fa63006fecbb39bbf7bea08ace50f08c61b41ce"
+    "contracts/integrity/integrity_finding.schema.json": "d4e0b05d78ce7156cfda1d5035f937291985e5200234ebdc80d1fc6aacff3ebc"
   },
   "retained_synthetic_fixture": {
     "business_id": "SYNTHETIC-PHASE1-DURABILITY-20260929",
@@ -364,94 +334,5 @@
     "membership_count_explanation": "The first count included three platform-managed admin-only grants from supabase_admin with SET=false and INHERIT=false. Final temporary executable membership count is zero; no platform grant was changed."
   },
   "phase1_evidence_check_exit_code": 2,
-  "client_harness_validation": "Psycopg 3.2.10 installed; SSL Session Pooler connected. Four independent races passed. Twenty-session contention blocked at connection/barrier prerequisite.",
-  "prior_head": "29998d90806efd7f91d98ce1d0c7c8c9a4deb421",
-  "completion_attempt_failures": [
-    "Two contention attempts could not establish 20 sessions; no claims issued.",
-    "Recovery attempt 1: Windows child output pipe timeout; disposable server explicitly stopped.",
-    "Recovery attempts 2-3: function-definition CRLF versus LF digest mismatch; resolved by newline normalization.",
-    "Recovery attempt 4: row sort collation mismatch; resolved by explicit C collation.",
-    "Recovery attempt 5: unscoped health assertion counted other restored fixtures; scoped assertion corrected. Final recovery attempt 6 passed."
-  ],
-  "completion_evidence": {
-    "concurrency": "docs/evidence/phase1/completion-concurrency.json",
-    "races": "docs/evidence/phase1/completion-races.json",
-    "recovery": "docs/evidence/phase1/completion-recovery.json",
-    "final-readback": "docs/evidence/phase1/completion-final-readback.json",
-    "offline": "docs/evidence/phase1/completion-offline.json",
-    "advisors": "docs/evidence/phase1/completion-advisors.json"
-  },
-  "connection": {
-    "mode": "Supabase Shared Pooler Session Mode",
-    "host": "aws-0-us-west-1.pooler.supabase.com",
-    "port": 5432,
-    "database": "postgres",
-    "user": "postgres.loonpojawpfagzobxoko",
-    "ssl": true,
-    "canonical_secret_reference": "google-drive:1x8dB_y3doSdGOxVLhWG7gmQ4SAcTjVLf",
-    "secret_materialization": "runtime-only read of independently verified synchronized artifact; no repository copy"
-  },
-  "security_incident": {
-    "password_value_printed": false,
-    "temporary_signed_download_reference_in_tool_output": true,
-    "reference_configured_expiry_utc": "2026-09-29T16:29:08Z",
-    "access_or_revocation_verified": false,
-    "reference_saved_in_repository": false,
-    "owner_action": "Review exposure and decide whether to rotate the development credential. No credential modification performed."
-  },
-  "completion_final_readback": {
-    "observed_at": "2026-09-29T16:49:06.873366+00:00",
-    "ssl": true,
-    "database_identity": [
-      "development",
-      "non_production",
-      false
-    ],
-    "transactional_checks": [
-      "task_transition_audit_outbox",
-      "idempotency_and_failure_atomicity",
-      "executor_direct_mutation_denied",
-      "evidence_and_fact_operations",
-      "atomic_notification_delivery_command",
-      "outbox_lease_recovery",
-      "unknown_outcome_reconciliation_and_duplicate_result",
-      "capability_pair_filter",
-      "claim_renewal",
-      "expired_claim_fencing_repair",
-      "immutable_completion_and_dependency_release",
-      "proposal_commit_hash_and_restart",
-      "memory_activation_supersession",
-      "bootstrap_database_package",
-      "stale_heartbeat_emergency_intent",
-      "typed_quarantine_four_defects",
-      "principal_and_role_replay_denial",
-      "proposal_stale_sibling_and_dependent_isolation",
-      "memory_cas_and_immutability",
-      "approval_expiry_revocation_maintenance_gates",
-      "dependency_cycle_rejected",
-      "dst_gap_and_fold_policies",
-      "claim_run_rollback_and_stage_preservation",
-      "all_ten_operations_principal_authorization",
-      "memory_read_role_and_sensitivity_scope",
-      "out_of_order_provider_result_preserves_success",
-      "recurrence_identity_and_schedule_update",
-      "delayed_heartbeat_cannot_revive_executor",
-      "five_stage_single_task_crash_recovery_preserves_hashes",
-      "revoked_scope_blocks_idempotent_replay",
-      "proposal_conflicting_invalid_ambiguous_isolation"
-    ],
-    "cleanup": [
-      0,
-      0,
-      false,
-      false,
-      false
-    ],
-    "secret_scan": {
-      "files_checked": 230,
-      "password_matches": [],
-      "password_in_git_diff": false,
-      "scope": "tracked and nonignored untracked files plus diff from HEAD; canonical password bytes read in memory only"
-    }
-  }
+  "client_harness_validation": "Python syntax/help and missing-DSN fail-closed check passed; no direct database connection attempted."
 }

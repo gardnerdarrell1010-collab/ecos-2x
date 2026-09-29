@@ -1,0 +1,55 @@
+{
+  "observed_at": "2026-09-29T16:49:06.873366+00:00",
+  "ssl": true,
+  "database_identity": [
+    "development",
+    "non_production",
+    false
+  ],
+  "transactional_checks": [
+    "task_transition_audit_outbox",
+    "idempotency_and_failure_atomicity",
+    "executor_direct_mutation_denied",
+    "evidence_and_fact_operations",
+    "atomic_notification_delivery_command",
+    "outbox_lease_recovery",
+    "unknown_outcome_reconciliation_and_duplicate_result",
+    "capability_pair_filter",
+    "claim_renewal",
+    "expired_claim_fencing_repair",
+    "immutable_completion_and_dependency_release",
+    "proposal_commit_hash_and_restart",
+    "memory_activation_supersession",
+    "bootstrap_database_package",
+    "stale_heartbeat_emergency_intent",
+    "typed_quarantine_four_defects",
+    "principal_and_role_replay_denial",
+    "proposal_stale_sibling_and_dependent_isolation",
+    "memory_cas_and_immutability",
+    "approval_expiry_revocation_maintenance_gates",
+    "dependency_cycle_rejected",
+    "dst_gap_and_fold_policies",
+    "claim_run_rollback_and_stage_preservation",
+    "all_ten_operations_principal_authorization",
+    "memory_read_role_and_sensitivity_scope",
+    "out_of_order_provider_result_preserves_success",
+    "recurrence_identity_and_schedule_update",
+    "delayed_heartbeat_cannot_revive_executor",
+    "five_stage_single_task_crash_recovery_preserves_hashes",
+    "revoked_scope_blocks_idempotent_replay",
+    "proposal_conflicting_invalid_ambiguous_isolation"
+  ],
+  "cleanup": [
+    0,
+    0,
+    false,
+    false,
+    false
+  ],
+  "secret_scan": {
+    "files_checked": 230,
+    "password_matches": [],
+    "password_in_git_diff": false,
+    "scope": "tracked and nonignored untracked files plus diff from HEAD; canonical password bytes read in memory only"
+  }
+}

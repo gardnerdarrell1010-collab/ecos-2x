@@ -14,7 +14,7 @@ cron, Google Sheet or provider runtime is required by core migrations.
 | Supabase project host/ref in the live harness | Prevent accidental wrong-target tests | Explicit owner-authorized alternative host identity adapter in the later portability gate |
 | PostgreSQL 17 | JSONB, PL/pgSQL, row/advisory locks, catalog privileges, native UUID/SHA-256 | PostgreSQL 17+; no extension installation |
 
-Core migrations rebuilt and a native development export restored successfully on standard PostgreSQL 17.11.
+Core migrations are valid PostgreSQL; the full off-host restore has not been performed.
 Roles must be created by an appropriately authorized migration login. No credential is
 stored in this repository. The existing eight NOLOGIN roles need explicit least-privilege
 bindings before any real executor connection is authorized. A Supabase service key or
@@ -31,12 +31,12 @@ and [unused-index guidance](https://supabase.com/docs/guides/database/database-l
 
 The suite deliberately expires only synthetic leases, simulates consumer loss after commit,
 and submits duplicate/stale/invalid inputs through the authenticated operations boundary.
-No production rows or business-provider secrets were used. The explicitly authorized development database credential was resolved at runtime. One attempted
+No executor credentials, production rows or provider secrets were used. One attempted
 diagnostic direct call to a private mutation helper was rejected by automatic approval
 review before execution; debugging continued through governed operations and read-only checks.
 
 Client reference: [Psycopg installation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
-The pinned Psycopg 3.2.10 client connected over SSL; portable PostgreSQL 17.11 binaries supplied native dump/restore and a disposable loopback acceptance server, now stopped.
+The optional pinned client has not been installed or connected on HOME-01 in this phase.
 
 Final privilege readback found platform-managed admin-only membership grants from
 `supabase_admin` to `postgres`. These have SET=false and INHERIT=false; they are not
@@ -44,31 +44,3 @@ temporary executor access and were left intact. Executable temporary service mem
 principal bindings, active claims and undelivered outbox counts are all zero. The direct
 client harness checks `pg_has_role(..., 'SET')` before temporary fixture grants, because
 MEMBER alone does not establish permission to switch roles on PostgreSQL 17.
-
-
-## Completion security review
-
-Fresh security advisor: zero findings. See completion-advisors.json for current
-performance INFO notices and remediation URLs. Fresh cleanup: zero principal bindings,
-zero active claims, maintenance false, executor/API SET permission false. The live
-31-check suite re-proved operation denial and scope boundaries after completion work.
-The exact-password scan checks tracked/nonignored untracked files and Git diff without
-printing secret bytes; its result is in completion-final-readback.json.
-
-Incident: a short-lived signed download reference to the restricted credential artifact
-was inadvertently included in a tool result. The password value was not printed. The
-reference was not written to repository files/evidence; its configured expiry was
-2026-09-29T16:29:08Z. Expiry has elapsed, but access/revocation was not verified. This
-is separate from the clean repository secret scan. Owner should review exposure and
-decide whether to rotate the development credential; this task did not modify it.
-
-Automatic approval review rejected a proposed broad diagnostic capture before execution.
-The replacement records only schema object identities/hashes, table counts and digests;
-no database row payload was added to committed discrepancy evidence.
-
-Portable comparison normalizes schema CRLF/LF and fixes UTC/C collation for row digests.
-All 74 table digests match after restore. Core requires no Supabase extension or service.
-The export intentionally includes only ecos/ecos_meta/ecos_migration, not platform auth
-or host schemas. Eight NOLOGIN roles are supplied as portable configuration. TLS private
-keys and generated local credentials are confined to the private disposable runtime;
-the initial password file was removed. No Windows service or production runtime changed.

@@ -1,7 +1,7 @@
 # Current Phase 1 status
 
 Database foundation: **BUILT**. Specific demonstrated database paths: **END-TO-END VERIFIED**.
-Phase 1 release acceptance is **incomplete**: 15 of 20 required gates pass; 5 remain pending.
+Phase 1 release acceptance is **incomplete**: 19 of 20 required gates pass; C-01 remains pending.
 No global shadow or production verification is claimed. Current implementation, coverage,
 remaining gates and evidence are in [PHASE1_IMPLEMENTATION.md](PHASE1_IMPLEMENTATION.md),
 [PHASE1_RESULTS.json](PHASE1_RESULTS.json), and [PHASE1_VERIFICATION.json](PHASE1_VERIFICATION.json).

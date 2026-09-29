@@ -1,16 +1,15 @@
 {
   "schema_version": "1.0.0",
   "manifest": "docs/PHASE1_MANIFEST.json",
-  "observed_at": "2026-09-29T16:51:18.234226+00:00",
+  "observed_at": "2026-09-29 09:25:40 UTC",
   "gates": [
     {
       "id": "C-01",
       "required_phase": 1,
-      "assertion": "20 independent simultaneous sessions: one winner for same work; 20 distinct parallel claims for independent work",
+      "assertion": "100 concurrent PostgreSQL contenders yield exactly one live claim/run and owner",
       "status": "pending",
       "evidence_checks": [],
-      "reason": "Twenty sessions required under owner-approved correction. Fifteen independent backend sessions reached the start barrier; five failed while connecting. No claim operations ran; Test B not run. Required simultaneous session capacity unavailable in this attempt; no pool settings changed.",
-      "acceptance_override": "contracts/acceptance/phase1-concurrency.json"
+      "reason": "No authorized direct development connection for 100 simultaneous independent server sessions. Concrete harness retained; not executed."
     },
     {
       "id": "C-02",
@@ -56,11 +55,9 @@
       "id": "C-06",
       "required_phase": 1,
       "assertion": "Approval expiry/revocation and maintenance win racing claims/effects",
-      "status": "passed",
-      "evidence_checks": [
-        "independent_gate_races"
-      ],
-      "reason": "Three real independent-session races passed: maintenance blocks claim; revocation blocks completion; approval expiry excludes work. Observed blocking PIDs and final unchanged state/result counts retained."
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "Sequential approval expiry/revocation and maintenance checks passed. Racing claims/effects require independent sessions; no direct development connection."
     },
     {
       "id": "C-07",
@@ -178,13 +175,9 @@
       "id": "TASK-02",
       "required_phase": 1,
       "assertion": "Concurrent dependency cycle creation rejected; recurrence handles DST gaps/folds and updates",
-      "status": "passed",
-      "evidence_checks": [
-        "concurrent_dependency_cycle",
-        "dst_gap_and_fold_policies",
-        "recurrence_identity_and_schedule_update"
-      ],
-      "reason": "Concurrent reverse dependency insertion blocked then rejected with SQLSTATE 23514; final graph has one edge. Existing and rerun SQL checks verify DST gap/fold and schedule updates."
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "Sequential cycle rejection, DST gap/fold and schedule-version reconciliation passed. Concurrent cycle creation requires independent sessions."
     },
     {
       "id": "MEM-01",
@@ -201,21 +194,17 @@
       "id": "MIG-01",
       "required_phase": 1,
       "assertion": "Clean PostgreSQL install, repeat migration, drift rejection, rollback and forward correction",
-      "status": "passed",
-      "evidence_checks": [
-        "clean_canonical_rebuild"
-      ],
-      "reason": "Clean PostgreSQL 17.11 rebuilt all 18 canonical migrations, exact ordered checksums/head, repeated chain, matching development schema, 31 SQL checks. Earlier drift rejection/rollback/forward-correction evidence retained."
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "Initial clean development install, repeat application, deliberate checksum-drift rejection and forward corrections observed. Final 18-migration chain has not been rebuilt from zero on a clean authorized target."
     },
     {
       "id": "REST-01",
       "required_phase": 1,
       "assertion": "Corrupt package rejected; clean standard PostgreSQL restore verifies counts/hashes/API synthetic claim",
-      "status": "passed",
-      "evidence_checks": [
-        "portable_export_restore"
-      ],
-      "reason": "Native custom-format development export restored to isolated PostgreSQL 17.11; matching schema inventory and counts/hashes for all 74 tables, corruption rejection, 31 SQL checks including governed claim/completion."
+      "status": "pending",
+      "evidence_checks": [],
+      "reason": "No authorized direct export connection or clean standard PostgreSQL restore target/client installation. Corruption validators pass offline; full dump/restore/rebuild was not executed."
     },
     {
       "id": "PORT-01",
@@ -266,9 +255,8 @@
       "reason": "Deferred by committed Phase 1 manifest to Phase 4"
     }
   ],
-  "phase1_passed": 19,
-  "phase1_pending": 1,
+  "phase1_passed": 15,
+  "phase1_pending": 5,
   "later_deferred": 6,
-  "release_gate": "BLOCKED",
-  "acceptance_override": "contracts/acceptance/phase1-concurrency.json"
+  "release_gate": "BLOCKED"
 }
