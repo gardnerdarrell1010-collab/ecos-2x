@@ -1,0 +1,3 @@
+# Optional client for explicitly invoked live tests; no PostgreSQL server.
+-r requirements.lock
+psycopg[binary]==3.2.10

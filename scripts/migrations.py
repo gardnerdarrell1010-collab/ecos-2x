@@ -41,7 +41,7 @@ def plan(migrations, applied):
 def render(migrations):
     if not migrations:
         raise ValueError("No migration inventory")
-    sql = ["-- REVIEW ONLY: Phase 0 never executes this file.", "\\set ON_ERROR_STOP on", "begin;",
+    sql = ["-- Canonical PostgreSQL migrations. Execute only against an explicitly authorized target.", "\\set ON_ERROR_STOP on", "begin;",
         "select pg_advisory_xact_lock(684026, 2);",
         "create schema if not exists ecos_meta;",
         "revoke all on schema ecos_meta from public;",
