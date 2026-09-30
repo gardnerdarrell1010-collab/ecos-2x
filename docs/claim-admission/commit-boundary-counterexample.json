@@ -1,0 +1,9 @@
+{
+  "reproduced": true,
+  "candidate_claimed_after_disable": true,
+  "disable_timing": "after final authoritative read, before unconditional Sheets ownership update",
+  "provider_calls": 0,
+  "production_writes": 0,
+  "live_runtime_probe": false,
+  "transfer_safe": false
+}
