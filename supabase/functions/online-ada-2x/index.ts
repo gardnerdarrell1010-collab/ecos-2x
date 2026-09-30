@@ -1,3 +1,4 @@
+import { registerGmailTools } from './gmail_tools.ts';
 import { createMcpHandler, McpServer } from 'npm:@modelcontextprotocol/server@2.2.0';
 import { createRemoteJWKSet, jwtVerify } from 'npm:jose@6.2.12';
 import postgres from 'npm:postgres@3.4.9';
@@ -87,6 +88,7 @@ Deno.serve(async (req: Request) => {
         return {isError:true,content:[{type:'text',text:'operation_outcome_unknown_preserve_idempotency_key'}]};
       }
     });
+    registerGmailTools(server,database,identity);
     return server;
   });
   return handler.fetch(boundedHttpRequest);

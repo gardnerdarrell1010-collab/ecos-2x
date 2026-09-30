@@ -38,6 +38,11 @@ try {
     $runner = Join-Path $release 'scripts\resident2x_watchdog.py'
     $arguments = '-B "'+$runner+'" --config "'+[IO.Path]::GetFullPath($ConfigPath)+'"'
     $name = 'ECOS HOME01 Resident Ada 2.x'
+    if ($config.domain -eq 'gmail.operations') {
+        $caps = @($config.capabilities.PSObject.Properties.Name | Sort-Object)
+        if (($caps -join ',') -ne 'db.governed_operations,ecos.2x.execute,provider.gmail') { throw 'Gmail profile capabilities mismatch' }
+        $name = 'ECOS HOME01 Resident Ada 2.x Gmail'
+    }
     $existing = Get-ScheduledTask -TaskName $name -TaskPath '\' -ErrorAction SilentlyContinue
     if ($existing) { throw 'Existing task requires reconciliation; no overwrite performed' }
     $action = New-ScheduledTaskAction -Execute $python -Argument $arguments -WorkingDirectory $release

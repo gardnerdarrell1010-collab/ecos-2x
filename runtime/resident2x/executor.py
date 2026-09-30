@@ -349,6 +349,9 @@ def main():
     if config.get("domain") == "toast.acquisition":
         from runtime.resident2x.toast_wave1 import handler
         handlers = {"toast_acquire": handler(config)}
+    elif config.get("domain") == "gmail.operations":
+        from runtime.resident2x.gmail import handler
+        handlers = {"gmail_draft": handler(config)}
     else:
         handlers = make_handlers(config)
     runtime = Resident(config, connection_factory(config), handlers)
