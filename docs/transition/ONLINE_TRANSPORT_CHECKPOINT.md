@@ -71,3 +71,20 @@ Function Secrets screen and save it; do not paste it into chat or Git.
 Next: retry the existing ChatGPT app connection, then run one synthetic governed
 round trip and independent readback. No production launchers are enabled.
 No authenticated business-operation acceptance is claimed.
+
+## Hosted acceptance checkpoint
+Owner authenticated the CLI; the five prepared secret names were installed
+without outputting values. Authenticated ChatGPT discovery now passes and exposes
+only ecos_identity and ecos_operate. Dedicated hosted registration, heartbeat,
+work.next, work.package and synthetic work.complete passed. Independent database
+readback confirmed succeeded and the expected synthetic result hash. Reusing the
+completed fence returned expired_fence; ungranted fact.record returned forbidden.
+No arbitrary SQL tool, administrator executor, or Sheets Task Loop was used.
+Request envelopes require arguments.fence; each new heartbeat observation needs
+a new idempotency key. Exact replay must retain original request bytes.
+Online capability renewals are not configured. Automatic approval review rejected
+the proposed existing-policy renewal of the same three capabilities (24-hour
+lease, 12-hour renewal threshold, exact deployment evidence hash). Owner approval
+is pending. No launcher was created and no scheduled invocation is claimed.
+The scheduler supports hourly custom cadence, requiring the prepared 15-offset
+grid. All 1.x launchers remain untouched. Detailed synthetic receipts remain local.
