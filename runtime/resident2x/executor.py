@@ -74,8 +74,13 @@ class OperationRejected(RuntimeError):
 
 
 class Resident:
+    expected_identity = "RESIDENT_ADA_2X_HOME01"
+    stage_kind = "deterministic"
+    runtime_name = "resident-ada-2x"
+    host_name = "HOME-01"
+
     def __init__(self, config, connect, handlers):
-        self.profile = validate_profile(config, expected_identity="RESIDENT_ADA_2X_HOME01")
+        self.profile = validate_profile(config, expected_identity=self.expected_identity)
         if config.get("authority") == "PRE_CUTOVER_NON_AUTHORITATIVE":
             # Backward-compatible synthetic configuration; never production authority.
             if config.get("provider_effects_enabled") is not False:
@@ -222,7 +227,7 @@ class Resident:
                     raise ValueError("work_package_changed")
             stage = package["stage"]["stage_key"]
             handler = self.handlers.get(stage)
-            if handler is None or package["stage"]["kind"] != "deterministic":
+            if handler is None or package["stage"]["kind"] != self.stage_kind:
                 self.finish_control("work.fail", fence, "unsupported_capability")
                 return {"occurrence_id": occurrence, "disposition": "unsupported_capability"}
             declared = {v["name"]: v["minimum_version"] for v in package["capability_requirements"]}
@@ -264,8 +269,8 @@ class Resident:
                  "instance_id": self.config["instance_id"], "runtime": str(Path(__file__).resolve()),
                  "version": VERSION, "session": self.session, "started_at": now()})
             try:
-                registered = self.invoke("executor.register", {"host": "HOME-01",
-                    "runtime": "resident-ada-2x", "software_version": VERSION,
+                registered = self.invoke("executor.register", {"host": self.host_name,
+                    "runtime": self.runtime_name, "software_version": VERSION,
                     "evidence_hash": self.evidence_hash})
                 if registered["data"]["authority"] != self.config["authority"]:
                     raise ValueError("authority_mismatch")

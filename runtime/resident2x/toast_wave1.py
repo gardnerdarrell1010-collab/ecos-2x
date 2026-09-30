@@ -91,9 +91,11 @@ def handler(config):
         stage_input=package['input']
         if config.get('domain')!='toast.acquisition' or config.get('execution_mode') not in ('shadow','production'):
             raise ValueError('wave1_domain_required')
-        if config['execution_mode']=='production':
-            # Production activation is added only after the publication/rollback gates pass.
-            raise ValueError('wave1_publication_acceptance_required')
+        # This capability acquires provider data and commits SQL only. It neither
+        # publishes a legacy compatibility artifact nor authorizes provider writes.
+        # PostgreSQL still enforces principal/domain scope and the current fence.
+        if config.get('provider_effects_enabled') is not False:
+            raise ValueError('toast_acquisition_requires_read_only_provider')
         directory=runtime.root/'toast';directory.mkdir(exist_ok=True)
         captured=directory/(occurrence+'.json')
         def crash(point):
