@@ -6,3 +6,6 @@ docs/baseline/*.md -text
 
 # Preserve the exact migration 26 bytes already verified in the production ledger.
 db/migrations/000026_staffing_bounded_read.sql -text
+
+# Preserve the exact applied Gmail migration bytes.
+db/migrations/000034_gmail_reconciled_readback.sql -text

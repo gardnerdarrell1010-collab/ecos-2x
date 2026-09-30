@@ -48,6 +48,37 @@ class GmailBoundaryTest(unittest.TestCase):
             GmailDraftAdapter(provider, command['account_scope']).draft(command, gate)
         self.assertEqual(provider.writes, 1)
 
+    def test_gmail_assigned_message_id_and_text_line_endings(self):
+        from email import policy
+        original = EmailMessage(); original['Subject'] = 'Synthetic draft'
+        original['Message-ID'] = '<ecos-synthetic@ecos.invalid>'
+        original['In-Reply-To'] = '<source@example.invalid>'
+        original.set_content('No delivery')
+        raw = original.as_bytes()
+        original.replace_header('Message-ID', '<provider-assigned@example.invalid>')
+        observed = base64.urlsafe_b64encode(original.as_bytes(policy=policy.SMTP)).decode()
+        provider, gate = Gmail(observed), Gate()
+        command = {'command_type': 'draft.create', 'account_scope': 'fixture@example.invalid',
+                   'request': {'raw': base64.urlsafe_b64encode(raw).decode(), 'thread_id': 'thread-1'},
+                   'request_hash': hashlib.sha256(raw).hexdigest()}
+        self.assertFalse(GmailDraftAdapter(provider, command['account_scope']).draft(command, gate)['sent'])
+        self.assertTrue(gate.finished)
+        original['To'] = 'unexpected@example.invalid'
+        provider = Gmail(base64.urlsafe_b64encode(original.as_bytes()).decode())
+        with self.assertRaises(ReconciliationRequired):
+            GmailDraftAdapter(provider, command['account_scope']).draft(command, Gate())
+
+    def test_reconcile_existing_draft_never_writes(self):
+        msg = EmailMessage(); msg['Subject'] = 'Synthetic draft'; msg.set_content('No delivery')
+        data = msg.as_bytes(); raw = base64.urlsafe_b64encode(data).decode()
+        class ResumeGate(Gate):
+            def begin(self, command): return {'disposition': 'reconcile', 'draft_id': 'draft-1'}
+        provider, gate = Gmail(raw), ResumeGate()
+        command = {'command_type': 'draft.create', 'account_scope': 'fixture@example.invalid',
+                   'request': {'raw': raw, 'thread_id': 'thread-1'}, 'request_hash': hashlib.sha256(data).hexdigest()}
+        GmailDraftAdapter(provider, command['account_scope']).draft(command, gate)
+        self.assertTrue(gate.finished); self.assertEqual(provider.writes, 0)
+
     def test_backlog_requires_positive_no_effect_evidence(self):
         item = {'account_scope': 'fixture@example.invalid', 'thread_id': 't', 'message_id': 'm',
                 'legacy_state': 'pending_reprocessing', 'source_reference': 'synthetic:1',

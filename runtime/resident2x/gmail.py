@@ -36,6 +36,8 @@ def handler(config):
                 if journal.exists():
                     saved=json.loads(journal.read_text())
                     if saved.get('status')=='completed':return {'disposition':'completed','result':saved['result']}
+                    if saved.get('status') == 'provider_observed' and saved.get('provider', {}).get('draft_id'):
+                        return {**saved['attempt'], 'disposition':'reconcile', 'draft_id':saved['provider']['draft_id']}
                     raise ReconciliationRequired('gmail_saved_attempt_requires_reconciliation')
                 # Save intent before the governed begin; loss at either boundary is held.
                 save(journal,{'status':'starting','command_id':command['id'],'occurrence_id':occurrence})
@@ -44,6 +46,8 @@ def handler(config):
                 if attempt['request_hash']!=content_hash(original):raise ValueError('gmail_attempt_hash_mismatch')
                 save(journal,{'status':'started','attempt':attempt})
                 return attempt
+            def observe(self, _, attempt, provider):
+                save(journal,{'status':'provider_observed','attempt':attempt,'provider':provider})
             def finish(self, _, attempt, result):
                 guard()
                 response=runtime.invoke('gmail.dispatch.finish',{'fence':package['fence'],'command_id':command['id'],'attempt_id':attempt['attempt_id'],'readback':result},key='gmail-finish:'+command['id'])

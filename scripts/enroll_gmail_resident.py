@@ -36,7 +36,7 @@ def main():
  principal,instance,executor,correlation,boot=[str(uuid4()) for _ in range(5)]
  role='resident2x_'+uuid4().hex[:16];password=secrets.token_urlsafe(48)
  caps={'ecos.2x.execute':1,'provider.gmail':1,'db.governed_operations':1}
- operations=['executor.register','executor.heartbeat','executor.stop','work.next','work.package','work.renew','work.complete','work.fail','work.defer','work.release','gmail.dispatch.begin','gmail.dispatch.finish']
+ operations=['executor.register','executor.heartbeat','executor.stop','work.next','work.package','work.renew','work.complete','work.fail','work.defer','work.release','gmail.dispatch.begin','gmail.dispatch.finish','provider.result.record','recovery.sweep']
  config={'identity':'RESIDENT_ADA_2X_HOME01','principal_id':principal,'instance_id':instance,'executor_id':executor,'correlation_id':correlation,'authority':'DOMAIN_SCOPED_PRODUCTION','domain':'gmail.operations','execution_mode':'production','provider_effects_enabled':True,'state_directory':str(state),'database_password_file':str(state/'database.secret'),'database':{**database,'user':role+'.loonpojawpfagzobxoko'},'control_plane':'POSTGRESQL','work_sources':['POSTGRESQL'],'capabilities':caps,'heartbeat_seconds':5,'lease_seconds':120,'poll_seconds':5,'google_client_library':'D:/ECOS/Node/runtime/releases/slots/1.0.011','gmail_credential_file':str(r/'.local/gmail-enrollment/oauth.json')}
  (state/'database.secret').write_text(password,encoding='utf-8');save(state/'config.json',config)
  save(state/'enrollment.json',{'status':'PREPARED','head':a.expected_head,'release':str(release),'instance_id':instance,'principal_id':principal,'executor_id':executor,'role':role})
@@ -47,7 +47,7 @@ def main():
    db.execute(item['sql'],prepare=False);db.execute('insert into ecos_meta.schema_migration(version,name,sha256) values(%s,%s,%s)',(item['version'],item['name'],item['sha256']))
   db.execute("insert into ecos_meta.domain_authority(domain,owner,epoch,evidence) values('gmail.operations','2X',1,'Owner approved Gmail functional cutover and exactly one additional Gmail-only Resident profile')")
   db.execute(sql.SQL('create role {} login password {} nosuperuser nocreatedb nocreaterole noreplication nobypassrls inherit').format(sql.Identifier(role),sql.Literal(password)))
-  db.execute(sql.SQL('grant executor,operations_api to {}').format(sql.Identifier(role)))
+  db.execute(sql.SQL('grant executor,operations_api,provider_adapter to {}').format(sql.Identifier(role)))
   db.execute("insert into ecos.executor(id,name,surface,enabled) values(%s,'resident_ada_2x_home01_gmail','RESIDENT_DETERMINISTIC_PROVIDER',true)",(executor,))
   db.execute("insert into ecos.executor_instance(id,executor_id,boot_id,availability,principal_id) values(%s,%s,%s,'available',%s)",(instance,executor,boot,principal))
   db.execute('insert into ecos_meta.principal_binding values(%s,%s,%s,true)',(role,principal,instance))

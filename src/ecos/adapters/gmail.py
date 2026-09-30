@@ -34,13 +34,18 @@ def message_evidence(account, message):
 def mime_identity(raw):
     """Gmail can normalize MIME bytes. Compare decoded content and identity headers."""
     parsed = BytesParser(policy=policy.default).parsebytes(decode_raw(raw))
+    # Gmail assigns its own Message-ID to a saved draft. Provider IDs are
+    # independently checked below; reply identity and all recipients remain exact.
     headers = {name: str(parsed.get(name, '')) for name in
-               ('To', 'Cc', 'Bcc', 'Subject', 'In-Reply-To', 'References', 'Message-ID')}
+               ('To', 'Cc', 'Bcc', 'Subject', 'In-Reply-To', 'References')}
     parts = []
     for part in parsed.walk():
         if not part.is_multipart():
+            payload = part.get_payload(decode=True) or b''
+            if part.get_content_maintype() == 'text':
+                payload = payload.replace(b'\r\n', b'\n')
             parts.append((part.get_content_type(), part.get_filename(),
-                          hashlib.sha256(part.get_payload(decode=True) or b'').hexdigest()))
+                          hashlib.sha256(payload).hexdigest()))
     return headers, parts
 
 
@@ -80,17 +85,21 @@ class GmailDraftAdapter:
         decision = gate.begin(command)
         if decision['disposition'] == 'completed':
             return decision['result']
-        if decision['disposition'] != 'dispatch':
+        if decision['disposition'] not in ('dispatch', 'reconcile'):
             raise ReconciliationRequired('gmail_effect_held')
         drafts = self.service.users().drafts()
         message = {'raw': request['raw']}
         if request.get('thread_id'):
             message['threadId'] = request['thread_id']
         try:
-            if command['command_type'] == 'draft.create':
+            if decision['disposition'] == 'reconcile':
+                created = {'id': decision['draft_id']}
+            elif command['command_type'] == 'draft.create':
                 created = drafts.create(userId='me', body={'message': message}).execute(num_retries=0)
             else:
                 created = drafts.update(userId='me', id=request['draft_id'], body={'message': message}).execute(num_retries=0)
+            if hasattr(gate, 'observe'):
+                gate.observe(command, decision, {'draft_id': created['id']})
             actual = drafts.get(userId='me', id=created['id'], format='raw').execute(num_retries=0)
             if actual['id'] != created['id'] or mime_identity(actual['message']['raw']) != expected:
                 raise ReconciliationRequired('gmail_draft_readback_mismatch')

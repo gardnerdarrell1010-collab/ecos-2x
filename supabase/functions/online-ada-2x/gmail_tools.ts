@@ -18,7 +18,7 @@ export function registerGmailTools(server:any,database:any,identity:any) {
  const read=async(occurrence:string)=>(await database`select ecos.gmail_read(${occurrence}::uuid) as response`)[0].response;
  const complete=async(id:string,at:string,fence:any,run:string,pkg:any,value:any)=>operate(id,'work.complete',{fence,result:{id,schema_version:'1.0.0',created_at:at,occurrence_id:fence.occurrence_id,stage_definition_id:fence.stage_definition_id,execution_run_id:run,result_schema_id:pkg.stage.result_schema_id,content_hash:await hash(value),artifact_uri:'ecos:gmail-stage:'+fence.occurrence_id,verified_at:at,verified_by:identity.principal,source_references:pkg.source_references}});
  const bounded=async(fn:()=>Promise<any>)=>{
-  try{return result(await fn());}catch(e){const message=e instanceof Error?e.message:'';return {isError:true,content:[{type:'text',text:['gate_blocked','forbidden','invalid_contract','expired_fence','stale_version','idempotency_conflict','unknown_outcome'].includes(message)?message:'gmail_operation_failed_preserve_request_id'}]};}
+  try{return result(await fn());}catch(e){const message=e instanceof Error?e.message:'';return {isError:true,content:[{type:'text',text:['gate_blocked','forbidden','invalid_contract','expired_fence','stale_version','idempotency_conflict','unknown_outcome','gmail_authentication_failed','gmail_read_failed','gmail_message_requires_bounded_review','gmail_secret_configuration_invalid'].includes(message)?message:'gmail_operation_failed_preserve_request_id'}]};}
  };
  const common={request_id:z.string().uuid(),observed_at:z.string().datetime({offset:true}),fence:fenceSchema,execution_run_id:z.string().uuid()};
  server.registerTool('ecos_gmail_intake',{
@@ -28,7 +28,7 @@ export function registerGmailTools(server:any,database:any,identity:any) {
   const pkg=(await operate(a.request_id,'work.package',{fence:a.fence})).data;
   if(pkg.stage.stage_key!=='gmail_intake')throw new Error('forbidden');
   const scoped=await read(a.fence.occurrence_id);
-  const secret=JSON.parse(Deno.env.get('ECOS_GMAIL_OAUTH_JSON')||'null');
+  let secret:any; try {secret=JSON.parse(Deno.env.get('ECOS_GMAIL_OAUTH_JSON')||'null');} catch {throw new Error('gmail_secret_configuration_invalid');}
   if(!secret || secret.account_scope!==scoped.input.account_scope)throw new Error('forbidden');
   const refresh=await fetch('https://oauth2.googleapis.com/token',{method:'POST',body:new URLSearchParams({grant_type:'refresh_token',refresh_token:secret.refresh_token,client_id:secret.client_id,client_secret:secret.client_secret})});
   if(!refresh.ok)throw new Error('gmail_authentication_failed');const token=await refresh.json();
