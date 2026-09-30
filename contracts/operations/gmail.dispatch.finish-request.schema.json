@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/gmail.dispatch.finish-request.schema.json",
+  "title": "gmail.dispatch.finish-request",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "command_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "attempt_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "readback": {
+          "type": "object",
+          "properties": {
+            "draft_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "thread_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "readback_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "provider": {
+              "const": "gmail"
+            },
+            "account_scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "sent": {
+              "const": false
+            }
+          },
+          "required": [
+            "draft_id",
+            "message_id",
+            "thread_id",
+            "readback_sha256",
+            "provider",
+            "account_scope",
+            "sent"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "fence",
+        "command_id",
+        "attempt_id",
+        "readback"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

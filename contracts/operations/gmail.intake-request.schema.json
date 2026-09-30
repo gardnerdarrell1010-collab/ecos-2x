@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/gmail.intake-request.schema.json",
+  "title": "gmail.intake-request",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "const": "gmail"
+            },
+            "account_scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "thread_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "history_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "internal_date": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "raw": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200000
+            },
+            "raw_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "label_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "maxItems": 100
+            },
+            "display": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "type": "string",
+                  "maxLength": 1000
+                },
+                "from": {
+                  "type": "string",
+                  "maxLength": 1000
+                },
+                "rfc_message_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000
+                },
+                "text": {
+                  "type": "string",
+                  "maxLength": 12000
+                }
+              },
+              "required": [
+                "subject",
+                "from",
+                "rfc_message_id",
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "provider",
+            "account_scope",
+            "message_id",
+            "thread_id",
+            "history_id",
+            "internal_date",
+            "raw",
+            "raw_sha256",
+            "label_ids",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "fence",
+        "evidence",
+        "observed_at"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}
