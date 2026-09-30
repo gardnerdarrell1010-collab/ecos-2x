@@ -106,6 +106,7 @@ def tests(target):
         assert admin('select availability from ecos.v_node_health where executor_instance_id=%s',(f.inst,))[0][0]=='unavailable'
         good('recovery.sweep',{'limit':100},'operations_api');assert admin('select status from ecos.executor_presence where executor_instance_id=%s',(f.inst,))[0][0]=='unavailable';mark('deterministic_stale_detection')
         good('executor.register',register)
+        admin("insert into ecos.executor_capability(executor_instance_id,capability_name,capability_version,attested_by,expires_at) values(%s,'ecos.2x.execute',1,%s,clock_timestamp()+interval '1 hour')",(f.inst,f.p))
         # Semantic adapter contract on the actual SQL surface; interpretation fixture is synthetic.
         admin("update ecos.executor set surface='ONLINE_SEMANTIC',record_version=record_version+1 where id=%s",(f.ex,))
         st2=uid();admin("insert into ecos.work_stage_definition(id,work_definition_id,stage_key,kind,execution_surface,input_schema_id,result_schema_id,requires_approval) values(%s,%s,'semantic','semantic','ONLINE_SEMANTIC','synthetic.input.v1','synthetic.result.v1',false)",(st2,f.definition))
@@ -195,6 +196,8 @@ def main():
         report['domain_authority_checks']=authority_checks(target,Fixture)
         from wave1_batch_tests import checks as batch_checks
         report['wave1_batch_checks']=batch_checks(target,Fixture)
+        from authority_effect_tests import checks as effect_checks
+        report['authority_effect_checks']=effect_checks(target,Fixture)
         f=Fixture(target);f.seed()
         try:report['concurrency']={'same_work':contend(f,1),'different_work':contend(f,15)}
         finally:f.cleanup()

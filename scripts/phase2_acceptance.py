@@ -23,6 +23,7 @@ def additional(target,Fixture):
         return ids
     register={'host':'SYNTHETIC-ACCEPTANCE','runtime':'contract-client','software_version':'phase2','evidence_hash':'a'*64}
     try:
+        admin("insert into ecos.executor_capability(executor_instance_id,capability_name,capability_version,attested_by,expires_at) values(%s,'ecos.2x.execute',1,%s,clock_timestamp()+interval '1 hour')",(f.inst,f.p))
         for surface in ('INTERACTIVE_ADA','RESIDENT_DETERMINISTIC_PROVIDER','ONLINE_SEMANTIC','DATABASE_DETERMINISTIC'):
             admin('update ecos.executor set surface=%s,record_version=record_version+1 where id=%s',(surface,f.ex))
             admin('update ecos.work_stage_definition set execution_surface=%s,record_version=record_version+1 where id=%s',(surface,f.stage))

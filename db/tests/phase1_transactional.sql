@@ -243,6 +243,11 @@ begin
  results:=results||'"delayed_heartbeat_cannot_revive_executor"'::jsonb;
 
 
+ -- Current autonomous generation capability required by forward migration 24.
+ if exists(select 1 from ecos.capability where name='ecos.2x.execute' and version=1) then
+  insert into ecos.executor_capability(executor_instance_id,capability_name,capability_version,attested_by,expires_at)
+  values(inst,'ecos.2x.execute',1,p,clock_timestamp()+interval '1 hour') on conflict do nothing;
+ end if;
  -- A single obligation has five staged, synthetic fulfillment mechanisms.
  delete from ecos_meta.object_grant where principal_id=p and record_type='work_occurrence' and record_id=nextoid;
  select to_jsonb(t) into v from ecos.task t where id=tid2;
