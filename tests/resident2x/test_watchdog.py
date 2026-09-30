@@ -18,7 +18,7 @@ class WatchdogTests(unittest.TestCase):
             'capabilities':{'ecos.2x.execute':1},'state_directory':str(self.root)}))
         (self.root/'installed-manifest.json').write_text(json.dumps({'files':{}}))
         self.root_patch=patch.object(watchdog,'ROOT',self.root);self.root_patch.start();self.addCleanup(self.root_patch.stop)
-        self.args=patch('sys.argv',['watchdog','--config',str(self.config)]);self.args.start();self.addCleanup(self.args.stop)
+        self.args=patch('sys.argv',['watchdog','--config',str(self.config.resolve())]);self.args.start();self.addCleanup(self.args.stop)
 
     def test_live_locked_resident_is_not_duplicated(self):
         (self.root/'heartbeat.json').write_text(json.dumps({'instance_id':'test','at':datetime.now(timezone.utc).isoformat()}))
@@ -35,7 +35,7 @@ class WatchdogTests(unittest.TestCase):
     def test_unlocked_runtime_launches_exact_config_and_returns_exit_code(self):
         with patch.object(watchdog.subprocess,'run',return_value=Mock(returncode=7)) as run:
             self.assertEqual(watchdog.main(),7)
-            self.assertEqual(run.call_args.args[0][-2:],['--config',str(self.config)])
+            self.assertEqual(run.call_args.args[0][-2:],['--config',str(self.config.resolve())])
 
     def test_manifest_tampering_blocks_launch(self):
         (self.root/'payload').write_text('changed')
