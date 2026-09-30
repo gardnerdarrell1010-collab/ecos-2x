@@ -7,7 +7,9 @@ from resident2x_acceptance import hosted_admin
 from ecos.core.contracts import content_hash
 from psycopg import sql
 from psycopg.types.json import Jsonb
-s=r/'.local/gmail-enrollment/acceptance'
+fixture_set=sys.argv[2] if len(sys.argv)>2 else 'acceptance'
+assert fixture_set in ('acceptance','functional-v2')
+s=r/'.local/gmail-enrollment'/fixture_set
 fixtures=json.loads((s/'fixtures.json').read_text());n=int(sys.argv[1]);assert n in(1,2)
 item=fixtures['passes'][n-1];connect,_=hosted_admin()
 with connect() as db:
