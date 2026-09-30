@@ -1,0 +1,515 @@
+{
+  "as_of": "2026-09-30",
+  "whole_function_acceptance_only": true,
+  "counts": {
+    "ONLINE_2X": 25,
+    "RESIDENT_2X": 12,
+    "SQL_NATIVE": 15,
+    "RETIRED": 3
+  },
+  "unaccounted": 0,
+  "active_1x": 0,
+  "workers": [
+    {
+      "legacy_worker_id": "TASK-AUTO-000001",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000002",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000003",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000004",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000005",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000006",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000007",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000008",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000009",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000010",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000011",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000012",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000013",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000014",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000015",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000016",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000017",
+      "target": "RETIRED",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000018",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000019",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000020",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000021",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000022",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000023",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000024",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000025",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000026",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000027",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000028",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000029",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": [
+        "Resident production acquisition and governed SQL commit/readback verified; whole-function acceptance pending"
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000029-B",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": [
+        "SQL statistics verified against canonical historical features; bounded production read verified; whole-function acceptance pending"
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000030",
+      "target": "RETIRED",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000031",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000032",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000033",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000034",
+      "target": "RETIRED",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000035",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000036",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000037",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000038",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000039",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000040",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000041",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000042",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000043",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000044",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000045",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000046",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000047",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": [
+        "Resident production acquisition and governed SQL commit/readback verified; whole-function acceptance pending"
+      ]
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000048",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000049",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000050",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000051",
+      "target": "SQL_NATIVE",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000052",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000053",
+      "target": "ONLINE_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000054",
+      "target": "RESIDENT_2X",
+      "implemented": false,
+      "tested": false,
+      "production_active": false,
+      "active_1x": false,
+      "component_acceptance": []
+    }
+  ]
+}

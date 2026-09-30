@@ -1,3 +1,5 @@
+> Superseded by [the production checkpoint](PRODUCTION_CHECKPOINT.md). The pending freeze and undeployed-runtime statements below describe the earlier checkpoint only.
+
 # 2.x functionality checkpoint
 
 Owner direction: stop 1.x with existing Windows controls; no drain, pre-stop checkpoint, publication guard, or coexistence bridge. The previously prepared checkpoint freeze is superseded. Its files remain historical evidence.

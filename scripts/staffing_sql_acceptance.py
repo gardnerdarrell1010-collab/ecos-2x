@@ -24,6 +24,10 @@ with connect() as db:
     try:
         existed=db.execute("select to_regprocedure('ecos_meta.staffing_statistics(text,text,text)') is not null").fetchone()[0]
         if not existed:db.execute(sql,prepare=False)
+        if '--candidate' in sys.argv:
+            candidate=Path(sys.argv[sys.argv.index('--candidate')+1]).resolve()
+            assert candidate.parent==(ROOT/'db/migrations').resolve()
+            db.execute(candidate.read_text(),prepare=False)
         for day,observation in dates.items():
             db.execute("insert into ecos.toast_closed_date(domain,execution_mode,restaurant_hash,business_date,observation,batch_id) values('synthetic.acceptance','synthetic',%s,%s,%s,null)",('e'*64,day,Jsonb(observation)))
         actual=db.execute("select ecos_meta.staffing_statistics('synthetic.acceptance','synthetic',%s)",('e'*64,)).fetchone()[0]
@@ -36,6 +40,10 @@ with connect() as db:
                         left=a['statistics'][window][measure][field];right=values[field]
                         assert (math.isclose(left,right,rel_tol=1e-12,abs_tol=1e-12) if isinstance(right,float) else left==right),(window,measure,field)
                         count+=1
+        if '--candidate' in sys.argv:
+            bounded=db.execute("select ecos_meta.staffing_statistics('synthetic.acceptance','synthetic',%s,%s::date,%s::date)",('e'*64,max(dates),max(dates))).fetchone()[0]
+            assert bounded['rows']==[r for r in actual['rows'] if r['business_date']==max(dates)]
+            assert not db.execute("select has_function_privilege('executor','ecos_meta.staffing_statistics(text,text,text,date,date)','execute')").fetchone()[0]
         report={'status':'passed','synthetic_days':len(dates),'feature_rows':len(actual['rows']),'parity_comparisons':count,'production_data_mutation':False,'transaction':'ROLLED_BACK'}
     finally:db.rollback()
 with connect() as db:
