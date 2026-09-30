@@ -1,0 +1,84 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>ECOS — Ada Live Monitor</title>
+<meta name="ecos-component" content="ECOS Ada Live Monitor">
+<meta name="ecos-version" content="2.0.001">
+<meta name="ecos-version-date" content="2026-09-30">
+<style>
+body{font-family:Segoe UI,Arial;background:#f5f7fa;color:#17202a;margin:0}.w{max-width:1500px;margin:auto;padding:22px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.c{background:white;border:1px solid #dde3ea;border-radius:14px;padding:16px}.full{grid-column:1/-1}h1{margin:0}
+.muted{color:#68717c}.pill{border:1px solid #ccd3db;border-radius:999px;padding:7px 11px}.label{font-size:12px;font-weight:700;text-transform:uppercase;color:#68717c;letter-spacing:.08em}
+.big{font-size:21px;font-weight:700;margin:8px 0}table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px;border-bottom:1px solid #edf0f3;text-align:left;vertical-align:top}
+th{font-size:11px;color:#68717c}.bad{color:#b42318}.good{color:#067647}.warn{color:#b54708}
+.buttons{margin:14px 0}.buttons button{margin-right:6px;padding:7px 10px;background:white;border:1px solid #ccd3db;border-radius:8px}.buttons .on{font-weight:700;border-color:#555}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.full{grid-column:auto}header{align-items:flex-start;flex-direction:column}}
+</style></head>
+<body><div class="w">
+<header><div><h1>ECOS — Ada Live Monitor</h1><div class="muted"><span id="nodeTitle">HOME-01</span> · PostgreSQL 2.x executor/work telemetry · v2.0.001</div></div><div id="conn" class="pill">Connecting…</div></header>
+<div class="buttons"><button class="on" data-node="HOME-01">HOME-01</button><button data-node="ALL">ALL 2.x</button><button id="refreshNow">Refresh Now</button></div>
+<div class="grid">
+<div class="c"><div class="label">Ada Now</div><div id="now"></div></div>
+<div class="c"><div class="label">Next Up</div><div id="next"></div></div>
+<div class="c"><div class="label">2.x Executors</div><div id="executors"></div></div>
+<div class="c"><div class="label">Needs Attention</div><div id="problems"></div></div>
+<div class="c full"><div class="label">Next 5 · PostgreSQL 2.x Work Queue</div><div id="ready"></div></div>
+<div class="c full"><div class="label">Active Claims</div><div id="claims"></div></div>
+<div class="c full"><div class="label">Recent 2.x Runs</div><div id="runs"></div></div>
+</div></div>
+<script>
+const ENDPOINT='https://loonpojawpfagzobxoko.supabase.co/functions/v1/ecos-ada-live-monitor-state';
+const POLL=5000, STALE=90000; let S=null, selectedNode='HOME-01', inflight=false;
+const E=s=>String(s??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const age=s=>{let n=(Date.now()-Date.parse(s))/1000;if(!Number.isFinite(n))return 'unknown';n=Math.max(0,n);return n<60?Math.floor(n)+'s':n<3600?Math.floor(n/60)+'m '+Math.floor(n%60)+'s':Math.floor(n/3600)+'h '+Math.floor(n%3600/60)+'m'};
+const cell=id=>document.getElementById(id);
+function tbl(a,cols){if(!a?.length)return '<p class=muted>None</p>';return '<div style="overflow-x:auto"><table><tr>'+cols.map(c=>'<th>'+c[0]+'</th>').join('')+'</tr>'+a.map(x=>'<tr>'+cols.map(c=>'<td>'+c[1](x)+'</td>').join('')+'</tr>').join('')+'</table></div>'}
+function presence(x){return x.presence||{}}
+function heartbeat(x){return x.heartbeat||{}}
+function relevantExecutors(){
+ let xs=S?.executors||[];
+ if(selectedNode==='ALL') return xs;
+ return xs.filter(x=>String(presence(x).host||'').toUpperCase()===selectedNode || String(x.executor_name||'').toLowerCase().includes('online'));
+}
+function live(x){const h=heartbeat(x); return x.executor_enabled!==false && x.availability==='available' && Date.parse(h.valid_until||0)>Date.now();}
+function render(){
+ if(!S)return;
+ const xs=relevantExecutors(), resident=xs.find(x=>x.surface==='RESIDENT_DETERMINISTIC_PROVIDER' && live(x)) || xs.find(x=>x.surface==='RESIDENT_DETERMINISTIC_PROVIDER');
+ const online=xs.filter(x=>x.surface==='ONLINE_SEMANTIC');
+ const active=S.active_claims||[], queue=S.queue||[], recent=S.recent_runs||[];
+ const residentClaims=active.filter(c=>c.executor_instance_id===resident?.executor_instance_id);
+ const onlineLive=online.filter(live).length;
+ let headline=resident&&live(resident)?'RESIDENT ADA 2.x LIVE':(onlineLive?'ONLINE ADA 2.x LIVE':'NO LIVE 2.x EXECUTOR');
+ let detail=[];
+ if(resident){detail.push((presence(resident).runtime||'resident2x')+' '+(presence(resident).software_version||'')); detail.push('heartbeat '+age(heartbeat(resident).observed_at)+' ago')}
+ detail.push(onlineLive+' Online 2.x live');
+ cell('now').innerHTML=`<div class="big ${headline.includes('NO LIVE')?'bad':'good'}">${E(headline)}</div><div class=muted>${E(detail.join(' · '))}</div>`;
+ const q=queue.filter(x=>x.state==='ready'||x.state==='retry_wait').slice(0,5), n=q[0];
+ cell('next').innerHTML=n?`<div class=big>${E((n.work_definition?.name)||n.occurrence_key)}</div><div class=muted>${E(n.work_stage_definition?.stage_key)} · ${E(n.state)} · due ${E(n.due_at)}</div>`:'<p class=muted>No currently published ready 2.x work.</p>';
+ cell('executors').innerHTML=tbl(xs,[['Executor',x=>E(x.executor_name)],['Surface',x=>E(x.surface)],['Host',x=>E(presence(x).host)],['Runtime',x=>E(presence(x).runtime)+' '+E(presence(x).software_version)],['State',x=>live(x)?'<span class=good>LIVE</span>':E(x.availability)],['Heartbeat',x=>age(heartbeat(x).observed_at)+' ago']]);
+ cell('ready').innerHTML=tbl(q,[['Work',x=>E(x.work_definition?.name||x.occurrence_key)],['Stage',x=>E(x.work_stage_definition?.stage_key)],['Surface',x=>E(x.work_stage_definition?.execution_surface)],['State',x=>E(x.state)],['Due',x=>E(x.due_at)],['Attempts',x=>E(x.attempt_count)]]);
+ cell('claims').innerHTML=tbl(active,[['Occurrence',x=>E(x.occurrence_id)],['Executor instance',x=>E(x.executor_instance_id)],['Version',x=>E(x.claim_version)],['Acquired',x=>E(x.acquired_at)],['Expires',x=>E(x.expires_at)]]);
+ cell('runs').innerHTML=tbl(recent,[['Run',x=>E(x.id)],['State',x=>E(x.state)],['Executor instance',x=>E(x.executor_instance_id)],['Started',x=>E(x.created_at)],['Ended',x=>E(x.ended_at)]]);
+ const stale=xs.filter(x=>x.executor_enabled!==false && !live(x));
+ cell('problems').innerHTML=stale.length?tbl(stale,[['Executor',x=>E(x.executor_name)],['Availability',x=>E(x.availability)],['Heartbeat',x=>age(heartbeat(x).observed_at)+' ago'],['Presence',x=>E(presence(x).status)]]):'<p class="good">No stale enabled 2.x executor in this view.</p>';
+ const generated=Date.parse(S.generated_at), isStale=!Number.isFinite(generated)||Date.now()-generated>STALE;
+ cell('conn').textContent=(isStale?'STALE':'POSTGRESQL 2.x LIVE')+' · '+selectedNode+' · snapshot '+age(S.generated_at)+' ago';
+ cell('conn').className='pill '+(isStale?'bad':'good');
+}
+async function poll(){
+ if(inflight)return; inflight=true;
+ try{
+   const r=await fetch(ENDPOINT+'?t='+Date.now(),{cache:'no-store'});
+   if(!r.ok)throw new Error('HTTP '+r.status);
+   const v=await r.json(); if(v.error)throw new Error(v.error);
+   if(v.authority!=='POSTGRESQL_2X')throw new Error('non-2.x authority rejected');
+   S=v; render();
+ }catch(e){
+   cell('conn').textContent='2.x TELEMETRY ERROR · '+e.message; cell('conn').className='pill bad';
+   cell('now').innerHTML='<div class="big bad">2.x telemetry unavailable</div><div class=muted>Legacy 1.x telemetry is intentionally rejected.</div>';
+ }finally{inflight=false}
+}
+document.querySelectorAll('button[data-node]').forEach(b=>b.addEventListener('click',()=>{selectedNode=b.dataset.node;document.querySelectorAll('button[data-node]').forEach(x=>x.classList.toggle('on',x===b));cell('nodeTitle').textContent=selectedNode;render()}));
+document.getElementById('refreshNow').addEventListener('click',poll);
+poll();setInterval(poll,POLL);setInterval(()=>{if(S)render()},1000);
+</script></body></html>
