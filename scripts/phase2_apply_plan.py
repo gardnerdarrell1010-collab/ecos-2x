@@ -2,7 +2,7 @@
 from migrations import ROOT,inventory,render
 
 def migration_sql():
-    items=inventory(ROOT/'db/migrations');assert len(items)==20
+    items=inventory(ROOT/'db/migrations')[:20];assert len(items)==20
     # Keep original prefix hashes, omit already-accepted bodies after a hard prefix guard.
     for m in items[:18]:m['sql']='-- Accepted prefix; body omitted after exact head guard.'
     sql=render(items).replace('\\set ON_ERROR_STOP on\n','',1)

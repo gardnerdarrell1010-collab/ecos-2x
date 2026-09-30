@@ -118,7 +118,7 @@ def enroll(connect, database, state, http_port, password, hosted=False):
     principal, instance, executor, correlation = [uid() for _ in range(4)]
     role = "resident2x_" + uuid4().hex[:16]
     config = {"identity": "RESIDENT_ADA_2X_HOME01", "principal_id": principal, "instance_id": instance,
-        "executor_id": executor, "correlation_id": correlation, "authority": "PRE_CUTOVER_NON_AUTHORITATIVE",
+        "executor_id": executor, "correlation_id": correlation, "authority": "DOMAIN_SCOPED_PRODUCTION", "domain": "synthetic.acceptance", "execution_mode": "synthetic",
         "provider_effects_enabled": False, "state_directory": str(state), "database_password_file": str(state / "database.secret"),
         "database": {**database, "user": role + (".loonpojawpfagzobxoko" if hosted else "")},
         "capabilities": {"local.process.execute": 1, "local.filesystem.read": 1, "http.authenticated.request": 1,
@@ -137,13 +137,14 @@ def enroll(connect, database, state, http_port, password, hosted=False):
     config["artifacts"] = {"acceptance": {"path": str(artifact), "sha256": hashlib.sha256(artifact.read_bytes()).hexdigest()}}
     work = []
     with connect() as db:
-        assert db.execute("select environment,authority,provider_effects_enabled from ecos_meta.database_identity").fetchone() == ("development", "non_production", False)
-        assert db.execute("select max(version) from ecos_meta.schema_migration").fetchone()[0] == 20
+        assert db.execute("select environment,authority,provider_effects_enabled from ecos_meta.database_identity").fetchone() == ("production", "domain_scoped", True)
+        assert db.execute("select max(version) from ecos_meta.schema_migration").fetchone()[0] >= 21
         db.execute(sql.SQL("create role {} login password {} nosuperuser nocreatedb nocreaterole inherit").format(sql.Identifier(role), sql.Literal(password)))
         db.execute(sql.SQL("grant executor, operations_api to {}").format(sql.Identifier(role)))
         db.execute("insert into ecos.executor(id,name,surface,enabled) values(%s,%s,'RESIDENT_DETERMINISTIC_PROVIDER',true)", (executor, "resident_ada_2x_home01"))
         db.execute("insert into ecos.executor_instance(id,executor_id,boot_id,availability,principal_id) values(%s,%s,%s,'available',%s)", (instance, executor, uid(), principal))
         db.execute("insert into ecos_meta.principal_binding values(%s,%s,%s,true)", (role, principal, instance))
+        db.execute("insert into ecos_meta.principal_domain values(%s,'synthetic.acceptance','synthetic',1)", (principal,))
         for operation in OPERATIONS:
             db.execute("insert into ecos_meta.principal_operation values(%s,%s)", (principal, operation))
         for name in config["capabilities"]:
@@ -157,7 +158,7 @@ def enroll(connect, database, state, http_port, password, hosted=False):
             task, retry, definition, stage, occurrence = [uid() for _ in range(5)]
             db.execute("insert into ecos.task(id,business_id,title,project_id,lifecycle_state,wait_reason,description) values(%s,%s,%s,null,'open','none',%s)",
                 (task, "SYNTHETIC-RESIDENT2X-" + task, "Synthetic Resident Ada 2.x " + key,
-                 "synthetic; acceptance-only; Resident Ada 2.x; Hello World round-trip evidence; PRE_CUTOVER; no provider effects"))
+                 "synthetic; acceptance-only; Resident Ada 2.x; Hello World round-trip evidence; synthetic.acceptance domain; no provider effects"))
             db.execute("insert into ecos.retry_policy(id,max_attempts,initial_delay_seconds,max_delay_seconds,backoff_multiplier,jitter_basis_points,retryable_error_classes) values(%s,3,1,10,2,0,'[\"transient\"]')", (retry,))
             db.execute("insert into ecos.work_definition(id,name,definition_version,enabled,fulfillment_kind,retry_policy_id) values(%s,%s,1,true,'staged',%s)", (definition, "synthetic_resident2x_" + uid().replace("-", ""), retry))
             db.execute("insert into ecos.work_stage_definition(id,work_definition_id,stage_key,kind,execution_surface,input_schema_id,result_schema_id,requires_approval) values(%s,%s,%s,'deterministic','RESIDENT_DETERMINISTIC_PROVIDER','synthetic.input.v1','synthetic.result.v1',false)", (stage, definition, key))
@@ -292,7 +293,7 @@ def main():
             with connect() as db:
                 db.autocommit = True
                 db.execute(render(inventory(ROOT / "db/migrations")).replace("\\set ON_ERROR_STOP on\n", "", 1), prepare=False)
-            print("PASS disposable migration head 20", flush=True)
+            print("PASS disposable canonical migrations", flush=True)
         report.update(run_acceptance(connect, database, state, args.hosted, args.fault_restart))
     except Exception as exc:
         report.update(error_type=type(exc).__name__, sqlstate=getattr(exc, "sqlstate", None))

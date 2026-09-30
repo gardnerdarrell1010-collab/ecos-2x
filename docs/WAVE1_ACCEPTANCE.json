@@ -1,0 +1,158 @@
+{
+  "verified_at": "2026-09-30T03:42:46.320711+00:00",
+  "result": "TRANSFER_BLOCKED_EXISTING_1X_PAUSE_FENCE",
+  "production_authority_model": "Production infrastructure; exclusive authority per functional domain",
+  "migration_head": 23,
+  "domain_owners": [
+    [
+      "staffing.features",
+      "1X",
+      1
+    ],
+    [
+      "synthetic.acceptance",
+      "2X",
+      1
+    ],
+    [
+      "toast.acquisition",
+      "1X",
+      1
+    ]
+  ],
+  "production_domain_transfer": false,
+  "production_compatibility_publication": false,
+  "a029b_changed": false,
+  "source_windows": [
+    "2026-09-27",
+    "2026-09-28"
+  ],
+  "shadow_occurrences_completed": 4,
+  "normalization_aggregate_labor_hash_projection_parity": "passed_on_identical_captured_inputs",
+  "a029b_input_and_calculation_compatibility": "passed_without_consumer_modification",
+  "crash_recovery": [
+    "after_acquisition_before_commit",
+    "after_commit_before_completion"
+  ],
+  "phase1_checks": 31,
+  "phase2_checks": 38,
+  "domain_authority_checks": [
+    "1x_owned_domain_denies_2x_production",
+    "shadow_general_business_mutation_denied",
+    "unmapped_work_denied",
+    "scoped_shadow_claim_allowed",
+    "domain_authority_rechecked_before_replay_and_completion",
+    "transfer_requires_domain_claim_drain",
+    "old_epoch_rejected_after_transfer",
+    "cross_domain_object_mutation_denied",
+    "executor_cannot_change_authority",
+    "rollback_epoch_fences_old_owner",
+    "transfer_and_rollback_audited"
+  ],
+  "batch_checks": [
+    "stale_fence_cannot_commit_batch",
+    "crash_before_commit_leaves_no_partial_batch_or_checkpoint",
+    "independent_committed_readback_preserves_decimal_values",
+    "same_request_and_new_key_replay_single_batch_checkpoint",
+    "cached_batch_replay_rechecks_revoked_occurrence_and_task_grants",
+    "cached_batch_replay_cannot_cross_domain_or_mode",
+    "committed_batch_immutable",
+    "conflicting_occurrence_payload_rejected",
+    "checkpoint_compare_and_swap_and_closed_date_upsert",
+    "open_business_date_rejected",
+    "direct_batch_mutation_denied"
+  ],
+  "offline_passed": 63,
+  "historical_placeholders_skipped": 26,
+  "contention": {
+    "same_work": {
+      "sessions": 15,
+      "winners": 1,
+      "valid_losers": 14
+    },
+    "different_work": {
+      "sessions": 15,
+      "winners": 15,
+      "valid_losers": 0
+    }
+  },
+  "synthetic_resident_regression": "passed",
+  "all_shadow_identities_retired": true,
+  "active_2x_claims": 0,
+  "blocker_probe": {
+    "disabled_claim_passes_owned_check": true,
+    "disabled_claim_passes_provider_claim_guard": true,
+    "fresh_selector_rejects_disabled": true,
+    "installed_dispatcher_sha256": "61356177937cf02fe7841a90a059bfa1ea637ad2157eff03982889455c759b47",
+    "meaning": "Enabled FALSE is a selection gate, not a final claim/provider authority fence for a previously selected item.",
+    "production_reads": false,
+    "production_writes": false,
+    "provider_calls": false,
+    "selected_then_disabled_row_still_claimed": true,
+    "status": "reproduced"
+  },
+  "full_domain_rollback": "not_proven",
+  "sql_authority_rollback_fencing": "passed",
+  "private_evidence": [
+    {
+      "path": ".local/wave1-authority-regression-008.json",
+      "sha256": "983f14e0f6441ac5461195801279b949294ee8bb567eb9e5a77a7d7f3d57827a"
+    },
+    {
+      "path": ".local/wave1-offline-final.json",
+      "sha256": "eae98edd6660a569b4c74cb55a2cb9853566551b7f8935549504aacee879fc88"
+    },
+    {
+      "path": ".local/wave1-synthetic-regression.json",
+      "sha256": "18559a276d37ad8f530ef32e495b1b215b22c81dd4c63af4770e817c55d2fe94"
+    },
+    {
+      "path": ".local/wave1-shadow-source/report.json",
+      "sha256": "e49a015613dd945241a4a4dfaf4e462f56be20bf602d21aa4f3bacf7b77797cf"
+    },
+    {
+      "path": ".local/wave1-shadow-source/compatibility-report.json",
+      "sha256": "127764d30dc246c9025d8fddf7b6e3baddf70c1bc2e2d37785766a8d8da90e19"
+    },
+    {
+      "path": ".local/wave1-resident-shadow-20260930T032532/report.json",
+      "sha256": "b7f8bbd85bfb6fc6aa3c9fdcf7a008c18855b9180fbe8886988f060a2ff078b6"
+    },
+    {
+      "path": ".local/wave1-resident-shadow-20260930T033028/report.json",
+      "sha256": "f543b778a1392f41a420cbe4e0953481885560f69bcf16581b2a88fe9ada425f"
+    },
+    {
+      "path": ".local/wave1-resident-shadow-20260930T033247/report.json",
+      "sha256": "f32bd50b4426d4b14ee8c9f721b82d92a77bed7d90159bcd2f338fa901963e47"
+    },
+    {
+      "path": ".local/wave1-final/result.json",
+      "sha256": "0b35b740c544feb0d25c951c4cd7b6c337fd05b5a74d3af6f2efa91cbbb54bfd"
+    }
+  ],
+  "migrations": [
+    {
+      "version": 21,
+      "name": "000021_domain_authority.sql",
+      "sha256": "6d4d52ef2855cbfb9f6142f58e2097d7acce470ce59ae62e5f68d1d5e3095b77"
+    },
+    {
+      "version": 22,
+      "name": "000022_toast_batches.sql",
+      "sha256": "02d27f69c453a1d1e758fca9c4688198642e324eefdbf0c6c4edfff4274221a7"
+    },
+    {
+      "version": 23,
+      "name": "000023_wave1_replay_scope.sql",
+      "sha256": "68ea9f2aa85d4ccfa1ec76b72d1862e3a5fee0dae112677346e1c4502b9ba84b"
+    }
+  ],
+  "security_advisors": "No WARN/ERROR findings; seven INFO deny-by-default RLS-without-policy notices",
+  "source_and_secrets_in_git": false,
+  "secret_scan": {
+    "status": "passed",
+    "files_scanned": 347,
+    "exact_credentials_and_patterns": true
+  }
+}

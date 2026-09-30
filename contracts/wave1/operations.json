@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "operations": [
+    {
+      "name": "toast.batch.commit",
+      "request_schema": "https://contracts.ecos.invalid/v1/toast.batch.commit-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    }
+  ]
+}

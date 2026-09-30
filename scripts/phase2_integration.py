@@ -23,6 +23,7 @@ class Fixture(Phase1Fixture):
             db.execute("update ecos.work_claim set state='revoked',record_version=record_version+1 where executor_instance_id=%s and state='active'",(self.inst,))
             db.execute("update ecos.execution_run set state='cancelled',ended_at=clock_timestamp(),record_version=record_version+1 where executor_instance_id=%s and state='started'",(self.inst,))
             db.execute("update ecos.work_occurrence set state='cancelled',record_version=record_version+1 where work_definition_id=%s and state not in ('succeeded','cancelled','dead_lettered','failed')",(self.definition,))
+            db.execute("update ecos.executor_presence set status='stopped',stopped_at=clock_timestamp(),record_version=record_version+1 where executor_instance_id=%s",(self.inst,))
             db.execute('delete from ecos_meta.principal_binding where principal_id=%s',(self.p,))
             db.execute('update ecos.executor set enabled=false,record_version=record_version+1 where id=%s',(self.ex,))
             for role in self.added_roles:
@@ -190,6 +191,10 @@ def main():
         report['phase2_checks']=tests(target)
         from phase2_acceptance import additional
         report['additional_acceptance']=additional(target,Fixture)
+        from wave1_authority_tests import checks as authority_checks
+        report['domain_authority_checks']=authority_checks(target,Fixture)
+        from wave1_batch_tests import checks as batch_checks
+        report['wave1_batch_checks']=batch_checks(target,Fixture)
         f=Fixture(target);f.seed()
         try:report['concurrency']={'same_work':contend(f,1),'different_work':contend(f,15)}
         finally:f.cleanup()

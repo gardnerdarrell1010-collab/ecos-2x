@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/toast.batch.commit-request.schema.json",
+  "title": "toast.batch.commit-request",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "restaurant_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "business_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "observation_json": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 700000
+        },
+        "projection_json": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 39999
+        },
+        "source_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "expected_checkpoint_version": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "fence",
+        "restaurant_hash",
+        "business_date",
+        "observation_json",
+        "projection_json",
+        "source_hash",
+        "expected_checkpoint_version"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

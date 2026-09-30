@@ -1,3 +1,8 @@
+> **Owner correction 2026-09-29:** ECOS 2.x is production infrastructure.
+> Authority transfers per functional domain; historical non-production descriptions below
+> are superseded by [the production authority decision](PRODUCTION_AUTHORITY.md).
+> A029/A047 remain 1X until Wave 1 acceptance and transfer; A029-B remains 1X.
+
 # Resident Ada 2.x — pre-cutover executor
 
 `runtime/resident2x/` is a separate executable plane. `src/ecos/` remains the pure,

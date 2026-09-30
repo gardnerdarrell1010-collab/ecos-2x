@@ -37,7 +37,7 @@ class Fixture:
         self.added_roles=[]
     def seed(self):
         with self.target.connect() as db:
-            assert db.execute('select environment,authority,provider_effects_enabled from ecos_meta.database_identity').fetchone()==('development','non_production',False)
+            assert db.execute('select environment,authority,provider_effects_enabled from ecos_meta.database_identity').fetchone() in [('development','non_production',False),('production','domain_scoped',True)]
             assert not db.execute("select exists(select 1 from ecos_meta.principal_binding where role_name in ('executor','operations_api'))").fetchone()[0], 'Fixture roles already bound'
             assert not db.execute('select maintenance from ecos_meta.control').fetchone()[0], 'Maintenance already enabled'
             for role in ('executor','operations_api'):
@@ -54,6 +54,8 @@ class Fixture:
             db.execute("insert into ecos.executor_capability(executor_instance_id,capability_name,capability_version,attested_by,expires_at) values(%s,'db.governed_operations',1,%s,clock_timestamp()+interval '1 hour')",(self.inst,self.p))
             for role in ('executor','operations_api'):
                 db.execute('insert into ecos_meta.principal_binding values(%s,%s,%s,true)',(role,self.p,self.inst))
+            if db.execute("select to_regclass('ecos_meta.principal_domain')").fetchone()[0]:
+                db.execute("insert into ecos_meta.principal_domain values(%s,'synthetic.acceptance','synthetic',1)",(self.p,))
             db.execute("insert into ecos_meta.principal_operation select %s,name from ecos_meta.operation_contract",(self.p,))
             db.execute("insert into ecos_meta.object_grant values(%s,'task',%s)",(self.p,self.task))
     def add_work(self,count):
@@ -91,6 +93,8 @@ class Fixture:
             db.execute("update ecos.work_claim set state='revoked',record_version=record_version+1 where executor_instance_id=%s and state='active'",(self.inst,))
             db.execute("update ecos.execution_run set state='cancelled',ended_at=clock_timestamp(),record_version=record_version+1 where executor_instance_id=%s and state='started'",(self.inst,))
             db.execute("update ecos.work_occurrence set state='cancelled',record_version=record_version+1 where work_definition_id=%s and state not in ('succeeded','cancelled')",(self.definition,))
+            if db.execute("select to_regclass('ecos.executor_presence')").fetchone()[0]:
+                db.execute("update ecos.executor_presence set status='stopped',stopped_at=clock_timestamp(),record_version=record_version+1 where executor_instance_id=%s",(self.inst,))
             db.execute('delete from ecos_meta.principal_binding where principal_id=%s',(self.p,))
             db.execute('update ecos.executor set enabled=false,record_version=record_version+1 where id=%s',(self.ex,))
             for role in self.added_roles:

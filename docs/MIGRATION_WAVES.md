@@ -1,3 +1,8 @@
+> **Owner correction 2026-09-29:** ECOS 2.x is production infrastructure.
+> Authority transfers per functional domain; historical non-production descriptions below
+> are superseded by [the production authority decision](PRODUCTION_AUTHORITY.md).
+> A029/A047 remain 1X until Wave 1 acceptance and transfer; A029-B remains 1X.
+
 # ECOS 2.x dependency-aware migration waves
 
 Planning only. **13 functional waves, followed by T14 shared-support retirement.** No worker is paused, no provider effect is enabled, and production authority remains 1.x. This plan applies the existing 55-worker disposition; it does not replace or regenerate that analysis.

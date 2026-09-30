@@ -151,7 +151,7 @@
     "completeness": "Direct documented edges plus explicitly conservative all-worker support closure. No complete machine-readable runtime consumer graph exists in the repository; do not claim exhaustive observed edges. Unmapped live/finite/manual consumers are an explicit retirement veto."
   },
   "CommonTransferGates": {
-    "G1": "Production authority boundary: current ecos.operate rejects anything except development/non_production/provider-effects-disabled (migration 20 line 346). Separately authorize and accept a production-safe operation boundary, enrollment and deployment; never remove the guard as a shortcut or treat a flag flip as acceptance.",
+    "G1": "Both architectures are production infrastructure. Before transfer, enforce explicit domain ownership, object scopes and authority epochs under PRODUCTION_AUTHORITY.md. No global database promotion is required; all functional/provider gates still apply.",
     "G2": "Domain ownership: map every affected record/artifact/provider target and entry point to one executor authority. Enforce at selection, claim and pre-effect/commit, including generic A024, direct commands and stale queued work. Shared Tasks must have a single versioned write owner; cross-domain requests go to that owner, never to two writable replicas. Missing object-scope partition or an unenumerated mutator blocks that transfer.",
     "G3": "Input/output coexistence: preserve exact artifact/schema/hash/freshness contracts with read-only consumers. Where commands cross architectures, use an accepted idempotent handoff to the sole domain owner with committed result read-back; no dual-write control store. These adapters are required build work, not existing implementation claims. If handoff cannot be proved, defer or merge the affected waves.",
     "G4": "Operational runtime: supervise Resident and deploy Online only when required; capability/operation/object scope attestation, expiring credentials, heartbeat, recurrence creation, recovery cadence and independent outage alert must be accepted. Hello World and loopback HTTP prove foundations only.",
@@ -159,7 +159,7 @@
     "G6": "Acceptance/rollback: satisfy this wave and existing disposition tests, representative schedule window and all downstream compatibility tests. Failed acceptance stops/drains new effects, reconciles outcomes and reverses ownership as one domain. Rollback is version-aware, never a blind provider replay or database downgrade.",
     "G7": "Dependency/retirement refresh: immediately before each transfer, verify current bounded consumer/entry-point inventory and provider/config versions. This plan is source-bounded, not proof of live Enabled state. Any additional consumer blocks retirement or moves its last-consumer wave later. All shared 1.x infrastructure stays until the conservative closure and non-worker workloads are drained."
   },
-  "AuthorityDuringBuild": "All domains stay 1.x. 2.x remains synthetic/shadow/read-only where safe. This document creates no launchers, SQL operations, data copies, provider effects or production authority.",
+  "AuthorityDuringBuild": "1X retains each unmigrated functional domain. 2X is production infrastructure executing scoped shadow/synthetic acceptance until that domain transfers.",
   "WaveRanking": [
     {
       "rank": 1,
@@ -3124,5 +3124,6 @@
       "database_tests_executed": false,
       "provider_calls_executed": false
     }
-  }
+  },
+  "ProductionAuthorityDecision": "docs/PRODUCTION_AUTHORITY.md"
 }

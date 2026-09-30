@@ -1,3 +1,8 @@
+> **Owner correction 2026-09-29:** ECOS 2.x is production infrastructure.
+> Authority transfers per functional domain; historical non-production descriptions below
+> are superseded by [the production authority decision](docs/PRODUCTION_AUTHORITY.md).
+> A029/A047 remain 1X until Wave 1 acceptance and transfer; A029-B remains 1X.
+
 # ECOS 2.x — Phase 1 development branch
 
 Portable PostgreSQL database foundation implemented in the authorized **development-only**

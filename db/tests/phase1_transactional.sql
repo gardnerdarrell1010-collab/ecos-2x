@@ -16,6 +16,7 @@ begin
  insert into ecos.executor(id,name,surface,enabled) values(ex,'synthetic_executor','DATABASE_DETERMINISTIC',true);
  insert into ecos.executor_instance(id,executor_id,boot_id,availability,principal_id) values(inst,ex,gen_random_uuid(),'available',p);
  insert into ecos_meta.principal_binding values('operations_api',p,inst,true),('executor',p,inst,true),('provider_adapter',p,inst,true);
+ if to_regclass('ecos_meta.principal_domain') is not null then insert into ecos_meta.principal_domain values(p,'synthetic.acceptance','synthetic',1); end if;
  insert into ecos_meta.principal_operation select p,name from ecos_meta.operation_contract;
  insert into ecos_meta.object_grant values(p,'task',tid),(p,'task',tid2);
  ctx:=jsonb_build_object('principal_id',p,'executor_instance_id',inst,'correlation_id',gen_random_uuid(),'causation_id',null,'idempotency_key','transition-1');

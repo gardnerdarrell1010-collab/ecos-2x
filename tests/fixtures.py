@@ -128,6 +128,8 @@ def specimen(schema, store):
     if kind == "string":
         if schema.get("format") == "uuid":
             return uid()
+        if schema.get("format") == "date":
+            return "2026-09-27"
         if schema.get("format") == "date-time":
             return NOW
         pattern = schema.get("pattern", "")

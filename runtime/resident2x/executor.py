@@ -1,4 +1,4 @@
-"""SQL-native, pre-cutover Resident. No Sheets, provider writes or table DML.
+"""SQL-native Resident. Production authority is scoped by domain in PostgreSQL.
 
 Enrollment supplies a dedicated login and scoped, attested capabilities. PostgreSQL
 owns selection, fences, leases and retries. The local journal only preserves exact
@@ -21,7 +21,7 @@ from uuid import uuid4
 from ecos.core.contracts import content_hash
 from scripts.phase2_executor_client import GovernedClient
 
-VERSION = "2.0.0-pre-cutover.1"
+VERSION = "2.0.1-domain-authority.1"
 
 
 def now():
@@ -74,9 +74,14 @@ class OperationRejected(RuntimeError):
 
 class Resident:
     def __init__(self, config, connect, handlers):
-        if (config["authority"] != "PRE_CUTOVER_NON_AUTHORITATIVE"
-                or config["provider_effects_enabled"] is not False):
-            raise ValueError("pre_cutover_only")
+        if config.get("authority") == "PRE_CUTOVER_NON_AUTHORITATIVE":
+            # Backward-compatible synthetic configuration; never production authority.
+            if config.get("provider_effects_enabled") is not False:
+                raise ValueError("synthetic_effects_forbidden")
+        elif (config.get("authority") != "DOMAIN_SCOPED_PRODUCTION"
+              or config.get("execution_mode") not in ("synthetic", "shadow", "production")
+              or not config.get("domain")):
+            raise ValueError("domain_authority_configuration_required")
         self.config, self.connect, self.handlers = config, connect, handlers
         self.root = Path(config["state_directory"]).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
@@ -309,7 +314,12 @@ def main():
     config = json.loads(args.config.read_text())
     from runtime.resident2x.capabilities import make_handlers
     from runtime.resident2x.connection import connection_factory
-    runtime = Resident(config, connection_factory(config), make_handlers(config))
+    if config.get("domain") == "toast.acquisition":
+        from runtime.resident2x.toast_wave1 import handler
+        handlers = {"toast_acquire": handler(config)}
+    else:
+        handlers = make_handlers(config)
+    runtime = Resident(config, connection_factory(config), handlers)
     signal.signal(signal.SIGINT, lambda *_: runtime.stopping.set())
     signal.signal(signal.SIGTERM, lambda *_: runtime.stopping.set())
     try:
