@@ -178,7 +178,17 @@ class Resident:
         try:
             def guard():
                 if lost:
-                    raise lost[0]
+                    # Gmail records a provider result before final renewal. Its
+                    # unresolved-effect gate may have stopped the pump; only a
+                    # fresh governed renewal can establish that it is resolved.
+                    if (self.config.get("domain") == "gmail.operations"
+                            and isinstance(lost[0], OperationRejected)
+                            and lost[0].operation == "work.renew"
+                            and lost[0].code == "gate_blocked"):
+                        self.invoke("work.renew", {"fence": fence, "lease_seconds": self.config.get("lease_seconds", 120)})
+                        lost.clear()
+                    else:
+                        raise lost[0]
                 if self.stopping.is_set():
                     raise InterruptedError("resident_stopping")
                 self.invoke("work.renew", {"fence": fence, "lease_seconds": self.config.get("lease_seconds", 120)})

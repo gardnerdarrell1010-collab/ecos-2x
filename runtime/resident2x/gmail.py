@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sys
 from uuid import uuid4
+from datetime import datetime, timezone
 
 from ecos.adapters.gmail import GmailDraftAdapter, ReconciliationRequired
 from ecos.core.contracts import content_hash
@@ -49,6 +50,16 @@ def handler(config):
             def observe(self, _, attempt, provider):
                 save(journal,{'status':'provider_observed','attempt':attempt,'provider':provider})
             def finish(self, _, attempt, result):
+                # Resolve the provider effect before renewal/selection checks;
+                # an unresolved effect correctly blocks selection and replay.
+                if command['outcome'] != 'reconciled':
+                    stamp=datetime.now(timezone.utc).isoformat()
+                    runtime.invoke('provider.result.record', {'result': {
+                        'id':str(uuid4()),'schema_version':'1.0.0','created_at':stamp,
+                        'provider_command_id':command['id'],'provider_attempt_id':attempt['attempt_id'],
+                        'outcome':'reconciled','provider_object_id':result['draft_id'],
+                        'observed_at':stamp,'evidence_hash':content_hash(result),
+                        'reconciled_outcome':'succeeded'}}, key='gmail-provider-result:'+command['id'])
                 guard()
                 response=runtime.invoke('gmail.dispatch.finish',{'fence':package['fence'],'command_id':command['id'],'attempt_id':attempt['attempt_id'],'readback':result},key='gmail-finish:'+command['id'])
                 with runtime.connect() as db:
