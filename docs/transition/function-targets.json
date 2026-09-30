@@ -1,0 +1,655 @@
+{
+  "source_sha256": "48f4cfb1eba6a8f599057aaead5d0599f2a185d8da80c181876b42388ec56c4f",
+  "owner_decision": "2026-09-30 end autonomous 1x; implementation batches replace coexistence waves",
+  "classification_meaning": "Final target owner, not implementation or acceptance. Mixed workflows retain all supporting surfaces; SQL_NATIVE targets still require their existing acceptance gates.",
+  "counts": {
+    "ONLINE_2X": 25,
+    "RESIDENT_2X": 12,
+    "SQL_NATIVE": 15,
+    "RETIRED": 3
+  },
+  "reference_only": 0,
+  "unaccounted": 0,
+  "workers": [
+    {
+      "legacy_worker_id": "TASK-AUTO-000001",
+      "legacy_short_id": "A001",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 16
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000002",
+      "legacy_short_id": "A002",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 17
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000003",
+      "legacy_short_id": "A003",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "ABSORB/MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 18
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000004",
+      "legacy_short_id": "A004",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "KEEP/IMPROVE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 19
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000005",
+      "legacy_short_id": "A005",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "REPLACE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 20
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000006",
+      "legacy_short_id": "A006",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "KEEP BUSINESS / MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 21
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000007",
+      "legacy_short_id": "A007",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 22
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000008",
+      "legacy_short_id": "A008",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "REPLACE MOSTLY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 23
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000009",
+      "legacy_short_id": "A009",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 24
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000010",
+      "legacy_short_id": "A010",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "REPLACE WORKER",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 25
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000011",
+      "legacy_short_id": "A011",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "ABSORB MOSTLY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 26
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000012",
+      "legacy_short_id": "A012",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 27
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000013",
+      "legacy_short_id": "A013",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "MODIFY/ABSORB",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 28
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000014",
+      "legacy_short_id": "A014",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP/EXPAND",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 29
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000015",
+      "legacy_short_id": "A015",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP BUSINESS / REDESIGN",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 30
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000016",
+      "legacy_short_id": "A016",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 31
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000017",
+      "legacy_short_id": "A017",
+      "target_disposition": "RETIRED",
+      "supporting_surfaces": [],
+      "source_disposition": "RETIRE",
+      "acceptance_status": "RETIRED_AT_PRIOR_REVIEW",
+      "source_line": 32
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000018",
+      "legacy_short_id": "A018",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP CAPABILITY / REPLACE MECHANICS",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 33
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000019",
+      "legacy_short_id": "A019",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP/IMPROVE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 39
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000020",
+      "legacy_short_id": "A020",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP/IMPROVE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 40
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000021",
+      "legacy_short_id": "A021",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP/IMPROVE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 41
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000022",
+      "legacy_short_id": "A022",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "CONSOLIDATE/REDESIGN",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 42
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000023",
+      "legacy_short_id": "A023",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 43
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000024",
+      "legacy_short_id": "A024",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "MAJOR REDESIGN",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 44
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000025",
+      "legacy_short_id": "A025",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "RETIRE AS WORKER",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 45
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000026",
+      "legacy_short_id": "A026",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP BUSINESS / SIMPLIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 46
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000027",
+      "legacy_short_id": "A027",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "CONSOLIDATE/REPLACE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 47
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000028",
+      "legacy_short_id": "A028",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP TRANSPORT / REPLACE MECHANICS",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 48
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000029",
+      "legacy_short_id": "A029",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 49
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000029-B",
+      "legacy_short_id": "A029-B",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB INTO DATABASE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 50
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000030",
+      "legacy_short_id": "A030",
+      "target_disposition": "RETIRED",
+      "supporting_surfaces": [],
+      "source_disposition": "RETIRE",
+      "acceptance_status": "RETIRED_AT_PRIOR_REVIEW",
+      "source_line": 51
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000031",
+      "legacy_short_id": "A031",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP/IMPROVE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 52
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000032",
+      "legacy_short_id": "A032",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "KEEP",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 53
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000033",
+      "legacy_short_id": "A033",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 54
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000034",
+      "legacy_short_id": "A034",
+      "target_disposition": "RETIRED",
+      "supporting_surfaces": [],
+      "source_disposition": "RETIRE",
+      "acceptance_status": "RETIRED_AT_PRIOR_REVIEW",
+      "source_line": 55
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000035",
+      "legacy_short_id": "A035",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC",
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "KEEP/MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 56
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000036",
+      "legacy_short_id": "A036",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "ABSORB MOSTLY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 57
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000037",
+      "legacy_short_id": "A037",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB INTO DATABASE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 63
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000038",
+      "legacy_short_id": "A038",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB INTO DATABASE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 64
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000039",
+      "legacy_short_id": "A039",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB INTO DATABASE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 65
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000040",
+      "legacy_short_id": "A040",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB INTO DATABASE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 66
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000041",
+      "legacy_short_id": "A041",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB INTO DATABASE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 67
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000042",
+      "legacy_short_id": "A042",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "CONSOLIDATE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 68
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000043",
+      "legacy_short_id": "A043",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB/MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 69
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000044",
+      "legacy_short_id": "A044",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "KEEP",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 70
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000045",
+      "legacy_short_id": "A045",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "CONSOLIDATE/MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 71
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000046",
+      "legacy_short_id": "A046",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP PROVIDER FUNCTION / MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 72
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000047",
+      "legacy_short_id": "A047",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "CONSOLIDATE WITH A029 DATA ACQUISITION",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 73
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000048",
+      "legacy_short_id": "A048",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP BUSINESS / MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 74
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000049",
+      "legacy_short_id": "A049",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP SEMANTIC / MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 75
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000050",
+      "legacy_short_id": "A050",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP/MODIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 76
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000051",
+      "legacy_short_id": "A051",
+      "target_disposition": "SQL_NATIVE",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC"
+      ],
+      "source_disposition": "ABSORB INTO DATABASE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 77
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000052",
+      "legacy_short_id": "A052",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "KEEP",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 78
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000053",
+      "legacy_short_id": "A053",
+      "target_disposition": "ONLINE_2X",
+      "supporting_surfaces": [
+        "ONLINE_SEMANTIC"
+      ],
+      "source_disposition": "KEEP SEMANTIC STAGE / GENERALIZE",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 79
+    },
+    {
+      "legacy_worker_id": "TASK-AUTO-000054",
+      "legacy_short_id": "A054",
+      "target_disposition": "RESIDENT_2X",
+      "supporting_surfaces": [
+        "DATABASE_DETERMINISTIC",
+        "RESIDENT_DETERMINISTIC_PROVIDER"
+      ],
+      "source_disposition": "KEEP DETERMINISTIC STAGE / SIMPLIFY",
+      "acceptance_status": "NOT_PROVEN_BY_CLASSIFICATION",
+      "source_line": 80
+    }
+  ]
+}

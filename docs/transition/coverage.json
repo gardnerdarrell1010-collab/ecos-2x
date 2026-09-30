@@ -1,0 +1,400 @@
+{
+  "at": "2026-09-30T09:02:16.228028+00:00",
+  "checkpoint_type": "PRE_FREEZE_NONATOMIC_READ_INTERVAL",
+  "source_interval_start": "2026-09-30T09:00:43Z",
+  "coverage": [
+    {
+      "source": "Contacts",
+      "source_rows": 8859,
+      "source_hash": "753ad2d0023e90478ba8804facf2951f4c747853ff1d3618aff93b1cccf431eb",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE",
+      "target_objects": [
+        "party",
+        "person",
+        "party_identifier"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Organizations",
+      "source_rows": 1092,
+      "source_hash": "904140528078e8f7fc461785ec2b0cd1c4514adde7c892d046fcbd4390adce80",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE",
+      "target_objects": [
+        "party",
+        "organization",
+        "party_identifier"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Relationships",
+      "source_rows": 9813,
+      "source_hash": "bd237cb46273d87afbf452364430a6bd5d1e91460856770f7ad20e54b2b82f8e",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE",
+      "target_objects": [
+        "party_relationship"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Tasks",
+      "source_rows": 646,
+      "source_hash": "c27c514975f34b19c9fa7e2feefe759527c175d305ca1c2f8c3ddd382bd3751a",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "task",
+        "task_assignment",
+        "task_schedule",
+        "task_dependency",
+        "approval_request",
+        "task_evidence"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Ingestion Log",
+      "source_rows": 83,
+      "source_hash": "d4f838613e8debb5c13079a463953a13df53209557051c6d9a01b7cda9e1e53f",
+      "coverage": "REFERENCE_ONLY",
+      "existing_mapping": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "legacy_ingestion_evidence"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Ingestion State",
+      "source_rows": 7,
+      "source_hash": "44ba141e71aaac8c6b3221225ef4c346bc69899745ba893862572319e89a6a78",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "provider_checkpoint"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Settings",
+      "source_rows": 321,
+      "source_hash": "ea691eabee4c6047d1c0682b0ce120812c1b04d9d988f6a835559a83483645f1",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "typed_configuration"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Projects",
+      "source_rows": 38,
+      "source_hash": "00b8104ae6f9b9c6c0c86a38fd996bef8cf20e5a3a75c3013158575a48b70c7c",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "project"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Activity Log",
+      "source_rows": 73,
+      "source_hash": "b2067c2693d6470c5750765c0f19c3c9bcc23b88faad9493488320dc6a06f150",
+      "coverage": "REFERENCE_ONLY",
+      "existing_mapping": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "legacy_activity_evidence"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Data Dictionary",
+      "source_rows": 660,
+      "source_hash": "593a2dcc11846988a2f4747417106e33e465e921414bcd3439f7bcaf8df3e6ce",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "schema_registry"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Validation Lists",
+      "source_rows": 19,
+      "source_hash": "7f27ff08004d8fbe2f22d853d17d14dc5f1f6fe0e80aabfdfdefa4f70556bbcd",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "controlled_vocabulary"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "ID Registry",
+      "source_rows": 23,
+      "source_hash": "4c1065f23c6d9b7d424d6d85ae5dc853d53f67bd9c83fce15bf79de628fdb7dd",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REQUIRES_EXISTING_CONTRACT_RESOLUTION",
+      "target_objects": [],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Exceptions",
+      "source_rows": 87,
+      "source_hash": "21ec413de0e94c58d1b832f4a48e29dd88b546bbd3e042b9dcbc03895e878d4e",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "exception_case",
+        "integrity_finding"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Integrity Checks",
+      "source_rows": 55,
+      "source_hash": "db96694690c8b65d54cfe036a2a02be4b2fcc80f584ff16f0ba70b2f7b867eb1",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "integrity_finding",
+        "assertion_catalog"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Staging Records",
+      "source_rows": 137,
+      "source_hash": "024a197c3a9275dec4e3b0c255b7e8c21e60d986a8c2eda2ab9d5b7c5959e847",
+      "coverage": "REFERENCE_ONLY",
+      "existing_mapping": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "quarantine_item",
+        "semantic_proposal",
+        "provider_receipt"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Run Control",
+      "source_rows": 33065,
+      "source_hash": "b13330a784d63e4a7ee8efe5aea34bd2dedbe0ae5ee5cff5ef656aba0dd493d7",
+      "coverage": "REFERENCE_ONLY",
+      "existing_mapping": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "legacy_run_evidence",
+        "execution_event"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Artifacts",
+      "source_rows": 514,
+      "source_hash": "d07f9dc959f4b039bd1495fcd367f989df70483309dea62dfd120916d02aa19b",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE",
+      "target_objects": [
+        "artifact",
+        "artifact_version"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Facts",
+      "source_rows": 27,
+      "source_hash": "6cd3f884196ed1c6b5163c35fca3ab298bda81e4ffc5f1592d14b11d0b7e988d",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE",
+      "target_objects": [
+        "fact"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "System Bootstrap",
+      "source_rows": 1,
+      "source_hash": "4793782df015e57767debcbca107bad29faec4cac7f54c3e8d58be97d36a5ed7",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "bootstrap_package"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "AI Memory",
+      "source_rows": 49,
+      "source_hash": "4977c5ecdf4921f73f02e20c2d94ff924a6bf137cd50cfb6cd4c6ca74fd148fb",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE",
+      "target_objects": [
+        "memory_record",
+        "memory_version",
+        "memory_scope",
+        "memory_reference",
+        "memory_compaction_run"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Authoritative Files",
+      "source_rows": 252,
+      "source_hash": "9f82d29e1b16949946bdf1e495433cf9d9b32b52e77766e5428ec7766af1458d",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE",
+      "target_objects": [
+        "artifact",
+        "artifact_version",
+        "publication_target"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Command Registry",
+      "source_rows": 21,
+      "source_hash": "dd52f48f91d91347d6e877bb088156b72a783e974ab6827a478f5fbc6cf1382f",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "operation_registry"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Workflow Dependencies",
+      "source_rows": 29,
+      "source_hash": "788afce9efc8bdd046ea23ff06e55c2eec1d9a64aee401b6c8e693e93da50092",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "work_dependency",
+        "task_dependency"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Forecast Data Audit",
+      "source_rows": 7,
+      "source_hash": "3e0ff46e639ab92d7d99e57e2ec528b4cc39d46980feabc51e282621d3890fe2",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "forecast_source_snapshot"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Task Loop",
+      "source_rows": 55,
+      "source_hash": "0a1717576d5cff4684f512f1dadab0016049053c06f8bd602f1f40c1d6c9a712",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "work_definition",
+        "work_stage_definition",
+        "task_schedule",
+        "capability"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Notification Queue",
+      "source_rows": 355,
+      "source_hash": "5e15719e0d7c707e1e8195d6016e6278c4ef03287345cdafc8e0b707f313bf50",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "notification"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Notification Deliveries",
+      "source_rows": 529,
+      "source_hash": "b908071e122fd26bddd804d18c4705dccace7e556acb426a89a0dbc047f7905d",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "delivery",
+        "delivery_attempt",
+        "provider_command"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Sheet Registry",
+      "source_rows": 32,
+      "source_hash": "e5b7ecc56fa7a40ad4f51c0c647cdadaee377a495129bcc9b03f26f0234f32a3",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "schema_registry",
+        "migration_mapping"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Recovery Map",
+      "source_rows": 31,
+      "source_hash": "7ba74e4780c3a7a6a116e5dcb2ef39d30f575d58ce96ba62d1f0d47f9d2aef37",
+      "coverage": "REFERENCE_ONLY",
+      "existing_mapping": "ARCHIVE_REFERENCE",
+      "target_objects": [
+        "backup_record",
+        "export_package",
+        "restore_test"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Ideas",
+      "source_rows": 17,
+      "source_hash": "fea703b9b974db40d4cfd91459c60be1425115fc52bc2edc9e33561fe8910f52",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REQUIRES_EXISTING_CONTRACT_RESOLUTION",
+      "target_objects": [],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Forecast Performance",
+      "source_rows": 0,
+      "source_hash": "b1c758dc79410c60a251ea61d07c048a77efe7087ba6b4c33f3853c895ab3e37",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "REBUILD",
+      "target_objects": [
+        "forecast_snapshot",
+        "forecast_actual_reconciliation"
+      ],
+      "promoted_legacy_identities": 0
+    },
+    {
+      "source": "Communications",
+      "source_rows": 186,
+      "source_hash": "6298cb64408c66f5c0589534638f72e2eeea187fdd8f48886d41e5615fd8f11d",
+      "coverage": "NOT_MIGRATED",
+      "existing_mapping": "MIGRATE_CURRENT_STATE",
+      "target_objects": [
+        "provider_receipt",
+        "communication",
+        "communication_processing"
+      ],
+      "promoted_legacy_identities": 0
+    }
+  ],
+  "sql_migration_batches": 0,
+  "sql_legacy_identities": 0,
+  "sql_tasks": "14 synthetic or shadow acceptance tasks, no migrated operational task",
+  "sql_projects": 0,
+  "sql_runs": "27 acceptance runs; no imported 1x history",
+  "final_checkpoint_pending": true,
+  "embedded_records": [
+    "Decisions and Risks require source-field/reference resolution; no standalone source tabs were present."
+  ],
+  "provider_checkpoints": "7 Ingestion State records preserved; not migrated",
+  "capability_contracts": "PARTIAL_IN_SQL: 24 capabilities, 23 operations; surviving workflow coverage unproven",
+  "executor_identities": "PARTIAL_IN_SQL: Resident2x available; Online2x not enrolled"
+}
