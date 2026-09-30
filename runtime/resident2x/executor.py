@@ -16,6 +16,7 @@ from pathlib import Path
 import signal
 import threading
 import time
+import psycopg
 from uuid import uuid4
 
 from ecos.core.contracts import content_hash
@@ -150,6 +151,8 @@ class Resident:
         response = self.invoke("executor.heartbeat", {
             "observed_at": now(), "evidence_hash": self.evidence_hash,
             "reported_running": int(running), "load_basis_points": 100 if running else 0}, client=client)
+        save(self.root / "connectivity.json", {"at": now(),
+             "identity": self.config["identity"], "status": "connected"})
         save(self.root / "heartbeat.json", {"pid": os.getpid(), "identity": self.config["identity"],
              "instance_id": self.config["instance_id"], "at": now(), "running": running,
              "generation": self.profile["generation"], "control_plane": self.profile["control_plane"],
@@ -167,7 +170,7 @@ class Resident:
                     self.heartbeat(client, True)
                     self.invoke("work.renew", {"fence": fence, "lease_seconds": self.config.get("lease_seconds", 120)}, client=client)
                 except Exception as exc:
-                    lost.append(type(exc).__name__)
+                    lost.append(exc)
                     break
 
         thread = threading.Thread(target=pump, name="resident2x-lease", daemon=True)
@@ -175,7 +178,7 @@ class Resident:
         try:
             def guard():
                 if lost:
-                    raise RuntimeError("lease_keepalive_failed")
+                    raise lost[0]
                 if self.stopping.is_set():
                     raise InterruptedError("resident_stopping")
                 self.invoke("work.renew", {"fence": fence, "lease_seconds": self.config.get("lease_seconds", 120)})
@@ -264,6 +267,23 @@ class Resident:
             return receipt
 
     def run(self, max_cycles=0):
+        # Retain journal and active claim after an ambiguous database response.
+        # Only connection failures are retried; governance rejections fail closed.
+        failures = 0
+        while not self.stopping.is_set():
+            try:
+                return self._run_connected(max_cycles)
+            except psycopg.OperationalError:
+                failures += 1
+                self.client.close()
+                delay = min(60, 2 ** min(failures, 6))
+                save(self.root / "connectivity.json", {
+                    "at": now(), "identity": self.config["identity"],
+                    "status": "reconnecting", "consecutive_failures": failures,
+                    "retry_seconds": delay, "active_claim_preserved": bool(self.state["active"])})
+                self.stopping.wait(delay)
+
+    def _run_connected(self, max_cycles=0):
         with singleton(self.root / "resident2x.lock"):
             save(self.root / "process.json", {"pid": os.getpid(), "identity": self.config["identity"],
                  "instance_id": self.config["instance_id"], "runtime": str(Path(__file__).resolve()),
@@ -302,6 +322,9 @@ class Resident:
                                 raise
                         else:
                             raise
+                    except psycopg.OperationalError:
+                        # Do not turn an unknown commit into a terminal failure.
+                        raise
                     except Exception as exc:
                         self.finish_control("work.fail", self.state["active"]["data"]["work_package"]["fence"], "capability_execution_failed", retryable=False)
                         save(self.root / "failure.json", {"at": now(), "type": type(exc).__name__})
