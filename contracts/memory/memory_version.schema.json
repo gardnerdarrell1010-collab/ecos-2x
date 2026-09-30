@@ -41,7 +41,7 @@
     "statement": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 10000
+      "maxLength": 50000
     },
     "operational_meaning": {
       "type": "string",

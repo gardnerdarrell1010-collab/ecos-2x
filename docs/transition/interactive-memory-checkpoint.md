@@ -1,0 +1,11 @@
+# Interactive and memory checkpoint
+
+Interactive Ada is accepted: two consecutive actual ChatGPT identity/read/write/readback passes, independently verified in PostgreSQL as completed version 2. The initial evidence-free completion request was rejected; no task changed until the corrected requests supplied verified source evidence. The conversion-control Interactive task is completed. No further executor acceptance tests are required.
+
+The dedicated hosted transport reuses Online OAuth/MCP patterns with a separate client and restricted database principal. It exposes identity, authorized record reads, and four allowlisted operations. No arbitrary SQL, administrator credentials, or Sheets runtime access is exposed. Existing owner identity and refresh-token authorization were reused. Enrollment configuration remains in restricted local storage and server secrets, never Git.
+
+Memory rollover passed twice: synthetic versions 1→2 and 2→3 through existing memory.activate, governed readback, unchanged previous versions, and independent PostgreSQL readback. The bounded harness records attempts privately and refuses blind repetition. Actual MEM-ECOS-000036 Version95 remains unchanged in preserved restricted source storage. No actual Version96 was created.
+
+Migration31 raises only memory statement capacity from 10000 to 50000 characters; canonical generator and contract match. This accommodates the preserved statement without truncation. Typed baseline import remains pending: ordinary memory.activate intentionally starts an empty record at version1, so importing historical version95 must use a bounded migration path without weakening normal sequential rollover. Future-version read grants also need to be handled within the existing scoped authorization model. These are remaining implementation steps, not owner authorization blockers.
+
+Next: reconcile Version95 into typed memory unchanged, then implement the existing Gmail disposition using two safe draft-path passes. Full A018 semantic continuity, Gmail, and the other function conversions are not accepted by this checkpoint. Four of five control tasks are accepted; all55 function tasks remain pending. All1.x executors remain frozen; this change does not touch their runtime or launchers.

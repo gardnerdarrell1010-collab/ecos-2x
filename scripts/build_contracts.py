@@ -262,7 +262,7 @@ def build():
     entity("memory", "memory_record", {"business_id": KEY, "scope_id": UUID,
         "memory_kind": TOKEN, "active_head_version_id": nullable(UUID)})
     entity("memory", "memory_version", {"memory_record_id": UUID, "version_number": POS,
-        "supersedes_version_id": nullable(UUID), "scope_id": UUID, "statement": TEXT,
+        "supersedes_version_id": nullable(UUID), "scope_id": UUID, "statement": {**TEXT, "maxLength": 50000},
         "operational_meaning": TEXT, "provenance": arr(source, 1), "effective_at": TIME,
         "sensitivity": state("sensitivity"), "retention_policy_ref": KEY,
         "authoritative_references": arr(source, 1), "content_hash": HASH,
