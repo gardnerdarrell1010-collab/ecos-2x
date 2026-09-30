@@ -1,0 +1,7 @@
+{
+  "error_type": "InvalidParameterValue",
+  "finished_at": "2026-09-30T00:20:42.199890+00:00",
+  "sqlstate": "22023",
+  "started_at": "2026-09-30T00:20:37.660129+00:00",
+  "status": "failed"
+}

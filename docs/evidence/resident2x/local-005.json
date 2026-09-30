@@ -1,0 +1,7 @@
+{
+  "error_type": "AssertionError",
+  "finished_at": "2026-09-30T00:21:55.060119+00:00",
+  "sqlstate": null,
+  "started_at": "2026-09-30T00:21:18.118031+00:00",
+  "status": "failed"
+}

@@ -1,0 +1,7 @@
+{
+  "error_type": "CalledProcessError",
+  "finished_at": "2026-09-30T00:14:12.284159+00:00",
+  "sqlstate": null,
+  "started_at": "2026-09-30T00:14:08.546801+00:00",
+  "status": "failed"
+}

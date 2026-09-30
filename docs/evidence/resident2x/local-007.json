@@ -1,0 +1,323 @@
+{
+  "coexistence": {
+    "after": {
+      "heartbeat_at": "2026-09-30T00:25:33.322906+00:00",
+      "pid": 19856,
+      "pointer_sha256": "df44f1ffab34454cf9593a5cfec1bb5532ed2ff660a43c6af6f5068908e70563",
+      "source_sha256": "61356177937cf02fe7841a90a059bfa1ea637ad2157eff03982889455c759b47",
+      "version": "1.0.011"
+    },
+    "before": {
+      "heartbeat_at": "2026-09-30T00:24:53.020458+00:00",
+      "pid": 19856,
+      "pointer_sha256": "df44f1ffab34454cf9593a5cfec1bb5532ed2ff660a43c6af6f5068908e70563",
+      "source_sha256": "61356177937cf02fe7841a90a059bfa1ea637ad2157eff03982889455c759b47",
+      "version": "1.0.011"
+    },
+    "during": {
+      "heartbeat_at": "2026-09-30T00:25:23.263630+00:00",
+      "pid": 19856,
+      "pointer_sha256": "df44f1ffab34454cf9593a5cfec1bb5532ed2ff660a43c6af6f5068908e70563",
+      "source_sha256": "61356177937cf02fe7841a90a059bfa1ea637ad2157eff03982889455c759b47",
+      "version": "1.0.011"
+    },
+    "passed": true,
+    "production_credentials_in_child": false,
+    "scheduled_tasks_created": false,
+    "shared_capability_hashes": {
+      "ecos_capability\\sms.py": "3bd981ca2afb6d37c783425cf0ce82ad614f0369525becc4654a5536e4bd9a93",
+      "ecos_runtime\\local_capability_consumer.py": "a3c74f879cc428d3074cbdaed0ed52ba242d809c6038c5747bb18c707d6345b7",
+      "ecos_runtime\\request_bindings.py": "6e302eb3bb22d6195c4019f13716d8336c40e5a62bd3e83e983389177e64145b"
+    }
+  },
+  "executor": {
+    "executor_id": "730b85ff-59e8-455e-b1ae-2a114612e34e",
+    "identity": "RESIDENT_ADA_2X_HOME01",
+    "instance_id": "9248e6b5-8618-4e2c-a17e-c5fa49a2b268",
+    "principal_id": "dc452636-412c-4fcb-b8df-8c72e06a64f9"
+  },
+  "finished_at": "2026-09-30T00:25:34.309731+00:00",
+  "launcher_pid": 35388,
+  "operation_audit_counts": [
+    [
+      "executor.heartbeat",
+      11
+    ],
+    [
+      "executor.register",
+      2
+    ],
+    [
+      "fact.record",
+      1
+    ],
+    [
+      "recovery.sweep",
+      1
+    ],
+    [
+      "work.complete",
+      3
+    ],
+    [
+      "work.next",
+      8
+    ],
+    [
+      "work.package",
+      4
+    ],
+    [
+      "work.renew",
+      14
+    ]
+  ],
+  "pid": 24432,
+  "restart_after_committed_fact_and_expired_lease": true,
+  "results": [
+    {
+      "claim": {
+        "claim_id": "e3ee6fac-0b11-4f7c-bd2b-b36d72eaf2b5",
+        "claim_version": 2,
+        "executor_instance_id": "9248e6b5-8618-4e2c-a17e-c5fa49a2b268",
+        "fence_token": "9ae54363-6193-4af5-b407-2b7369d331bf",
+        "occurrence_id": "3d4c8adb-25d9-40ee-9048-882e72f03ce5",
+        "stage_definition_id": "00cb3734-0579-44ea-9968-5e594c8857cb"
+      },
+      "completed_at": "2026-09-30T00:25:26.964268+00:00",
+      "completion": {
+        "correlation_id": "0e367623-a9fd-419a-8f98-c46e05cd6a75",
+        "event_ids": [
+          "4662d271-e5ee-4842-8851-e146a3fb2259"
+        ],
+        "operation_id": "c84c5566-7146-4e4e-b33d-087e3823b5bf",
+        "record_versions": [],
+        "result_hash": "fafd4633b3dd0bc4db60c1284e6f367b58b39efcb9eb917707c15cc55f4a726e",
+        "schema_version": "1.0.0",
+        "status": "committed"
+      },
+      "execution_run_id": "b8da5540-7eaf-4042-a795-05fe2d3a3b56",
+      "instance_id": "9248e6b5-8618-4e2c-a17e-c5fa49a2b268",
+      "occurrence_id": "3d4c8adb-25d9-40ee-9048-882e72f03ce5",
+      "occurrence_readback": {
+        "content_hash": "ea7cd9544c36eb8da0a238b2ff80bd3a13d554a699e09c635a81a972d7e2f289",
+        "record": {
+          "attempt_count": 2,
+          "claim_version": 2,
+          "created_at": "2026-09-30T00:24:53.73309+00:00",
+          "due_at": "2026-09-30T00:24:52.73309+00:00",
+          "fulfillment_id": "11958e8c-9bac-4afc-8eac-9be0d2e0fa7c",
+          "id": "3d4c8adb-25d9-40ee-9048-882e72f03ce5",
+          "occurrence_key": "SYNTHETIC-RESIDENT2X-3d4c8adb-25d9-40ee-9048-882e72f03ce5",
+          "priority_override": null,
+          "ready_override_at": null,
+          "record_version": 8,
+          "retry_at": null,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "00cb3734-0579-44ea-9968-5e594c8857cb",
+          "state": "succeeded",
+          "task_id": "05b0e745-f7f7-47cf-81e1-dbfd69f8cee7",
+          "work_definition_id": "fa267ab1-9fff-41df-8363-16449f698797"
+        }
+      },
+      "pid": 24432,
+      "resident_identity": "RESIDENT_ADA_2X_HOME01",
+      "result": {
+        "content_hash": "6bd6d31b10f29c6785f626ca3ecabd221bbc4e057931f716ec32119eacce456e",
+        "fact_id": "c3291ce9-d02e-4c23-adf7-9a6ea411297b",
+        "input": "Hello",
+        "provider_effects": false,
+        "python_output": "Hello World",
+        "readback": {
+          "content_hash": "6bd6d31b10f29c6785f626ca3ecabd221bbc4e057931f716ec32119eacce456e",
+          "record": {
+            "created_at": "2026-09-30T00:24:54.266966+00:00",
+            "id": "c3291ce9-d02e-4c23-adf7-9a6ea411297b",
+            "record_version": 1,
+            "sensitivity": "internal",
+            "source_references": [
+              {
+                "authority": "structured_ecos",
+                "content_hash": "4a7c38bc3a1c16e7d3b0292641716061530c28aec57b16819e7d522fa8baa9c6",
+                "record_id": "05b0e745-f7f7-47cf-81e1-dbfd69f8cee7",
+                "record_type": "task",
+                "record_version": 1
+              }
+            ],
+            "statement": "Hello World",
+            "subject_id": "05b0e745-f7f7-47cf-81e1-dbfd69f8cee7"
+          }
+        },
+        "source_references": [
+          {
+            "authority": "structured_ecos",
+            "content_hash": "6bd6d31b10f29c6785f626ca3ecabd221bbc4e057931f716ec32119eacce456e",
+            "record_id": "c3291ce9-d02e-4c23-adf7-9a6ea411297b",
+            "record_type": "fact",
+            "record_version": 1
+          }
+        ],
+        "synthetic_identity": "SYNTHETIC-RESIDENT2X-05b0e745-f7f7-47cf-81e1-dbfd69f8cee7"
+      }
+    },
+    {
+      "claim": {
+        "claim_id": "80ce157d-44e2-457e-8c16-0c457065367c",
+        "claim_version": 1,
+        "executor_instance_id": "9248e6b5-8618-4e2c-a17e-c5fa49a2b268",
+        "fence_token": "056b6719-930f-4ba8-9f1c-089680086fb4",
+        "occurrence_id": "6688035d-302d-48b7-9da9-2e5418fb8b37",
+        "stage_definition_id": "0e41780e-cde1-41c5-8243-86d1b9d63acd"
+      },
+      "completed_at": "2026-09-30T00:25:27.072764+00:00",
+      "completion": {
+        "correlation_id": "0e367623-a9fd-419a-8f98-c46e05cd6a75",
+        "event_ids": [
+          "b3c0ceaa-4d0b-4d66-a8a0-d132163c7a44"
+        ],
+        "operation_id": "04ac584a-d7dc-4674-bc32-b0d94fc7bd5d",
+        "record_versions": [],
+        "result_hash": "cc38414c8c9b6d711e904e63993889c162225531ab7129fd2abf2d7803794cdb",
+        "schema_version": "1.0.0",
+        "status": "committed"
+      },
+      "execution_run_id": "0ce5edce-2598-40a2-994a-2d60e107942c",
+      "instance_id": "9248e6b5-8618-4e2c-a17e-c5fa49a2b268",
+      "occurrence_id": "6688035d-302d-48b7-9da9-2e5418fb8b37",
+      "occurrence_readback": {
+        "content_hash": "f323ac50e2e65b5e4ee4f106f2cdfee19c693c8a23f454d8f5d1e003825e46e8",
+        "record": {
+          "attempt_count": 1,
+          "claim_version": 1,
+          "created_at": "2026-09-30T00:24:53.741144+00:00",
+          "due_at": "2026-09-30T00:24:52.741144+00:00",
+          "fulfillment_id": "5d02d3e7-7df5-48da-bbff-7489dea6ff50",
+          "id": "6688035d-302d-48b7-9da9-2e5418fb8b37",
+          "occurrence_key": "SYNTHETIC-RESIDENT2X-6688035d-302d-48b7-9da9-2e5418fb8b37",
+          "priority_override": null,
+          "ready_override_at": null,
+          "record_version": 4,
+          "retry_at": null,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "0e41780e-cde1-41c5-8243-86d1b9d63acd",
+          "state": "succeeded",
+          "task_id": "5a84362d-c98b-461d-9558-411832befd03",
+          "work_definition_id": "7ef2a634-54ca-424f-b0fa-195de091949b"
+        }
+      },
+      "pid": 24432,
+      "resident_identity": "RESIDENT_ADA_2X_HOME01",
+      "result": {
+        "content_hash": "7f671425c2f488c9ba7e56ef4e8b01990ccfd6dc2521025382e7f6406a9ba324",
+        "read_only": true,
+        "source_references": [
+          {
+            "authority": "structured_ecos",
+            "content_hash": "f4ca6f8b41375498d39a727516c2dfedac77d2cdae192969d7dd6e5c23ae6350",
+            "record_id": "5a84362d-c98b-461d-9558-411832befd03",
+            "record_type": "task",
+            "record_version": 1
+          }
+        ]
+      }
+    },
+    {
+      "claim": {
+        "claim_id": "66acb955-910c-473b-a9dd-cc56fe65b09e",
+        "claim_version": 1,
+        "executor_instance_id": "9248e6b5-8618-4e2c-a17e-c5fa49a2b268",
+        "fence_token": "b7ea0bcd-a7dc-409d-a041-dbb4d8b88491",
+        "occurrence_id": "06fb327a-147e-4228-9994-682e1dd87f67",
+        "stage_definition_id": "bf3215f0-b70e-4678-9646-8f02f32bc688"
+      },
+      "completed_at": "2026-09-30T00:25:29.296599+00:00",
+      "completion": {
+        "correlation_id": "0e367623-a9fd-419a-8f98-c46e05cd6a75",
+        "event_ids": [
+          "a990754e-17b2-41b6-9ac4-3977fb818205"
+        ],
+        "operation_id": "7d2c6fab-8484-45a9-b9c4-55756cf2db7e",
+        "record_versions": [],
+        "result_hash": "f195d03e41906d2ef91bd37f5d964d96c6f8120e99c16a8f81007723dcc5745b",
+        "schema_version": "1.0.0",
+        "status": "committed"
+      },
+      "execution_run_id": "dcd51e89-f2ae-4274-aaed-17c7ca42e25e",
+      "instance_id": "9248e6b5-8618-4e2c-a17e-c5fa49a2b268",
+      "occurrence_id": "06fb327a-147e-4228-9994-682e1dd87f67",
+      "occurrence_readback": {
+        "content_hash": "d667b4783efe04e86d9b72da7f3a83f6f1ea88de91e912ac54d8bda88eb6f72b",
+        "record": {
+          "attempt_count": 1,
+          "claim_version": 1,
+          "created_at": "2026-09-30T00:24:53.744098+00:00",
+          "due_at": "2026-09-30T00:24:52.744098+00:00",
+          "fulfillment_id": "84efe3e7-7a6d-4438-9b84-f1a3d2bf55e1",
+          "id": "06fb327a-147e-4228-9994-682e1dd87f67",
+          "occurrence_key": "SYNTHETIC-RESIDENT2X-06fb327a-147e-4228-9994-682e1dd87f67",
+          "priority_override": null,
+          "ready_override_at": null,
+          "record_version": 4,
+          "retry_at": null,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "bf3215f0-b70e-4678-9646-8f02f32bc688",
+          "state": "succeeded",
+          "task_id": "1d4027ca-590d-4bd5-af0f-99082f6c7376",
+          "work_definition_id": "67f45b5d-84e7-4f6d-976f-34956e51f075"
+        }
+      },
+      "pid": 24432,
+      "resident_identity": "RESIDENT_ADA_2X_HOME01",
+      "result": {
+        "content_hash": "99d1f1e55cad9acdc5cf2c7c22d7b3ec044839e4c14a2123dc6ac09c7a6f321a",
+        "http_result": {
+          "attempts": 1,
+          "authentication_result": "not_rejected",
+          "http_status": 200,
+          "reflected": "[REDACTED]",
+          "value": "synthetic-readback"
+        },
+        "shared_implementation": "ecos_runtime.local_capability_consumer.HttpExecutor",
+        "source_references": [
+          {
+            "authority": "structured_ecos",
+            "content_hash": "ece768524622cd2972afe83f6d897a8ed8b14a09173acfe021d19e42371002f4",
+            "record_id": "1d4027ca-590d-4bd5-af0f-99082f6c7376",
+            "record_type": "task",
+            "record_version": 1
+          }
+        ]
+      }
+    }
+  ],
+  "security": {
+    "dedicated_login": "resident2x_893d13cdd52d4a60",
+    "direct_dml_denied": true,
+    "private_helpers_denied": true,
+    "provider_effects": false,
+    "secret_reflection_redacted": true,
+    "tls": "verify-full"
+  },
+  "singleton_collision_rejected": true,
+  "started_at": "2026-09-30T00:24:50.114938+00:00",
+  "state_directory": "C:\\ecos\\ecos-2x\\.local\\resident2x-local-007",
+  "status": "passed",
+  "target": "disposable",
+  "work": [
+    {
+      "occurrence_id": "3d4c8adb-25d9-40ee-9048-882e72f03ce5",
+      "stage": "hello_world",
+      "task_id": "05b0e745-f7f7-47cf-81e1-dbfd69f8cee7"
+    },
+    {
+      "occurrence_id": "6688035d-302d-48b7-9da9-2e5418fb8b37",
+      "stage": "artifact_read",
+      "task_id": "5a84362d-c98b-461d-9558-411832befd03"
+    },
+    {
+      "occurrence_id": "06fb327a-147e-4228-9994-682e1dd87f67",
+      "stage": "authenticated_http_read",
+      "task_id": "1d4027ca-590d-4bd5-af0f-99082f6c7376"
+    }
+  ]
+}

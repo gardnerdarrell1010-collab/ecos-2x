@@ -1,0 +1,7 @@
+{
+  "error_type": "OperationalError",
+  "finished_at": "2026-09-30T00:26:33.360173+00:00",
+  "sqlstate": null,
+  "started_at": "2026-09-30T00:26:31.316718+00:00",
+  "status": "failed"
+}

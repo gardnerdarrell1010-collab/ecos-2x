@@ -1,0 +1,8 @@
+{
+  "assertion": "singleton not exclusive",
+  "error_type": "AssertionError",
+  "finished_at": "2026-09-30T00:23:59.405916+00:00",
+  "sqlstate": null,
+  "started_at": "2026-09-30T00:23:22.392110+00:00",
+  "status": "failed"
+}

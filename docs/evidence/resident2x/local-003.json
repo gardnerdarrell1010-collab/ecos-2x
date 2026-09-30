@@ -1,0 +1,7 @@
+{
+  "status": "interrupted",
+  "reason": "Localhost connection stalled before enrollment; exact root cause not established. Subsequent runs use explicit IPv4 hostaddr and a bounded connection timeout.",
+  "cleanup": "Stopped only the local-003 disposable PostgreSQL data directory and verified acceptance harness PID 28924.",
+  "resident1_changed": false,
+  "hosted_writes": false
+}

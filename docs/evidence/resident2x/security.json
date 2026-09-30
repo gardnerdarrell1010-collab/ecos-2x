@@ -1,0 +1,24 @@
+{
+  "accepted_migrations_and_contracts": "byte-unchanged",
+  "at": "2026-09-30T00:39:37.632154+00:00",
+  "ca_file_sha256": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+  "canonical_secret_retrieved_for_enrollment_only": true,
+  "denials": {
+    "direct_table_read": true,
+    "private_operation": true,
+    "spoofed_principal": true,
+    "ungranted_object": true
+  },
+  "files_scanned": 329,
+  "findings": [],
+  "known_secret_exact_comparison": "passed",
+  "resident1": {
+    "heartbeat_at": "2026-09-30T00:39:35.157988+00:00",
+    "pid": 19856,
+    "pointer_sha256": "df44f1ffab34454cf9593a5cfec1bb5532ed2ff660a43c6af6f5068908e70563",
+    "source_sha256": "61356177937cf02fe7841a90a059bfa1ea637ad2157eff03982889455c759b47",
+    "version": "1.0.011"
+  },
+  "status": "passed",
+  "tls": "verify-full"
+}

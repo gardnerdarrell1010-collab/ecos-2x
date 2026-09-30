@@ -1,0 +1,3797 @@
+{
+  "started_at": "2026-09-30T00:21:58.165727+00:00",
+  "status": "passed",
+  "provider_side_effects": false,
+  "ecos_1x_writes": false,
+  "authority_switch": false,
+  "runtime_directory": "C:\\Users\\info\\AppData\\Local\\Temp\\ecos-phase2-test-a2fw65o3",
+  "postgresql": "PostgreSQL 17.11 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit",
+  "migration_rebuild": "passed",
+  "guarded_persistent_transport_preflight": "passed",
+  "migration_repeat": "passed",
+  "phase1_regression": [
+    "task_transition_audit_outbox",
+    "idempotency_and_failure_atomicity",
+    "executor_direct_mutation_denied",
+    "evidence_and_fact_operations",
+    "atomic_notification_delivery_command",
+    "outbox_lease_recovery",
+    "unknown_outcome_reconciliation_and_duplicate_result",
+    "capability_pair_filter",
+    "claim_renewal",
+    "expired_claim_fencing_repair",
+    "immutable_completion_and_dependency_release",
+    "proposal_commit_hash_and_restart",
+    "memory_activation_supersession",
+    "bootstrap_database_package",
+    "stale_heartbeat_emergency_intent",
+    "typed_quarantine_four_defects",
+    "principal_and_role_replay_denial",
+    "proposal_stale_sibling_and_dependent_isolation",
+    "memory_cas_and_immutability",
+    "approval_expiry_revocation_maintenance_gates",
+    "dependency_cycle_rejected",
+    "dst_gap_and_fold_policies",
+    "claim_run_rollback_and_stage_preservation",
+    "all_ten_operations_principal_authorization",
+    "memory_read_role_and_sensitivity_scope",
+    "out_of_order_provider_result_preserves_success",
+    "recurrence_identity_and_schedule_update",
+    "delayed_heartbeat_cannot_revive_executor",
+    "five_stage_single_task_crash_recovery_preserves_hashes",
+    "revoked_scope_blocks_idempotent_replay",
+    "proposal_conflicting_invalid_ambiguous_isolation"
+  ],
+  "persistent_smoke_preflight": [
+    [
+      [
+        "register",
+        "next_package_claim",
+        "renew",
+        "complete_readback"
+      ]
+    ]
+  ],
+  "catalog": {
+    "views": [
+      [
+        "ecos",
+        "v_blocked_work",
+        "ccd022ecf5a9faedc45a301a1f427bd0"
+      ],
+      [
+        "ecos",
+        "v_current_claims",
+        "69aa49c3c1b9989f5910273bd8a3933b"
+      ],
+      [
+        "ecos",
+        "v_dead_letters",
+        "5ef680c0e310bac3b2d727a9b3b93dc1"
+      ],
+      [
+        "ecos",
+        "v_executor_status",
+        "3b640755a63a6b077122802bb3354193"
+      ],
+      [
+        "ecos",
+        "v_memory_heads",
+        "12b357721fea1fbd615aff5adf0d43b4"
+      ],
+      [
+        "ecos",
+        "v_node_health",
+        "3f14cf8a242838f228b33e4bbe37aa69"
+      ],
+      [
+        "ecos",
+        "v_outbox_health",
+        "5f0ce021ccfbbc925d085ab94c9c610a"
+      ],
+      [
+        "ecos",
+        "v_provider_reconciliation",
+        "50c1099325cf2dd1b23c388d463a8d3d"
+      ],
+      [
+        "ecos",
+        "v_ready_work",
+        "f2830aa3ef4a7636e3485948df766a6d"
+      ],
+      [
+        "ecos",
+        "v_recent_failures",
+        "84355241cff10e2148c42a2c89f9900e"
+      ],
+      [
+        "ecos",
+        "v_resource_pressure",
+        "54e7ca70a7bb73872ccf75f30738c815"
+      ],
+      [
+        "ecos",
+        "v_system_status_header",
+        "4579f3f058f956a7be0f3836f663525d"
+      ],
+      [
+        "ecos",
+        "v_work_aging",
+        "9fc0617f6a66dccba76e5dc3b900c365"
+      ],
+      [
+        "ecos",
+        "v_work_health",
+        "bbb92f7f0d61c1340c9d6e22b23c0782"
+      ],
+      [
+        "ecos",
+        "v_work_readiness",
+        "9c9a409252e0372cfaf77295b31d3035"
+      ]
+    ],
+    "ledger": [
+      {
+        "name": "000001_foundation.sql",
+        "sha256": "e708bca782117bf21f06bc98d6f28d0f9817a19e15386d4d220ff9ce1dbfa2b7",
+        "version": 1
+      },
+      {
+        "name": "000002_typed_foundation.sql",
+        "sha256": "72885367066299ed28af5e0094be155832fe6652c3fed70b1cfd22e6aaf65bbd",
+        "version": 2
+      },
+      {
+        "name": "000003_contract_guards.sql",
+        "sha256": "63d3a45b059752e93cd483642666195483c0dfc37c911e23f71547e87f4c6b67",
+        "version": 3
+      },
+      {
+        "name": "000004_governed_operations.sql",
+        "sha256": "b2e4190ec076070ddbd7a5bbd697c448b3780b92f3e810f1d87766a04adfa4bf",
+        "version": 4
+      },
+      {
+        "name": "000005_operation_boundary.sql",
+        "sha256": "027e644b6e6e10f5a252f515cdd91b930791b697c19cd29d088784edcaf965b6",
+        "version": 5
+      },
+      {
+        "name": "000006_governance_support.sql",
+        "sha256": "e867e5aafd638782a51864c68447ae4c86db6c1ebb7478cc906baf22bd4c9c1c",
+        "version": 6
+      },
+      {
+        "name": "000007_operation_diagnostics.sql",
+        "sha256": "9e6766d480a2543714b5395449b3fc234a4ab9d7bc51819a490db6a807815f08",
+        "version": 7
+      },
+      {
+        "name": "000008_event_payload_type.sql",
+        "sha256": "24589ea21ea367d565d4a80a0d4fd4468d18bb39ec31227c947f3d0bebd8d64b",
+        "version": 8
+      },
+      {
+        "name": "000009_sqlstate_diagnostics.sql",
+        "sha256": "57e381878181ed6ac5ae8889a6785e263584315aeabfbe1a89d68f10d028568d",
+        "version": 9
+      },
+      {
+        "name": "000010_fence_gate_expression.sql",
+        "sha256": "4fc84100d3d01ac388a746d0bf5f516fe7661eb8113770b406cbbaeca9e1b383",
+        "version": 10
+      },
+      {
+        "name": "000011_proposal_version_union.sql",
+        "sha256": "e30265c1aed60cd0564098fc63cd8b22c9a18129b68a8d84ebb6623e3178756b",
+        "version": 11
+      },
+      {
+        "name": "000012_bootstrap_binding_union.sql",
+        "sha256": "c37242db003d72b02ad7bcb839bb94025aabb03b6cba86b0c20c26ef21c0ae47",
+        "version": 12
+      },
+      {
+        "name": "000013_scope_and_gate_hardening.sql",
+        "sha256": "abc983766a825d3b9069168032adb445e312617d7f6ea7f7e3b4370b12bbc04d",
+        "version": 13
+      },
+      {
+        "name": "000014_outbox_scope.sql",
+        "sha256": "a4f01bd97911319a4476f284509996b3596fcae9eac7bd85cf0d65052eb5c0f5",
+        "version": 14
+      },
+      {
+        "name": "000015_bootstrap_findings_and_vocabulary.sql",
+        "sha256": "fc37ee462cc6a0fad16291d797990702fbeb8ec67ab89ae8280ab2e93df36945",
+        "version": 15
+      },
+      {
+        "name": "000016_scope_and_heartbeat_freshness.sql",
+        "sha256": "1a4a6668e3b9caa14072a950f0f4c3e85fcac5f23e08db6dd985f3066e3dc4a3",
+        "version": 16
+      },
+      {
+        "name": "000017_reconciled_outbox_ack_recovery.sql",
+        "sha256": "c0f48e9bf31a4da70aa385976245f06c39caf5c5ac4c29ee829e31cdf910484d",
+        "version": 17
+      },
+      {
+        "name": "000018_replay_authorization_scope.sql",
+        "sha256": "a2b56a7ff378784e652154f664e54cbe286709051359ae8ac90a9ffd5dfa3e70",
+        "version": 18
+      },
+      {
+        "name": "000019_control_plane_contracts.sql",
+        "sha256": "ff8e1f72b794cc24c483a4d6bded2d0559b8cb9af3f8dcfeef1234ee5fcd8a17",
+        "version": 19
+      },
+      {
+        "name": "000020_execution_control_plane.sql",
+        "sha256": "9c9388d3ef089cc133d258410ea968089b3deb78aca237fd1ed1a4cef81e1a5e",
+        "version": 20
+      }
+    ],
+    "functions": [
+      [
+        "ecos",
+        "ack_outbox",
+        "item uuid, token uuid",
+        "e8a50ab04d9625471fa2593d56fc4b8d"
+      ],
+      [
+        "ecos",
+        "begin_synthetic_attempt",
+        "command uuid, request_hash_ text",
+        "7e3c7e89cfe0dfa1b0033f3b3fbdd520"
+      ],
+      [
+        "ecos",
+        "bootstrap_package",
+        "",
+        "e9afa3982775dec2a92db2830cc5b3e8"
+      ],
+      [
+        "ecos",
+        "claim_outbox",
+        "lease_seconds integer",
+        "5c3c3c39569c273a3fd221b765b27307"
+      ],
+      [
+        "ecos",
+        "control_plane_health",
+        "",
+        "cdf3f13a25e2f04f2f4b7bf30c4bac31"
+      ],
+      [
+        "ecos",
+        "health_summary",
+        "",
+        "d82287221c132836f15761719ffd1247"
+      ],
+      [
+        "ecos",
+        "operate",
+        "operation text, request jsonb",
+        "63437b32c1318d3b80c8afd08e3d3f2c"
+      ],
+      [
+        "ecos",
+        "read_record",
+        "kind text, entity uuid",
+        "95663952c855e3fa3f4e97c1fb7266fb"
+      ],
+      [
+        "ecos",
+        "record_heartbeat",
+        "observed timestamp with time zone, evidence_hash text",
+        "7acd499667a892fea502cdb29dcf2493"
+      ],
+      [
+        "ecos_meta",
+        "apply_operation",
+        "op text, ctx jsonb, args jsonb",
+        "14e946cd2a70d77b064e249ab6894940"
+      ],
+      [
+        "ecos_meta",
+        "apply_operation_phase1",
+        "op text, ctx jsonb, args jsonb",
+        "f86ad2b5ff3f3408c958fb1dab1b4ca8"
+      ],
+      [
+        "ecos_meta",
+        "assert_contract",
+        "name text, v jsonb",
+        "e54416e367a5ad6a75588d1252bd5fe5"
+      ],
+      [
+        "ecos_meta",
+        "assignment_guard",
+        "",
+        "7e22a86481a119f6d06fcf4ed6cce6c5"
+      ],
+      [
+        "ecos_meta",
+        "canonical_json",
+        "v jsonb",
+        "466170385d7dbf4534781838d767ab0c"
+      ],
+      [
+        "ecos_meta",
+        "check_fence",
+        "ctx jsonb, f jsonb",
+        "fccbd8edaac0b20a47600277c7beb00b"
+      ],
+      [
+        "ecos_meta",
+        "claim_work",
+        "ctx jsonb, args jsonb",
+        "6b0acd0c58dfddd20e80e4e71431c123"
+      ],
+      [
+        "ecos_meta",
+        "commit_proposal",
+        "ctx jsonb, p jsonb",
+        "a3aac772e83dd740a1e8b436016f0587"
+      ],
+      [
+        "ecos_meta",
+        "content_hash",
+        "v jsonb",
+        "cad2929d7b834db9a2d825834a0e1540"
+      ],
+      [
+        "ecos_meta",
+        "current_principal",
+        "",
+        "e5eec16b354c91051db5a24091412d33"
+      ],
+      [
+        "ecos_meta",
+        "delivery_attempt_guard",
+        "",
+        "b8b17576442bb8cc86db5cf8e29c5094"
+      ],
+      [
+        "ecos_meta",
+        "domain_effect",
+        "op text, ctx jsonb, args jsonb, entity uuid, version_ bigint",
+        "fdda75d4c6b39954842f6fc393b58ab7"
+      ],
+      [
+        "ecos_meta",
+        "execution_event",
+        "run_id uuid, state_ text, reason text, hash_ text",
+        "69bd5cd78b569293a95364981f276640"
+      ],
+      [
+        "ecos_meta",
+        "execution_reference_guard",
+        "",
+        "931ace7a8c67401cb3951d91ca75e09f"
+      ],
+      [
+        "ecos_meta",
+        "fence",
+        "r jsonb",
+        "aafc2f6c0387d611e7713ea8a6e6fd21"
+      ],
+      [
+        "ecos_meta",
+        "forbid_evidence_change",
+        "",
+        "229c74582724e723758d6f168a815b8a"
+      ],
+      [
+        "ecos_meta",
+        "gate_configuration_lock",
+        "",
+        "e1022a74bf05dd517edeb318f9eadd3e"
+      ],
+      [
+        "ecos_meta",
+        "graph_guard",
+        "",
+        "53833432e73fa887d4cd8ada3b92cdd9"
+      ],
+      [
+        "ecos_meta",
+        "guard_entity",
+        "",
+        "e769a4d92192b7c216d82fc9b58dd29b"
+      ],
+      [
+        "ecos_meta",
+        "insert_wire",
+        "kind text, v jsonb",
+        "f5c50697c0f1f8cd67d357d5e206d781"
+      ],
+      [
+        "ecos_meta",
+        "local_occurrence",
+        "local_time timestamp without time zone, zone text, gap_policy text, fold_policy text",
+        "227d05e2b306281d6a3674d486d07fb1"
+      ],
+      [
+        "ecos_meta",
+        "materialize_occurrence",
+        "schedule uuid, expected bigint, stage uuid, logical_time timestamp without time zone",
+        "3f169403226258748fbe71ac696307bb"
+      ],
+      [
+        "ecos_meta",
+        "memory_version_guard",
+        "",
+        "014691f28505be3fc786c1be2fdbef2c"
+      ],
+      [
+        "ecos_meta",
+        "notify_transition",
+        "task_id_ uuid, eid uuid, ctx jsonb",
+        "7f37ec97941dc2026c9dfff4fe9d8f6c"
+      ],
+      [
+        "ecos_meta",
+        "operation_authorized",
+        "op text, role_ name",
+        "506bbf170bac0f995a54037cb17a0f43"
+      ],
+      [
+        "ecos_meta",
+        "operation_role_guard",
+        "",
+        "a271ed244de9cde96dfb36344bf6c031"
+      ],
+      [
+        "ecos_meta",
+        "presence_heartbeat",
+        "ctx jsonb, args jsonb",
+        "6a60bc9d648386590acb43da36be9e94"
+      ],
+      [
+        "ecos_meta",
+        "reconcile_schedule",
+        "",
+        "23081a8e894b6568156df66a67fd4b9a"
+      ],
+      [
+        "ecos_meta",
+        "record_reservations",
+        "",
+        "abbc406816477650c960e7e348d837f6"
+      ],
+      [
+        "ecos_meta",
+        "record_value",
+        "kind text, entity uuid, lock_ boolean",
+        "b4b6c37d612661398f4f34e42b4a62bb"
+      ],
+      [
+        "ecos_meta",
+        "recover_occurrence",
+        "oid uuid",
+        "2694d00521124612092fcfe4ab988cc0"
+      ],
+      [
+        "ecos_meta",
+        "release_dependents",
+        "",
+        "d40158ae2da69c2a39b1c1c1ac6f3156"
+      ],
+      [
+        "ecos_meta",
+        "repair_expired_claim",
+        "oid uuid, correlation uuid",
+        "7d5a4201062691eb0d5e01ff6667e321"
+      ],
+      [
+        "ecos_meta",
+        "require_access",
+        "principal uuid, kind text, entity uuid",
+        "c5a78a879bc1ab4b1fa6b86c18147bc3"
+      ],
+      [
+        "ecos_meta",
+        "require_operation_scope",
+        "op text, args jsonb, principal uuid",
+        "b84030d5b4fc08193d0dca07d57369e5"
+      ],
+      [
+        "ecos_meta",
+        "require_operation_scope_phase1",
+        "op text, args jsonb, principal uuid",
+        "46e2e3fa4224722f820f45d0ca57250c"
+      ],
+      [
+        "ecos_meta",
+        "require_package_scope",
+        "principal uuid, package_ jsonb",
+        "3eb4b96b7d5cc340634135e6c2bd3b77"
+      ],
+      [
+        "ecos_meta",
+        "reserve_resources",
+        "",
+        "ea90c3e481a3f358b1a3b840f83d7b07"
+      ],
+      [
+        "ecos_meta",
+        "resource_pressure",
+        "provider_ text, metric_ text, at_ timestamp with time zone",
+        "3637b9cae5d232bde9fcafb5033ec7d7"
+      ],
+      [
+        "ecos_meta",
+        "run_wire",
+        "r jsonb",
+        "e2989ce3b73696f1c18235bc57b10009"
+      ],
+      [
+        "ecos_meta",
+        "schedule_guard",
+        "",
+        "f7b50440676c8a05964ba527d2f486c8"
+      ],
+      [
+        "ecos_meta",
+        "selection",
+        "oid uuid, instance uuid, at_ timestamp with time zone",
+        "cc229dcb95868c68087c6b3c8fb004dc"
+      ],
+      [
+        "ecos_meta",
+        "selection_phase1",
+        "oid uuid, instance uuid, at_ timestamp with time zone",
+        "1faec1ced12d43bf4cf03711ee6c7555"
+      ],
+      [
+        "ecos_meta",
+        "valid_json",
+        "s jsonb, v jsonb, depth integer",
+        "53a8362898a802c98090b498256fb23d"
+      ],
+      [
+        "ecos_meta",
+        "verify_evidence",
+        "principal uuid, ev jsonb",
+        "695fd1de2990adfde96bd09caf4ca340"
+      ],
+      [
+        "ecos_meta",
+        "verify_sources",
+        "principal uuid, refs jsonb",
+        "214d1251f8b2a8b9a80d3f86f68f9302"
+      ],
+      [
+        "ecos_meta",
+        "wake_work",
+        "oid uuid, corr uuid, source_ text",
+        "c6771e071e98d5ae1289af0faf9f8c58"
+      ],
+      [
+        "ecos_meta",
+        "watchdog",
+        "correlation uuid",
+        "5ebe48b17d8e73a3666f84242f95c71c"
+      ],
+      [
+        "ecos_meta",
+        "work_package",
+        "ctx jsonb, f jsonb",
+        "a10295dcf7cf29748d65c7e961106e76"
+      ],
+      [
+        "ecos_migration",
+        "quarantine_row",
+        "batch uuid, locator text, raw jsonb",
+        "5d6ded71ba491f9e61119e29bc776629"
+      ]
+    ],
+    "relations": [
+      [
+        "ecos",
+        "approval_decision",
+        "r"
+      ],
+      [
+        "ecos",
+        "approval_request",
+        "r"
+      ],
+      [
+        "ecos",
+        "artifact",
+        "r"
+      ],
+      [
+        "ecos",
+        "backup_record",
+        "r"
+      ],
+      [
+        "ecos",
+        "capability",
+        "r"
+      ],
+      [
+        "ecos",
+        "command_occurrence",
+        "r"
+      ],
+      [
+        "ecos",
+        "communication",
+        "r"
+      ],
+      [
+        "ecos",
+        "communication_processing",
+        "r"
+      ],
+      [
+        "ecos",
+        "control_plane_event",
+        "r"
+      ],
+      [
+        "ecos",
+        "dead_letter_item",
+        "r"
+      ],
+      [
+        "ecos",
+        "delivery",
+        "r"
+      ],
+      [
+        "ecos",
+        "delivery_attempt",
+        "r"
+      ],
+      [
+        "ecos",
+        "domain_event",
+        "r"
+      ],
+      [
+        "ecos",
+        "emergency_intent",
+        "r"
+      ],
+      [
+        "ecos",
+        "execution_event",
+        "r"
+      ],
+      [
+        "ecos",
+        "execution_run",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor_capability",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor_instance",
+        "r"
+      ],
+      [
+        "ecos",
+        "executor_presence",
+        "r"
+      ],
+      [
+        "ecos",
+        "export_package",
+        "r"
+      ],
+      [
+        "ecos",
+        "fact",
+        "r"
+      ],
+      [
+        "ecos",
+        "heartbeat",
+        "r"
+      ],
+      [
+        "ecos",
+        "heartbeat_load",
+        "r"
+      ],
+      [
+        "ecos",
+        "integrity_finding",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_compaction_run",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_record",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_reference",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_scope",
+        "r"
+      ],
+      [
+        "ecos",
+        "memory_version",
+        "r"
+      ],
+      [
+        "ecos",
+        "notification",
+        "r"
+      ],
+      [
+        "ecos",
+        "outbox_item",
+        "r"
+      ],
+      [
+        "ecos",
+        "package_measurement",
+        "r"
+      ],
+      [
+        "ecos",
+        "party",
+        "r"
+      ],
+      [
+        "ecos",
+        "project",
+        "r"
+      ],
+      [
+        "ecos",
+        "proposal_submission",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_attempt",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_command",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_receipt",
+        "r"
+      ],
+      [
+        "ecos",
+        "provider_result",
+        "r"
+      ],
+      [
+        "ecos",
+        "repair_action",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_budget",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_health",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_metric",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_provider",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_reservation",
+        "r"
+      ],
+      [
+        "ecos",
+        "resource_usage_window",
+        "r"
+      ],
+      [
+        "ecos",
+        "restore_test",
+        "r"
+      ],
+      [
+        "ecos",
+        "retry_policy",
+        "r"
+      ],
+      [
+        "ecos",
+        "schedule_occurrence",
+        "r"
+      ],
+      [
+        "ecos",
+        "semantic_proposal",
+        "r"
+      ],
+      [
+        "ecos",
+        "stage_capability_requirement",
+        "r"
+      ],
+      [
+        "ecos",
+        "stage_resource_requirement",
+        "r"
+      ],
+      [
+        "ecos",
+        "stage_result",
+        "r"
+      ],
+      [
+        "ecos",
+        "task",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_assignment",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_dependency",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_evidence",
+        "r"
+      ],
+      [
+        "ecos",
+        "task_schedule",
+        "r"
+      ],
+      [
+        "ecos",
+        "v_blocked_work",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_current_claims",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_dead_letters",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_executor_status",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_memory_heads",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_node_health",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_outbox_health",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_provider_reconciliation",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_ready_work",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_recent_failures",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_resource_pressure",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_system_status_header",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_work_aging",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_work_health",
+        "v"
+      ],
+      [
+        "ecos",
+        "v_work_readiness",
+        "v"
+      ],
+      [
+        "ecos",
+        "work_approval",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_claim",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_context",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_definition",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_dependency",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_occurrence",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_priority",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_stage_definition",
+        "r"
+      ],
+      [
+        "ecos",
+        "work_wakeup",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "contract_schema",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "control",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "database_identity",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "entity_contract",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "executor_policy",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "notification_policy",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "object_grant",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "operation_audit",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "operation_contract",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "operation_receipt",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "outbox_lease",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "principal_binding",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "principal_clearance",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "principal_operation",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "proposal_item_result",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "schema_migration",
+        "r"
+      ],
+      [
+        "ecos_meta",
+        "transition_policy",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "legacy_identity",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "quarantine_item",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "raw_migration_batch",
+        "r"
+      ],
+      [
+        "ecos_migration",
+        "raw_source_row",
+        "r"
+      ]
+    ]
+  },
+  "phase2_checks": [
+    "executor_registration_with_attested_capabilities",
+    "heartbeat_freshness_and_running_count",
+    "delayed_heartbeat_rejected",
+    "incompatible_capability_no_claim",
+    "capability_compatible_atomic_claim",
+    "narrow_work_package_bounded_context",
+    "database_deterministic_slice_complete",
+    "work_package_payload_bytes_recorded",
+    "resource_block_isolates_dependent_work_unrelated_continues",
+    "release_preserves_occurrence",
+    "defer_backoff_enforced",
+    "failure_dead_letter_audit",
+    "resource_pressure_transitions_unknown_not_zero",
+    "completion_transaction_durable_dependent_wakeup",
+    "lost_transient_wakeup_recovered",
+    "executor_loss_expired_fence_repair_readback",
+    "deterministic_stale_detection",
+    "semantic_submission_immutable_no_business_mutation",
+    "semantic_to_deterministic_commit_hybrid_handoff",
+    "synthetic_notification_delivery_provider_outbox",
+    "synthetic_provider_duplicate_idempotency",
+    "synthetic_adapter_ack_after_durable_result",
+    "graceful_stop_no_active_claims",
+    "stopped_instance_cannot_restart_same_identity",
+    "operation_audit_durable"
+  ],
+  "additional_acceptance": {
+    "status": "passed",
+    "checks": [
+      "INTERACTIVE_ADA_governed_claim_renew_complete",
+      "RESIDENT_DETERMINISTIC_PROVIDER_governed_claim_renew_complete",
+      "ONLINE_SEMANTIC_governed_claim_renew_complete",
+      "DATABASE_DETERMINISTIC_governed_claim_renew_complete",
+      "resource_budget_two_session_single_reservation",
+      "completion_and_release_free_effective_reservations",
+      "work_next_idempotent_single_claim",
+      "work_next_cached_package_revocation_enforced",
+      "unknown_resource_blocks_and_dead_letter_authorization",
+      "private_helpers_direct_tables_spoofed_principal_role_denied",
+      "bounded_readonly_1x_time_gate_shadow_equivalence",
+      "client_reuses_connection_measures_bytes_latency_bounded_pressure_backoff",
+      "all_phase2_observability_views_queryable"
+    ],
+    "measurements": {
+      "resource_contention": [
+        {
+          "backend": 17704,
+          "result": {
+            "data": {
+              "claim": {
+                "id": "f93fd4fb-e5f0-41a1-8096-4d1f064ec482",
+                "state": "active",
+                "created_at": "2026-09-30T00:22:11.251965+00:00",
+                "expires_at": "2026-09-30T00:24:11.251965+00:00",
+                "renewed_at": "2026-09-30T00:22:11.251966+00:00",
+                "acquired_at": "2026-09-30T00:22:11.251965+00:00",
+                "fence_token": "aaec83ad-fc06-4727-ab8f-f00a275ecb71",
+                "claim_version": 1,
+                "occurrence_id": "1d1bb796-8e79-423a-84f9-737dd609e76e",
+                "record_version": 1,
+                "schema_version": "1.0.0",
+                "stage_definition_id": "1acf2847-741c-42a9-be60-17db05db5372",
+                "executor_instance_id": "ef28e1a1-03a9-4b03-bf70-9433fe1135d4"
+              },
+              "work_package": {
+                "task": {
+                  "id": "2438d6b7-9bbf-4dac-9120-92e2e989cbd3",
+                  "title": "Synthetic Phase 1 completion",
+                  "record_version": 1,
+                  "lifecycle_state": "open"
+                },
+                "fence": {
+                  "claim_id": "f93fd4fb-e5f0-41a1-8096-4d1f064ec482",
+                  "fence_token": "aaec83ad-fc06-4727-ab8f-f00a275ecb71",
+                  "claim_version": 1,
+                  "occurrence_id": "1d1bb796-8e79-423a-84f9-737dd609e76e",
+                  "stage_definition_id": "1acf2847-741c-42a9-be60-17db05db5372",
+                  "executor_instance_id": "ef28e1a1-03a9-4b03-bf70-9433fe1135d4"
+                },
+                "input": {},
+                "stage": {
+                  "id": "1acf2847-741c-42a9-be60-17db05db5372",
+                  "kind": "deterministic",
+                  "stage_key": "synthetic_completion",
+                  "created_at": "2026-09-30T00:22:08.94172+00:00",
+                  "record_version": 5,
+                  "schema_version": "1.0.0",
+                  "input_schema_id": "synthetic.input.v1",
+                  "result_schema_id": "synthetic.result.v1",
+                  "execution_surface": "DATABASE_DETERMINISTIC",
+                  "requires_approval": false,
+                  "work_definition_id": "24734620-bff9-47d0-b553-7eb97caebdf5"
+                },
+                "operation": {
+                  "name": "work.complete",
+                  "atomicity": "single transaction",
+                  "required_role": "executor",
+                  "acceptance_ids": [
+                    "API-01",
+                    "API-02",
+                    "API-03"
+                  ],
+                  "request_schema": "https://contracts.ecos.invalid/v1/work.complete-request.schema.json",
+                  "response_schema": "https://contracts.ecos.invalid/v1/operation_result.schema.json",
+                  "idempotency_scope": "principal_id + operation + idempotency_key",
+                  "semantic_proposable": false
+                },
+                "occurrence": {
+                  "id": "1d1bb796-8e79-423a-84f9-737dd609e76e",
+                  "state": "running",
+                  "due_at": "2026-09-30T00:22:10.107635+00:00",
+                  "task_id": "2438d6b7-9bbf-4dac-9120-92e2e989cbd3",
+                  "retry_at": null,
+                  "created_at": "2026-09-30T00:22:11.107635+00:00",
+                  "attempt_count": 1,
+                  "claim_version": 1,
+                  "fulfillment_id": "c767ccdd-296f-40bf-9c59-7de01d64c464",
+                  "occurrence_key": "SYNTHETIC-COMPLETION-1d1bb796-8e79-423a-84f9-737dd609e76e",
+                  "record_version": 3,
+                  "schema_version": "1.0.0",
+                  "priority_override": null,
+                  "ready_override_at": null,
+                  "work_definition_id": "24734620-bff9-47d0-b553-7eb97caebdf5",
+                  "stage_definition_id": "1acf2847-741c-42a9-be60-17db05db5372"
+                },
+                "idempotency": {
+                  "scope": "principal + operation + key",
+                  "occurrence_key": "SYNTHETIC-COMPLETION-1d1bb796-8e79-423a-84f9-737dd609e76e"
+                },
+                "deadline_sla": null,
+                "retry_policy": {
+                  "id": "29909d35-f100-4e49-a772-7a5193bea414",
+                  "created_at": "2026-09-30T00:22:08.93941+00:00",
+                  "max_attempts": 10,
+                  "record_version": 1,
+                  "schema_version": "1.0.0",
+                  "max_delay_seconds": 30,
+                  "backoff_multiplier": 2,
+                  "jitter_basis_points": 0,
+                  "initial_delay_seconds": 1,
+                  "retryable_error_classes": [
+                    "transient"
+                  ]
+                },
+                "correlation_id": "216555b7-4e4c-41d0-9f3f-eb94c91faff2",
+                "context_version": 1,
+                "approval_context": [],
+                "memory_references": [],
+                "source_references": [],
+                "capability_requirements": [
+                  {
+                    "name": "db.governed_operations",
+                    "minimum_version": 1
+                  }
+                ]
+              },
+              "execution_run": {
+                "id": "62fff069-3b2b-4368-8bac-5c3444b45e43",
+                "fence": {
+                  "claim_id": "f93fd4fb-e5f0-41a1-8096-4d1f064ec482",
+                  "fence_token": "aaec83ad-fc06-4727-ab8f-f00a275ecb71",
+                  "claim_version": 1,
+                  "occurrence_id": "1d1bb796-8e79-423a-84f9-737dd609e76e",
+                  "stage_definition_id": "1acf2847-741c-42a9-be60-17db05db5372",
+                  "executor_instance_id": "ef28e1a1-03a9-4b03-bf70-9433fe1135d4"
+                },
+                "state": "started",
+                "ended_at": null,
+                "created_at": "2026-09-30T00:22:11.253983+00:00",
+                "correlation_id": "216555b7-4e4c-41d0-9f3f-eb94c91faff2",
+                "record_version": 1,
+                "schema_version": "1.0.0",
+                "selection_evidence": {
+                  "eligible": true,
+                  "created_at": "2026-09-30T00:22:11.107635+00:00",
+                  "evaluated_at": "2026-09-30T00:22:11.248957+00:00",
+                  "reason_codes": [],
+                  "occurrence_id": "1d1bb796-8e79-423a-84f9-737dd609e76e",
+                  "policy_version": "lexicographic-v1",
+                  "business_impact": 0,
+                  "immediate_ready": false,
+                  "source_versions": [
+                    {
+                      "record_id": "1d1bb796-8e79-423a-84f9-737dd609e76e",
+                      "record_type": "work_occurrence",
+                      "record_version": 1
+                    },
+                    {
+                      "record_id": "24734620-bff9-47d0-b553-7eb97caebdf5",
+                      "record_type": "work_definition",
+                      "record_version": 1
+                    },
+                    {
+                      "record_id": "1acf2847-741c-42a9-be60-17db05db5372",
+                      "record_type": "work_stage_definition",
+                      "record_version": 5
+                    }
+                  ],
+                  "priority_override": 0,
+                  "sla_breach_seconds": 0,
+                  "deadline_pressure_seconds": 0,
+                  "recurrence_relative_age_basis_points": 0
+                }
+              },
+              "correlation_id": "216555b7-4e4c-41d0-9f3f-eb94c91faff2",
+              "schema_version": "1.0.0"
+            },
+            "status": "CLAIMED",
+            "correlation_id": "216555b7-4e4c-41d0-9f3f-eb94c91faff2",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "backend": 8096,
+          "result": {
+            "code": "gate_blocked",
+            "message": "gate_blocked",
+            "retryable": false,
+            "correlation_id": "216555b7-4e4c-41d0-9f3f-eb94c91faff2"
+          }
+        }
+      ],
+      "shadow_comparison": {
+        "scope": "Two sampled time-admission predicates only, not full queue eligibility or global shadow parity",
+        "comparisons": [
+          {
+            "sample": "A025_time_gate",
+            "source_values_sha256": "74f926cc47ab82f68f2c3fd81efea1a9294a617d6429212eae67e970a7724d70",
+            "one_x_time_gate": true,
+            "two_x_time_gate": true,
+            "classification": "EQUIVALENT",
+            "scope": "time admission only"
+          },
+          {
+            "sample": "A027_time_gate",
+            "source_values_sha256": "2c307488bc25bb3259c439485b636aa63ca48e0f94793d3cd7f9331fb8411a09",
+            "one_x_time_gate": false,
+            "two_x_time_gate": false,
+            "classification": "EQUIVALENT",
+            "scope": "time admission only"
+          }
+        ],
+        "global_shadow_verified": false
+      },
+      "client": {
+        "calls": 2,
+        "connections_opened": 1,
+        "reconnects": 0,
+        "response_bytes": 430,
+        "query_ms": 171.99999999138527
+      },
+      "connection_pressure": {
+        "attempts": 3,
+        "backoff_seconds": [
+          0.25,
+          1.0
+        ],
+        "bounded": true
+      },
+      "health": {
+        "as_of": "2026-09-30T00:22:12.989433+00:00",
+        "authority": "PRE_CUTOVER_NON_AUTHORITATIVE",
+        "claim_oldest": null,
+        "active_claims": 0,
+        "outbox_oldest": "2026-09-30T00:22:08.271205+00:00",
+        "query_latency": null,
+        "outbox_backlog": 1,
+        "max_connections": 25,
+        "stale_executors": 0,
+        "active_executors": 1,
+        "pool_utilization": null,
+        "visible_lock_waits": 0,
+        "unavailable_metrics": [
+          "pool_utilization",
+          "query_latency",
+          "host_cpu",
+          "host_bandwidth"
+        ],
+        "visible_connections": 1
+      },
+      "package_bytes": [
+        2712,
+        2746,
+        7
+      ]
+    }
+  },
+  "concurrency": {
+    "same_work": {
+      "status": "passed",
+      "sessions": 15,
+      "backend_pids": [
+        6192,
+        17492,
+        17596,
+        17680,
+        18756,
+        20432,
+        21872,
+        23060,
+        30184,
+        32264,
+        35204,
+        37036,
+        39844,
+        40572,
+        44480
+      ],
+      "initial_eligible_occurrences": [
+        "b49c3dc9-f89d-4632-9476-693c91c915c7"
+      ],
+      "winners": 1,
+      "valid_losers": 14,
+      "all_operations_returned_before_any_commit": true,
+      "observations": [
+        {
+          "contender": 0,
+          "backend_pid": 39844,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 1,
+          "backend_pid": 17596,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 2,
+          "backend_pid": 32264,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 3,
+          "backend_pid": 20432,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 4,
+          "backend_pid": 17492,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 5,
+          "backend_pid": 21872,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 6,
+          "backend_pid": 40572,
+          "started": 226504.953,
+          "returned": 226505.046,
+          "result": {
+            "claim": {
+              "id": "a0fd26b3-acb1-4f45-839d-5542b2c11732",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:13.72083+00:00",
+              "expires_at": "2026-09-30T00:27:13.720831+00:00",
+              "renewed_at": "2026-09-30T00:22:13.720831+00:00",
+              "acquired_at": "2026-09-30T00:22:13.720831+00:00",
+              "fence_token": "2e14b5eb-2ff8-47df-8fbb-a4ef054dc658",
+              "claim_version": 1,
+              "occurrence_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "895ecf70-7136-42cd-a895-de1cbf58c434",
+              "fence": {
+                "claim_id": "a0fd26b3-acb1-4f45-839d-5542b2c11732",
+                "fence_token": "2e14b5eb-2ff8-47df-8fbb-a4ef054dc658",
+                "claim_version": 1,
+                "occurrence_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:13.723455+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.443893+00:00",
+                "evaluated_at": "2026-09-30T00:22:13.718191+00:00",
+                "reason_codes": [],
+                "occurrence_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 7,
+          "backend_pid": 30184,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 8,
+          "backend_pid": 6192,
+          "started": 226504.953,
+          "returned": 226505.046,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 9,
+          "backend_pid": 17680,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 10,
+          "backend_pid": 37036,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 11,
+          "backend_pid": 44480,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 12,
+          "backend_pid": 18756,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 13,
+          "backend_pid": 23060,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 14,
+          "backend_pid": 35204,
+          "started": 226504.953,
+          "returned": 226505.031,
+          "result": {
+            "claim": null,
+            "execution_run": null,
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        }
+      ],
+      "durable_claims": [
+        {
+          "id": "a0fd26b3-acb1-4f45-839d-5542b2c11732",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:13.72083+00:00",
+          "expires_at": "2026-09-30T00:27:13.720831+00:00",
+          "renewed_at": "2026-09-30T00:22:13.720831+00:00",
+          "acquired_at": "2026-09-30T00:22:13.720831+00:00",
+          "fence_token": "2e14b5eb-2ff8-47df-8fbb-a4ef054dc658",
+          "claim_version": 1,
+          "occurrence_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        }
+      ],
+      "durable_runs": [
+        {
+          "id": "895ecf70-7136-42cd-a895-de1cbf58c434",
+          "state": "started",
+          "claim_id": "a0fd26b3-acb1-4f45-839d-5542b2c11732",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:13.723455+00:00",
+          "fence_token": "2e14b5eb-2ff8-47df-8fbb-a4ef054dc658",
+          "claim_version": 1,
+          "occurrence_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.443893+00:00",
+            "evaluated_at": "2026-09-30T00:22:13.718191+00:00",
+            "reason_codes": [],
+            "occurrence_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "b49c3dc9-f89d-4632-9476-693c91c915c7",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        }
+      ]
+    },
+    "different_work": {
+      "status": "passed",
+      "sessions": 15,
+      "backend_pids": [
+        7436,
+        9260,
+        10348,
+        14576,
+        16004,
+        23304,
+        26468,
+        30444,
+        32968,
+        33300,
+        40776,
+        41728,
+        42144,
+        43156,
+        43936
+      ],
+      "initial_eligible_occurrences": [
+        "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+        "b05026a9-0c68-4766-b770-ff9a23a4191f",
+        "ac98756e-36d4-459a-84a4-36b36310ee7d",
+        "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+        "1fb085d8-e392-46db-ace5-19625314ffbd",
+        "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+        "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+        "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+        "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+        "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+        "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+        "caba4464-cf95-4f7f-8961-42bf7c477571",
+        "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+        "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+        "29951a2e-2bfe-48dd-8b93-865a2fb18a75"
+      ],
+      "winners": 15,
+      "valid_losers": 0,
+      "all_operations_returned_before_any_commit": true,
+      "observations": [
+        {
+          "contender": 0,
+          "backend_pid": 23304,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "92e0082d-7818-43ec-b3aa-0c004f2cb511",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.194418+00:00",
+              "expires_at": "2026-09-30T00:27:14.194419+00:00",
+              "renewed_at": "2026-09-30T00:22:14.194419+00:00",
+              "acquired_at": "2026-09-30T00:22:14.194419+00:00",
+              "fence_token": "b5f33c9f-a528-4c9f-8ce1-b762d704f703",
+              "claim_version": 1,
+              "occurrence_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "5beb6587-1f9d-4442-8da5-9bb376103198",
+              "fence": {
+                "claim_id": "92e0082d-7818-43ec-b3aa-0c004f2cb511",
+                "fence_token": "b5f33c9f-a528-4c9f-8ce1-b762d704f703",
+                "claim_version": 1,
+                "occurrence_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.199289+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.99609+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.192294+00:00",
+                "reason_codes": [],
+                "occurrence_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 1,
+          "backend_pid": 33300,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "a8d06c3a-af00-456c-b91d-3e529aef0581",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.18755+00:00",
+              "expires_at": "2026-09-30T00:27:14.187551+00:00",
+              "renewed_at": "2026-09-30T00:22:14.187551+00:00",
+              "acquired_at": "2026-09-30T00:22:14.187551+00:00",
+              "fence_token": "55420a69-03e9-45a3-a31f-6c7457b46b3c",
+              "claim_version": 1,
+              "occurrence_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "39263348-48e3-4c1a-87e0-31fb517c50e4",
+              "fence": {
+                "claim_id": "a8d06c3a-af00-456c-b91d-3e529aef0581",
+                "fence_token": "55420a69-03e9-45a3-a31f-6c7457b46b3c",
+                "claim_version": 1,
+                "occurrence_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.190323+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.993332+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.185116+00:00",
+                "reason_codes": [],
+                "occurrence_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 2,
+          "backend_pid": 32968,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "8b8bfae0-a314-41d6-93a0-f96b62dbb819",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.197257+00:00",
+              "expires_at": "2026-09-30T00:27:14.197258+00:00",
+              "renewed_at": "2026-09-30T00:22:14.197258+00:00",
+              "acquired_at": "2026-09-30T00:22:14.197258+00:00",
+              "fence_token": "db51d522-80c8-4104-aa0b-85d18ef5a4db",
+              "claim_version": 1,
+              "occurrence_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "200b0228-dd8a-4b72-ba4e-7beb1aa3daae",
+              "fence": {
+                "claim_id": "8b8bfae0-a314-41d6-93a0-f96b62dbb819",
+                "fence_token": "db51d522-80c8-4104-aa0b-85d18ef5a4db",
+                "claim_version": 1,
+                "occurrence_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.200003+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.997258+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.194812+00:00",
+                "reason_codes": [],
+                "occurrence_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 3,
+          "backend_pid": 26468,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "361927d3-4207-4d5f-a03f-30dc07b10af8",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.188265+00:00",
+              "expires_at": "2026-09-30T00:27:14.188266+00:00",
+              "renewed_at": "2026-09-30T00:22:14.188267+00:00",
+              "acquired_at": "2026-09-30T00:22:14.188266+00:00",
+              "fence_token": "dbe7239d-ff0a-43fa-b17e-338b84ec16e2",
+              "claim_version": 1,
+              "occurrence_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "91ceb433-35c1-4829-934b-d9aeb1b641e5",
+              "fence": {
+                "claim_id": "361927d3-4207-4d5f-a03f-30dc07b10af8",
+                "fence_token": "dbe7239d-ff0a-43fa-b17e-338b84ec16e2",
+                "claim_version": 1,
+                "occurrence_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.192453+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.993943+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.185859+00:00",
+                "reason_codes": [],
+                "occurrence_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 4,
+          "backend_pid": 43936,
+          "started": 226505.406,
+          "returned": 226505.5,
+          "result": {
+            "claim": {
+              "id": "6917b747-1374-44fa-96a9-a26fa007883e",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.181245+00:00",
+              "expires_at": "2026-09-30T00:27:14.181247+00:00",
+              "renewed_at": "2026-09-30T00:22:14.181247+00:00",
+              "acquired_at": "2026-09-30T00:22:14.181247+00:00",
+              "fence_token": "1da6f75a-3508-48a6-a507-37298154d785",
+              "claim_version": 1,
+              "occurrence_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "0929218c-1648-4e31-a61c-ca7214a1d4f0",
+              "fence": {
+                "claim_id": "6917b747-1374-44fa-96a9-a26fa007883e",
+                "fence_token": "1da6f75a-3508-48a6-a507-37298154d785",
+                "claim_version": 1,
+                "occurrence_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.184629+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.982533+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.178587+00:00",
+                "reason_codes": [],
+                "occurrence_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 5,
+          "backend_pid": 43156,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "891a61ce-2d82-458e-a777-69f7b08eb613",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.193369+00:00",
+              "expires_at": "2026-09-30T00:27:14.193369+00:00",
+              "renewed_at": "2026-09-30T00:22:14.19337+00:00",
+              "acquired_at": "2026-09-30T00:22:14.193369+00:00",
+              "fence_token": "ecc02818-95f7-49c0-9514-c33d12115190",
+              "claim_version": 1,
+              "occurrence_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "edf6fb8d-dc73-4115-ab3c-bbde837b61a7",
+              "fence": {
+                "claim_id": "891a61ce-2d82-458e-a777-69f7b08eb613",
+                "fence_token": "ecc02818-95f7-49c0-9514-c33d12115190",
+                "claim_version": 1,
+                "occurrence_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.198213+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.995693+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.190975+00:00",
+                "reason_codes": [],
+                "occurrence_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 6,
+          "backend_pid": 9260,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "9dd48034-1acf-458a-b739-aac67bd9e53c",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.194351+00:00",
+              "expires_at": "2026-09-30T00:27:14.194353+00:00",
+              "renewed_at": "2026-09-30T00:22:14.194353+00:00",
+              "acquired_at": "2026-09-30T00:22:14.194353+00:00",
+              "fence_token": "970b98d3-b2d1-441f-9e70-46118689ff11",
+              "claim_version": 1,
+              "occurrence_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "a1e06f00-ff4e-4d39-a787-a0bd473214c0",
+              "fence": {
+                "claim_id": "9dd48034-1acf-458a-b739-aac67bd9e53c",
+                "fence_token": "970b98d3-b2d1-441f-9e70-46118689ff11",
+                "claim_version": 1,
+                "occurrence_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.198596+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.995201+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.190969+00:00",
+                "reason_codes": [],
+                "occurrence_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 7,
+          "backend_pid": 42144,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "16d58838-76dc-446d-a26d-165161bcb4ed",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.183116+00:00",
+              "expires_at": "2026-09-30T00:27:14.183118+00:00",
+              "renewed_at": "2026-09-30T00:22:14.183118+00:00",
+              "acquired_at": "2026-09-30T00:22:14.183118+00:00",
+              "fence_token": "ae4a96c1-ddbd-420d-898f-8818a1111b5e",
+              "claim_version": 1,
+              "occurrence_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "70c9c7c8-71bd-4ea9-a8f3-78b0b1f8a21e",
+              "fence": {
+                "claim_id": "16d58838-76dc-446d-a26d-165161bcb4ed",
+                "fence_token": "ae4a96c1-ddbd-420d-898f-8818a1111b5e",
+                "claim_version": 1,
+                "occurrence_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.186641+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.990888+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.180728+00:00",
+                "reason_codes": [],
+                "occurrence_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 8,
+          "backend_pid": 41728,
+          "started": 226505.406,
+          "returned": 226505.5,
+          "result": {
+            "claim": {
+              "id": "4fa89648-7fe5-4429-8b91-6d29d8762872",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.184791+00:00",
+              "expires_at": "2026-09-30T00:27:14.184793+00:00",
+              "renewed_at": "2026-09-30T00:22:14.184793+00:00",
+              "acquired_at": "2026-09-30T00:22:14.184792+00:00",
+              "fence_token": "150ecdad-9125-4cfb-bb7e-fcac49cd9e0c",
+              "claim_version": 1,
+              "occurrence_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "c39feea8-8158-412b-95dd-68b3f81ef76b",
+              "fence": {
+                "claim_id": "4fa89648-7fe5-4429-8b91-6d29d8762872",
+                "fence_token": "150ecdad-9125-4cfb-bb7e-fcac49cd9e0c",
+                "claim_version": 1,
+                "occurrence_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.188145+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.991592+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.182335+00:00",
+                "reason_codes": [],
+                "occurrence_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 9,
+          "backend_pid": 30444,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "860fe45b-db30-4eae-a579-ed635aacf7c1",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.190246+00:00",
+              "expires_at": "2026-09-30T00:27:14.190247+00:00",
+              "renewed_at": "2026-09-30T00:22:14.190247+00:00",
+              "acquired_at": "2026-09-30T00:22:14.190247+00:00",
+              "fence_token": "c4aff47d-349a-458a-a6a7-dd3481f47b26",
+              "claim_version": 1,
+              "occurrence_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "90ec06f3-756c-4364-9579-d5ad4b5ca1df",
+              "fence": {
+                "claim_id": "860fe45b-db30-4eae-a579-ed635aacf7c1",
+                "fence_token": "c4aff47d-349a-458a-a6a7-dd3481f47b26",
+                "claim_version": 1,
+                "occurrence_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.19776+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.994375+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.187937+00:00",
+                "reason_codes": [],
+                "occurrence_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 10,
+          "backend_pid": 10348,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "fecb6c9d-5c02-4a01-a030-fde9d2a85bfc",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.196091+00:00",
+              "expires_at": "2026-09-30T00:27:14.196092+00:00",
+              "renewed_at": "2026-09-30T00:22:14.196092+00:00",
+              "acquired_at": "2026-09-30T00:22:14.196092+00:00",
+              "fence_token": "40327668-86bc-431b-b1bf-6fc02662328d",
+              "claim_version": 1,
+              "occurrence_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "ee5f69df-e981-4a16-a88e-2dd9642171d5",
+              "fence": {
+                "claim_id": "fecb6c9d-5c02-4a01-a030-fde9d2a85bfc",
+                "fence_token": "40327668-86bc-431b-b1bf-6fc02662328d",
+                "claim_version": 1,
+                "occurrence_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.199636+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.996491+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.193585+00:00",
+                "reason_codes": [],
+                "occurrence_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 11,
+          "backend_pid": 7436,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "8aad458a-7e79-4edf-aa9a-8a463816ea37",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.191557+00:00",
+              "expires_at": "2026-09-30T00:27:14.191558+00:00",
+              "renewed_at": "2026-09-30T00:22:14.191558+00:00",
+              "acquired_at": "2026-09-30T00:22:14.191558+00:00",
+              "fence_token": "53c4a327-0508-488b-ac5b-f7546733578b",
+              "claim_version": 1,
+              "occurrence_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "49f5b369-84e2-47cf-b8bc-d6704553025c",
+              "fence": {
+                "claim_id": "8aad458a-7e79-4edf-aa9a-8a463816ea37",
+                "fence_token": "53c4a327-0508-488b-ac5b-f7546733578b",
+                "claim_version": 1,
+                "occurrence_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.198944+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.994788+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.188468+00:00",
+                "reason_codes": [],
+                "occurrence_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 12,
+          "backend_pid": 40776,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "5e9cd5e9-ef0b-47b6-85ee-e898133dd97a",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.185843+00:00",
+              "expires_at": "2026-09-30T00:27:14.185845+00:00",
+              "renewed_at": "2026-09-30T00:22:14.185845+00:00",
+              "acquired_at": "2026-09-30T00:22:14.185845+00:00",
+              "fence_token": "9bff7e0f-381b-442f-87ef-48c1393f38ba",
+              "claim_version": 1,
+              "occurrence_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "4f697332-45de-4f0b-b21c-08cef2aa6271",
+              "fence": {
+                "claim_id": "5e9cd5e9-ef0b-47b6-85ee-e898133dd97a",
+                "fence_token": "9bff7e0f-381b-442f-87ef-48c1393f38ba",
+                "claim_version": 1,
+                "occurrence_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.189573+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.992184+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.183253+00:00",
+                "reason_codes": [],
+                "occurrence_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 13,
+          "backend_pid": 14576,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "6e54a53a-c45c-459d-94cc-7609268dd2f5",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.196886+00:00",
+              "expires_at": "2026-09-30T00:27:14.196886+00:00",
+              "renewed_at": "2026-09-30T00:22:14.196887+00:00",
+              "acquired_at": "2026-09-30T00:22:14.196886+00:00",
+              "fence_token": "892ffef8-7f96-4e5a-92c1-9e6deca25c9e",
+              "claim_version": 1,
+              "occurrence_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "0bf0badf-d4a0-4c5d-aeb3-b7b86be46684",
+              "fence": {
+                "claim_id": "6e54a53a-c45c-459d-94cc-7609268dd2f5",
+                "fence_token": "892ffef8-7f96-4e5a-92c1-9e6deca25c9e",
+                "claim_version": 1,
+                "occurrence_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.200387+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.996873+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.194377+00:00",
+                "reason_codes": [],
+                "occurrence_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        },
+        {
+          "contender": 14,
+          "backend_pid": 16004,
+          "started": 226505.406,
+          "returned": 226505.515,
+          "result": {
+            "claim": {
+              "id": "c2f0c43b-4137-4ab0-a307-866df5ae1630",
+              "state": "active",
+              "created_at": "2026-09-30T00:22:14.186938+00:00",
+              "expires_at": "2026-09-30T00:27:14.186939+00:00",
+              "renewed_at": "2026-09-30T00:22:14.186939+00:00",
+              "acquired_at": "2026-09-30T00:22:14.186939+00:00",
+              "fence_token": "3a33cbee-3d12-4950-b608-79b03c45dd3f",
+              "claim_version": 1,
+              "occurrence_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+              "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+            },
+            "execution_run": {
+              "id": "dcfd51ff-0806-44f6-aacf-957f6a306cf8",
+              "fence": {
+                "claim_id": "c2f0c43b-4137-4ab0-a307-866df5ae1630",
+                "fence_token": "3a33cbee-3d12-4950-b608-79b03c45dd3f",
+                "claim_version": 1,
+                "occurrence_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+                "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+              },
+              "state": "started",
+              "ended_at": null,
+              "created_at": "2026-09-30T00:22:14.190007+00:00",
+              "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+              "record_version": 1,
+              "schema_version": "1.0.0",
+              "selection_evidence": {
+                "eligible": true,
+                "created_at": "2026-09-30T00:22:13.992731+00:00",
+                "evaluated_at": "2026-09-30T00:22:14.184438+00:00",
+                "reason_codes": [],
+                "occurrence_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+                "policy_version": "lexicographic-v1",
+                "business_impact": 0,
+                "immediate_ready": false,
+                "source_versions": [
+                  {
+                    "record_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+                    "record_type": "work_occurrence",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                    "record_type": "work_definition",
+                    "record_version": 1
+                  },
+                  {
+                    "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                    "record_type": "work_stage_definition",
+                    "record_version": 1
+                  }
+                ],
+                "priority_override": 0,
+                "sla_breach_seconds": 0,
+                "deadline_pressure_seconds": 0,
+                "recurrence_relative_age_basis_points": 0
+              }
+            },
+            "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+            "schema_version": "1.0.0"
+          }
+        }
+      ],
+      "durable_claims": [
+        {
+          "id": "891a61ce-2d82-458e-a777-69f7b08eb613",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.193369+00:00",
+          "expires_at": "2026-09-30T00:27:14.193369+00:00",
+          "renewed_at": "2026-09-30T00:22:14.19337+00:00",
+          "acquired_at": "2026-09-30T00:22:14.193369+00:00",
+          "fence_token": "ecc02818-95f7-49c0-9514-c33d12115190",
+          "claim_version": 1,
+          "occurrence_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "c2f0c43b-4137-4ab0-a307-866df5ae1630",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.186938+00:00",
+          "expires_at": "2026-09-30T00:27:14.186939+00:00",
+          "renewed_at": "2026-09-30T00:22:14.186939+00:00",
+          "acquired_at": "2026-09-30T00:22:14.186939+00:00",
+          "fence_token": "3a33cbee-3d12-4950-b608-79b03c45dd3f",
+          "claim_version": 1,
+          "occurrence_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "8b8bfae0-a314-41d6-93a0-f96b62dbb819",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.197257+00:00",
+          "expires_at": "2026-09-30T00:27:14.197258+00:00",
+          "renewed_at": "2026-09-30T00:22:14.197258+00:00",
+          "acquired_at": "2026-09-30T00:22:14.197258+00:00",
+          "fence_token": "db51d522-80c8-4104-aa0b-85d18ef5a4db",
+          "claim_version": 1,
+          "occurrence_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "860fe45b-db30-4eae-a579-ed635aacf7c1",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.190246+00:00",
+          "expires_at": "2026-09-30T00:27:14.190247+00:00",
+          "renewed_at": "2026-09-30T00:22:14.190247+00:00",
+          "acquired_at": "2026-09-30T00:22:14.190247+00:00",
+          "fence_token": "c4aff47d-349a-458a-a6a7-dd3481f47b26",
+          "claim_version": 1,
+          "occurrence_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "361927d3-4207-4d5f-a03f-30dc07b10af8",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.188265+00:00",
+          "expires_at": "2026-09-30T00:27:14.188266+00:00",
+          "renewed_at": "2026-09-30T00:22:14.188267+00:00",
+          "acquired_at": "2026-09-30T00:22:14.188266+00:00",
+          "fence_token": "dbe7239d-ff0a-43fa-b17e-338b84ec16e2",
+          "claim_version": 1,
+          "occurrence_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "9dd48034-1acf-458a-b739-aac67bd9e53c",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.194351+00:00",
+          "expires_at": "2026-09-30T00:27:14.194353+00:00",
+          "renewed_at": "2026-09-30T00:22:14.194353+00:00",
+          "acquired_at": "2026-09-30T00:22:14.194353+00:00",
+          "fence_token": "970b98d3-b2d1-441f-9e70-46118689ff11",
+          "claim_version": 1,
+          "occurrence_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "a8d06c3a-af00-456c-b91d-3e529aef0581",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.18755+00:00",
+          "expires_at": "2026-09-30T00:27:14.187551+00:00",
+          "renewed_at": "2026-09-30T00:22:14.187551+00:00",
+          "acquired_at": "2026-09-30T00:22:14.187551+00:00",
+          "fence_token": "55420a69-03e9-45a3-a31f-6c7457b46b3c",
+          "claim_version": 1,
+          "occurrence_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "4fa89648-7fe5-4429-8b91-6d29d8762872",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.184791+00:00",
+          "expires_at": "2026-09-30T00:27:14.184793+00:00",
+          "renewed_at": "2026-09-30T00:22:14.184793+00:00",
+          "acquired_at": "2026-09-30T00:22:14.184792+00:00",
+          "fence_token": "150ecdad-9125-4cfb-bb7e-fcac49cd9e0c",
+          "claim_version": 1,
+          "occurrence_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "8aad458a-7e79-4edf-aa9a-8a463816ea37",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.191557+00:00",
+          "expires_at": "2026-09-30T00:27:14.191558+00:00",
+          "renewed_at": "2026-09-30T00:22:14.191558+00:00",
+          "acquired_at": "2026-09-30T00:22:14.191558+00:00",
+          "fence_token": "53c4a327-0508-488b-ac5b-f7546733578b",
+          "claim_version": 1,
+          "occurrence_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "16d58838-76dc-446d-a26d-165161bcb4ed",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.183116+00:00",
+          "expires_at": "2026-09-30T00:27:14.183118+00:00",
+          "renewed_at": "2026-09-30T00:22:14.183118+00:00",
+          "acquired_at": "2026-09-30T00:22:14.183118+00:00",
+          "fence_token": "ae4a96c1-ddbd-420d-898f-8818a1111b5e",
+          "claim_version": 1,
+          "occurrence_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "92e0082d-7818-43ec-b3aa-0c004f2cb511",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.194418+00:00",
+          "expires_at": "2026-09-30T00:27:14.194419+00:00",
+          "renewed_at": "2026-09-30T00:22:14.194419+00:00",
+          "acquired_at": "2026-09-30T00:22:14.194419+00:00",
+          "fence_token": "b5f33c9f-a528-4c9f-8ce1-b762d704f703",
+          "claim_version": 1,
+          "occurrence_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "5e9cd5e9-ef0b-47b6-85ee-e898133dd97a",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.185843+00:00",
+          "expires_at": "2026-09-30T00:27:14.185845+00:00",
+          "renewed_at": "2026-09-30T00:22:14.185845+00:00",
+          "acquired_at": "2026-09-30T00:22:14.185845+00:00",
+          "fence_token": "9bff7e0f-381b-442f-87ef-48c1393f38ba",
+          "claim_version": 1,
+          "occurrence_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "6917b747-1374-44fa-96a9-a26fa007883e",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.181245+00:00",
+          "expires_at": "2026-09-30T00:27:14.181247+00:00",
+          "renewed_at": "2026-09-30T00:22:14.181247+00:00",
+          "acquired_at": "2026-09-30T00:22:14.181247+00:00",
+          "fence_token": "1da6f75a-3508-48a6-a507-37298154d785",
+          "claim_version": 1,
+          "occurrence_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "6e54a53a-c45c-459d-94cc-7609268dd2f5",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.196886+00:00",
+          "expires_at": "2026-09-30T00:27:14.196886+00:00",
+          "renewed_at": "2026-09-30T00:22:14.196887+00:00",
+          "acquired_at": "2026-09-30T00:22:14.196886+00:00",
+          "fence_token": "892ffef8-7f96-4e5a-92c1-9e6deca25c9e",
+          "claim_version": 1,
+          "occurrence_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "fecb6c9d-5c02-4a01-a030-fde9d2a85bfc",
+          "state": "active",
+          "created_at": "2026-09-30T00:22:14.196091+00:00",
+          "expires_at": "2026-09-30T00:27:14.196092+00:00",
+          "renewed_at": "2026-09-30T00:22:14.196092+00:00",
+          "acquired_at": "2026-09-30T00:22:14.196092+00:00",
+          "fence_token": "40327668-86bc-431b-b1bf-6fc02662328d",
+          "claim_version": 1,
+          "occurrence_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        }
+      ],
+      "durable_runs": [
+        {
+          "id": "0929218c-1648-4e31-a61c-ca7214a1d4f0",
+          "state": "started",
+          "claim_id": "6917b747-1374-44fa-96a9-a26fa007883e",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.184629+00:00",
+          "fence_token": "1da6f75a-3508-48a6-a507-37298154d785",
+          "claim_version": 1,
+          "occurrence_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.982533+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.178587+00:00",
+            "reason_codes": [],
+            "occurrence_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "de40bcfd-4f04-4ee8-a276-53ebb08ea91e",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "70c9c7c8-71bd-4ea9-a8f3-78b0b1f8a21e",
+          "state": "started",
+          "claim_id": "16d58838-76dc-446d-a26d-165161bcb4ed",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.186641+00:00",
+          "fence_token": "ae4a96c1-ddbd-420d-898f-8818a1111b5e",
+          "claim_version": 1,
+          "occurrence_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.990888+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.180728+00:00",
+            "reason_codes": [],
+            "occurrence_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "b05026a9-0c68-4766-b770-ff9a23a4191f",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "c39feea8-8158-412b-95dd-68b3f81ef76b",
+          "state": "started",
+          "claim_id": "4fa89648-7fe5-4429-8b91-6d29d8762872",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.188145+00:00",
+          "fence_token": "150ecdad-9125-4cfb-bb7e-fcac49cd9e0c",
+          "claim_version": 1,
+          "occurrence_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.991592+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.182335+00:00",
+            "reason_codes": [],
+            "occurrence_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "ac98756e-36d4-459a-84a4-36b36310ee7d",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "4f697332-45de-4f0b-b21c-08cef2aa6271",
+          "state": "started",
+          "claim_id": "5e9cd5e9-ef0b-47b6-85ee-e898133dd97a",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.189573+00:00",
+          "fence_token": "9bff7e0f-381b-442f-87ef-48c1393f38ba",
+          "claim_version": 1,
+          "occurrence_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.992184+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.183253+00:00",
+            "reason_codes": [],
+            "occurrence_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "d583a05a-66ff-4a06-98a5-39aa46cf819f",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "39263348-48e3-4c1a-87e0-31fb517c50e4",
+          "state": "started",
+          "claim_id": "a8d06c3a-af00-456c-b91d-3e529aef0581",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.190323+00:00",
+          "fence_token": "55420a69-03e9-45a3-a31f-6c7457b46b3c",
+          "claim_version": 1,
+          "occurrence_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.993332+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.185116+00:00",
+            "reason_codes": [],
+            "occurrence_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "9cab9712-877b-4dfe-bb64-9df074c6eb43",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "dcfd51ff-0806-44f6-aacf-957f6a306cf8",
+          "state": "started",
+          "claim_id": "c2f0c43b-4137-4ab0-a307-866df5ae1630",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.190007+00:00",
+          "fence_token": "3a33cbee-3d12-4950-b608-79b03c45dd3f",
+          "claim_version": 1,
+          "occurrence_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.992731+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.184438+00:00",
+            "reason_codes": [],
+            "occurrence_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "1fb085d8-e392-46db-ace5-19625314ffbd",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "91ceb433-35c1-4829-934b-d9aeb1b641e5",
+          "state": "started",
+          "claim_id": "361927d3-4207-4d5f-a03f-30dc07b10af8",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.192453+00:00",
+          "fence_token": "dbe7239d-ff0a-43fa-b17e-338b84ec16e2",
+          "claim_version": 1,
+          "occurrence_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.993943+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.185859+00:00",
+            "reason_codes": [],
+            "occurrence_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "4a6a19a7-a8ca-45c3-b0bd-965155621f16",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "90ec06f3-756c-4364-9579-d5ad4b5ca1df",
+          "state": "started",
+          "claim_id": "860fe45b-db30-4eae-a579-ed635aacf7c1",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.19776+00:00",
+          "fence_token": "c4aff47d-349a-458a-a6a7-dd3481f47b26",
+          "claim_version": 1,
+          "occurrence_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.994375+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.187937+00:00",
+            "reason_codes": [],
+            "occurrence_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "37a92ea9-1699-4cb6-b227-5c65c97dea70",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "a1e06f00-ff4e-4d39-a787-a0bd473214c0",
+          "state": "started",
+          "claim_id": "9dd48034-1acf-458a-b739-aac67bd9e53c",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.198596+00:00",
+          "fence_token": "970b98d3-b2d1-441f-9e70-46118689ff11",
+          "claim_version": 1,
+          "occurrence_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.995201+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.190969+00:00",
+            "reason_codes": [],
+            "occurrence_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "948e60ff-f135-4fe3-96f8-2c216c0faf99",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "49f5b369-84e2-47cf-b8bc-d6704553025c",
+          "state": "started",
+          "claim_id": "8aad458a-7e79-4edf-aa9a-8a463816ea37",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.198944+00:00",
+          "fence_token": "53c4a327-0508-488b-ac5b-f7546733578b",
+          "claim_version": 1,
+          "occurrence_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.994788+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.188468+00:00",
+            "reason_codes": [],
+            "occurrence_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "adf25fd1-2bdf-47db-8aaa-05200d4f6da9",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "edf6fb8d-dc73-4115-ab3c-bbde837b61a7",
+          "state": "started",
+          "claim_id": "891a61ce-2d82-458e-a777-69f7b08eb613",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.198213+00:00",
+          "fence_token": "ecc02818-95f7-49c0-9514-c33d12115190",
+          "claim_version": 1,
+          "occurrence_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.995693+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.190975+00:00",
+            "reason_codes": [],
+            "occurrence_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "1bbe554c-2dae-41f8-8e62-dbbdce4a7434",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "5beb6587-1f9d-4442-8da5-9bb376103198",
+          "state": "started",
+          "claim_id": "92e0082d-7818-43ec-b3aa-0c004f2cb511",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.199289+00:00",
+          "fence_token": "b5f33c9f-a528-4c9f-8ce1-b762d704f703",
+          "claim_version": 1,
+          "occurrence_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.99609+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.192294+00:00",
+            "reason_codes": [],
+            "occurrence_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "caba4464-cf95-4f7f-8961-42bf7c477571",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "ee5f69df-e981-4a16-a88e-2dd9642171d5",
+          "state": "started",
+          "claim_id": "fecb6c9d-5c02-4a01-a030-fde9d2a85bfc",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.199636+00:00",
+          "fence_token": "40327668-86bc-431b-b1bf-6fc02662328d",
+          "claim_version": 1,
+          "occurrence_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.996491+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.193585+00:00",
+            "reason_codes": [],
+            "occurrence_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "fe47d05a-d8ed-4441-9f28-9359051f30dc",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "0bf0badf-d4a0-4c5d-aeb3-b7b86be46684",
+          "state": "started",
+          "claim_id": "6e54a53a-c45c-459d-94cc-7609268dd2f5",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.200387+00:00",
+          "fence_token": "892ffef8-7f96-4e5a-92c1-9e6deca25c9e",
+          "claim_version": 1,
+          "occurrence_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.996873+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.194377+00:00",
+            "reason_codes": [],
+            "occurrence_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "e6cf62bd-e2a0-4086-8e15-06d6ee21f960",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        },
+        {
+          "id": "200b0228-dd8a-4b72-ba4e-7beb1aa3daae",
+          "state": "started",
+          "claim_id": "8b8bfae0-a314-41d6-93a0-f96b62dbb819",
+          "ended_at": null,
+          "created_at": "2026-09-30T00:22:14.200003+00:00",
+          "fence_token": "db51d522-80c8-4104-aa0b-85d18ef5a4db",
+          "claim_version": 1,
+          "occurrence_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+          "correlation_id": "274a15cf-fea7-49a2-8fa5-92f2db8dc44c",
+          "record_version": 1,
+          "schema_version": "1.0.0",
+          "selection_evidence": {
+            "eligible": true,
+            "created_at": "2026-09-30T00:22:13.997258+00:00",
+            "evaluated_at": "2026-09-30T00:22:14.194812+00:00",
+            "reason_codes": [],
+            "occurrence_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+            "policy_version": "lexicographic-v1",
+            "business_impact": 0,
+            "immediate_ready": false,
+            "source_versions": [
+              {
+                "record_id": "29951a2e-2bfe-48dd-8b93-865a2fb18a75",
+                "record_type": "work_occurrence",
+                "record_version": 1
+              },
+              {
+                "record_id": "a20eb442-fb29-44e0-8ed4-ca983b7cacea",
+                "record_type": "work_definition",
+                "record_version": 1
+              },
+              {
+                "record_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+                "record_type": "work_stage_definition",
+                "record_version": 1
+              }
+            ],
+            "priority_override": 0,
+            "sla_breach_seconds": 0,
+            "deadline_pressure_seconds": 0,
+            "recurrence_relative_age_basis_points": 0
+          },
+          "stage_definition_id": "8772b236-5a82-4386-8f40-f8ca702c2704",
+          "executor_instance_id": "16634cf8-a99f-4b65-8837-074fcc9b69a6"
+        }
+      ]
+    }
+  },
+  "disposable_server_stopped": true
+}
