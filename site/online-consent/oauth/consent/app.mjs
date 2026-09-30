@@ -11,7 +11,7 @@ let authorization=current.searchParams.get('authorization_id');
 if(authorization)sessionStorage.setItem('ecos.authorization',authorization);
 else authorization=sessionStorage.getItem('ecos.authorization');
 const message=(value)=>{status.textContent=value;};
-const validAuthorization=()=>typeof authorization==='string'&&/^[0-9a-f-]{36}$/i.test(authorization);
+const validAuthorization=()=>typeof authorization==='string'&&/^[A-Za-z0-9_-]{16,256}$/.test(authorization);
 async function load(){
   if(current.searchParams.has('error')){history.replaceState({},'',location.pathname);message('Sign-in was not completed. Restart the ChatGPT connection flow.');return;}
   if(current.searchParams.has('code')){
