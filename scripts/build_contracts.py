@@ -134,6 +134,11 @@ def build():
         "satisfaction_rule": enum("completed", "approved_evidence")})
     entity("task", "approval_request", {"task_id": nullable(UUID), "subject_type": TOKEN,
         "subject_id": UUID, "subject_hash": HASH, "state": state("approval"), "expires_at": TIME})
+    # Explicit non-expiring approval; old expiring wire values stay valid.
+    approval = OUTPUTS["contracts/task/approval_request.schema.json"]
+    approval["properties"]["expires_at"] = nullable(TIME)
+    approval["properties"]["expiration_mode"] = enum("expires", "never")
+    approval["allOf"] = [{"if": {"properties": {"expiration_mode": {"const": "never"}}, "required": ["expiration_mode"]}, "then": {"properties": {"expires_at": {"type": "null"}}}, "else": {"properties": {"expires_at": TIME}}}]
     entity("task", "approval_decision", {"approval_request_id": UUID, "decision": enum("approved", "rejected", "changes_requested", "expired", "revoked"),
         "actor_id": UUID, "reason_code": TOKEN, "evidence": arr(evidence),
         "supersedes_decision_id": nullable(UUID)}, immutable=True)

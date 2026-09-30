@@ -82,7 +82,8 @@
         "subject_id",
         "subject_hash",
         "state",
-        "expires_at"
+        "expires_at",
+        "expiration_mode"
       ],
       "mutable": true
     },

@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "passes": [
+    {
+      "pass": 1,
+      "organization": "PASS",
+      "relationship": "PASS",
+      "approval": "PASS",
+      "artifact": "PASS",
+      "sms": "PASS",
+      "independent_readback": "PASS"
+    },
+    {
+      "pass": 2,
+      "organization": "PASS",
+      "relationship": "PASS",
+      "approval": "PASS",
+      "artifact": "PASS",
+      "sms": "PASS",
+      "independent_readback": "PASS"
+    }
+  ],
+  "production_writes": 0,
+  "migration": 35,
+  "migration_sha256": "e3c06b14f56b90b3e2cb2287de4c3f923887e1804f0521bd7e2348c87deeebe7",
+  "scope": "isolated synthetic PostgreSQL end-to-end; committed writes and independent governed readback",
+  "production_deployment_readback": "PASS",
+  "protected_population_readback": "PASS",
+  "compatibility": "PASS",
+  "sms_production_activation": "BLOCKED_PENDING_DOMAIN_ASSIGNMENT",
+  "held_records_migrated": 0
+}
