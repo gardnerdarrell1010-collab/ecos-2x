@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://esm.sh; connect-src https://loonpojawpfagzobxoko.supabase.co https://esm.sh; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<title>ECOS Online Ada authorization</title><link rel="stylesheet" href="./style.css"></head>
+<body><main><p class="eyebrow">ECOS · ONLINE ADA 2.X</p><h1>Authorize your connection</h1>
+<p>Sign in through GitHub to review the connection to the governed ECOS operations.</p>
+<button id="login" disabled>Continue with GitHub</button>
+<section id="consent" hidden><h2 id="client"></h2><p id="scopes"></p><p id="redirect"></p>
+<p>This connection does not provide database administrator or arbitrary SQL access.</p>
+<button id="approve">Approve connection</button><button id="deny" class="secondary">Deny</button></section>
+<p id="status" role="status">Checking authorization request…</p>
+<footer>Enter your GitHub credentials only on github.com. This page contains no password form or database credentials.</footer></main>
+<script type="module" src="./app.mjs"></script></body></html>
