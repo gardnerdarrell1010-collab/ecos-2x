@@ -1,0 +1,11 @@
+# Gmail lane: partial implementation, not functional acceptance
+
+A001 and A035 Online stage definitions and A010 Resident draft/send stages are instantiated but disabled. Their declared requirements use existing ecos.2x.execute, provider.gmail, semantic.interpret, semantic.draft and db.governed_operations capabilities as applicable. Draft/send stages require approval. No new occurrences, executor grants, schedules or provider effects were created. A017 is untouched and remains retired.
+
+The new draft adapter preserves exact mailbox/message/thread identity, reads Gmail raw evidence, and implements draft create/update followed by provider readback. It requires an injected governed effect gate before mutation; that SQL/runtime gate is NOT implemented in this checkpoint. The adapter has no send method, disables automatic HTTP retries and holds uncertain outcomes. MIME verification follows the Gmail drafts API: https://developers.google.com/workspace/gmail/api/guides/drafts .
+
+The backlog eligibility predicate rejects missing provider identity/provenance, duplicates, completed effects and effects without independently verified no-effect evidence. It is NOT yet a complete migration/re-enqueue implementation. No legacy item was made eligible or replayed; current ambiguous effects have not been reconciled.
+
+Two focused component checks passed. These are not the two required Gmail E2E occurrences. Neither E2E pass has run. Receipt/communication/processing persistence, actual Online semantic integration, approval/provider-command integration, Resident installation and backlog re-enqueue remain unfinished. A001/A035/A010 are not accepted; no external send was performed. Accepted executors, monitor, memory and other migration lanes were not changed or retested.
+
+Concrete provider blocker: the existing Resident Gmail OAuth refresh returned invalid_grant. Connected ChatGPT Gmail profile access succeeds, but it is a separate transport and does not repair Resident OAuth. Owner-run scripts/reauthorize_gmail.py reuses the existing installed client and exact gmail.modify scope, checks the approved mailbox, writes only restricted 2.x credential storage, and leaves the legacy credential unchanged. It prints no credentials. Once authorization succeeds, continue the remaining implementation before running exactly two safe E2E occurrences.
