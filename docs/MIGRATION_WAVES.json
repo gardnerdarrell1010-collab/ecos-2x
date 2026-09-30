@@ -1,0 +1,3128 @@
+{
+  "schema_version": "1.0.0",
+  "status": "PLANNING_ONLY_NO_MIGRATION_AUTHORIZED",
+  "planning_date": "2026-09-29",
+  "SourceHEAD": "2426e73bd63970a5f7f92d36b3fccc23375034a8",
+  "ExistingDispositionArtifact": "contracts/migration/worker-dispositions.json",
+  "TotalWorkers": 55,
+  "MigrationWaveCount": 13,
+  "RetirementTailWindow": 14,
+  "CountMeaning": "13 functional authority-transfer waves, then T14 support retirement. T14 is not an early infrastructure migration wave.",
+  "Sources": [
+    {
+      "path": "contracts/migration/worker-dispositions.json",
+      "sha256": "48f4cfb1eba6a8f599057aaead5d0599f2a185d8da80c181876b42388ec56c4f"
+    },
+    {
+      "path": "docs/baseline/ECOS_2X_WORKER_DISPOSITION_APPENDIX.md",
+      "sha256": "841c800b522390917f74abfc189a4d46edf9e22d8455ada87778a8495fcccf89"
+    },
+    {
+      "path": "docs/baseline/ECOS_2X_PREIMPLEMENTATION_ARCHITECTURE_REVIEW.md",
+      "sha256": "26dcf88caa41c199d521e44a409b2f250e1a59a4db6e825059ce55dc762354dc"
+    },
+    {
+      "path": "docs/adr/ADR-009.md",
+      "sha256": "64d3c40d4dd17997164416bcee761e8b646f898f23cb4725da770ea7c7e386d6"
+    },
+    {
+      "path": "docs/RESIDENT2X_DISPOSITION_DELTA.md",
+      "sha256": "aa427c11ebda0d6a90b8769bd674c8046920fe2cc8c5028ad26ace12256f2116"
+    },
+    {
+      "path": "docs/PHASE2_VERTICAL_SLICES.md",
+      "sha256": "754958553e3da3484fa91d9462aa1780cbcc63582efa79d74435ef6614df564a"
+    },
+    {
+      "path": "db/migrations/000020_execution_control_plane.sql",
+      "sha256": "9c9388d3ef089cc133d258410ea968089b3deb78aca237fd1ed1a4cef81e1a5e"
+    }
+  ],
+  "DependencyEvidence": {
+    "repository_basis": "Existing appendix inputs/outputs, subordinate preservation rules and architecture review; no new worker classification.",
+    "supplemental_basis": "Previously retrieved Workflow Dependencies A2:J990 in this same execution context; normalized relationships only, no raw rows/provider IDs exported. Planning evidence, not current-state authority.",
+    "edges": [
+      {
+        "id": "E1",
+        "upstream": [
+          "A001",
+          "A002"
+        ],
+        "consumer": [
+          "A003"
+        ],
+        "type": "ordering_barrier",
+        "meaning": "Wait only while the relevant upstream occurrence is validly running; not a perpetual completed-once prerequisite."
+      },
+      {
+        "id": "E2",
+        "upstream": [
+          "A023",
+          "A053"
+        ],
+        "consumer": [
+          "A053",
+          "A054"
+        ],
+        "type": "ordered_verified_handoff",
+        "meaning": "A023 package -> A053 immutable proposal -> A054 deterministic commit/ACK."
+      },
+      {
+        "id": "E3",
+        "upstream": [
+          "A029",
+          "A029-B"
+        ],
+        "consumer": [
+          "A029-B",
+          "A020",
+          "A021"
+        ],
+        "type": "handoff_then_preferred_input",
+        "meaning": "A029 verified closed actuals -> A029-B; A020/A021 summary input is soft and preserves governed fallback."
+      },
+      {
+        "id": "E4",
+        "upstream": [
+          "A026"
+        ],
+        "consumer": [
+          "A004"
+        ],
+        "type": "freshness",
+        "meaning": "Canonical build freshness matters; A032 deployment lag does not block A004."
+      },
+      {
+        "id": "E5",
+        "upstream": [
+          "A037",
+          "A038",
+          "A039",
+          "A040",
+          "A041",
+          "A042",
+          "A043",
+          "A045",
+          "A046",
+          "A047",
+          "A048",
+          "A049",
+          "A050",
+          "A051",
+          "A026"
+        ],
+        "consumer": [
+          "A022",
+          "A044",
+          "A026",
+          "A052"
+        ],
+        "type": "separate_artifact_chains",
+        "meaning": "Appendix specifies status producers -> A022 -> A044, dashboard producers -> A026 -> A052; A032 consumes their verified canonical files. This is not a Cartesian set of edges."
+      },
+      {
+        "id": "E6",
+        "upstream": [
+          "A005",
+          "A018"
+        ],
+        "consumer": [
+          "A018",
+          "A005"
+        ],
+        "type": "mutual_live_run_exclusion",
+        "meaning": "Backup and continuity exclude each other while running; preserve across migration, do not invent an acyclic dependency."
+      },
+      {
+        "id": "E7",
+        "upstream": [
+          "A027",
+          "A031",
+          "A036"
+        ],
+        "consumer": [
+          "A031",
+          "A028"
+        ],
+        "type": "verified_handoff",
+        "meaning": "A027 -> A031 -> A028; A036 -> A028. Inactive A028 prerequisite on A023 is excluded."
+      }
+    ],
+    "completeness": "Direct documented edges plus explicitly conservative all-worker support closure. No complete machine-readable runtime consumer graph exists in the repository; do not claim exhaustive observed edges. Unmapped live/finite/manual consumers are an explicit retirement veto."
+  },
+  "CommonTransferGates": {
+    "G1": "Production authority boundary: current ecos.operate rejects anything except development/non_production/provider-effects-disabled (migration 20 line 346). Separately authorize and accept a production-safe operation boundary, enrollment and deployment; never remove the guard as a shortcut or treat a flag flip as acceptance.",
+    "G2": "Domain ownership: map every affected record/artifact/provider target and entry point to one executor authority. Enforce at selection, claim and pre-effect/commit, including generic A024, direct commands and stale queued work. Shared Tasks must have a single versioned write owner; cross-domain requests go to that owner, never to two writable replicas. Missing object-scope partition or an unenumerated mutator blocks that transfer.",
+    "G3": "Input/output coexistence: preserve exact artifact/schema/hash/freshness contracts with read-only consumers. Where commands cross architectures, use an accepted idempotent handoff to the sole domain owner with committed result read-back; no dual-write control store. These adapters are required build work, not existing implementation claims. If handoff cannot be proved, defer or merge the affected waves.",
+    "G4": "Operational runtime: supervise Resident and deploy Online only when required; capability/operation/object scope attestation, expiring credentials, heartbeat, recurrence creation, recovery cadence and independent outage alert must be accepted. Hello World and loopback HTTP prove foundations only.",
+    "G5": "Transfer: exact preimage/config/code hashes and backups; stop admission for complete legacy functional set and drain claims/attempts. Reconcile UNKNOWN effects and disable all legacy side-effect paths. Establish the sole new owner, enable complete new stage set, independently verify committed/provider output. No overlap; do not force-kill a valid owner.",
+    "G6": "Acceptance/rollback: satisfy this wave and existing disposition tests, representative schedule window and all downstream compatibility tests. Failed acceptance stops/drains new effects, reconciles outcomes and reverses ownership as one domain. Rollback is version-aware, never a blind provider replay or database downgrade.",
+    "G7": "Dependency/retirement refresh: immediately before each transfer, verify current bounded consumer/entry-point inventory and provider/config versions. This plan is source-bounded, not proof of live Enabled state. Any additional consumer blocks retirement or moves its last-consumer wave later. All shared 1.x infrastructure stays until the conservative closure and non-worker workloads are drained."
+  },
+  "AuthorityDuringBuild": "All domains stay 1.x. 2.x remains synthetic/shadow/read-only where safe. This document creates no launchers, SQL operations, data copies, provider effects or production authority.",
+  "WaveRanking": [
+    {
+      "rank": 1,
+      "domain": "Toast acquisition (A029/A047)",
+      "reason": "Deterministic provider reads, reusable normalization, small source-output ownership; no Online dependency. Preserve A029-B rather than absorb it early."
+    },
+    {
+      "rank": 2,
+      "domain": "Canonical publication (A032)",
+      "reason": "Narrow one-owner deterministic boundary and existing hash/readback, but public alias changes increase side-effect risk."
+    },
+    {
+      "rank": 3,
+      "domain": "Social planning (A033)",
+      "reason": "Small functional scope and no publication approval implied, but actual Online executor and shared Task ownership are still missing."
+    }
+  ],
+  "Waves": [
+    {
+      "Wave": 1,
+      "CapabilityDomain": "Toast closed-actual acquisition and dashboard source facts",
+      "Included1xWorkers": [
+        "A029",
+        "A047"
+      ],
+      "DispositionOfEach": {
+        "A029": {
+          "disposition": "KEEP",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/28"
+        },
+        "A047": {
+          "disposition": "CONSOLIDATE WITH A029 DATA ACQUISITION",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/47"
+        }
+      },
+      "OnlineAda2xComponents": "None. Acquisition and normalization remain deterministic; staffing judgment remains with 1.x.",
+      "ResidentAda2xComponents": "One Toast acquisition adapter, existing closed-date normalization, verified cache/artifact output and dashboard source snapshot adapter. A047 consumes A029 facts; no second Toast fetch.",
+      "ExistingCapabilitiesReused": [
+        "Resident SQL client, fencing, journal and bounded local execution foundation",
+        "Existing A029 acquisition/date-boundary/normalization logic",
+        "Existing A047 snapshot contract; unchanged provider HTTP/binding primitive"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Separate Sheets control from the existing A029 business logic; bind approved inputs and secrets to scoped SQL packages",
+        "Implement governed POS batch/checkpoint persistence and deterministic A047 projection; fact.record is available but is not proof that POS import semantics exist",
+        "Retain exact verified closed-actual artifact interface for 1.x A029-B and A026; one owner writes each output, read-only consumers remain 1.x",
+        "Operational supervision, due-occurrence driver, least-privilege enrollment and common authority gates G1-G7"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "fact.record and task.evidence.attach where their existing schemas fit; POS-specific commit mapping still to adapt"
+      ],
+      "ProviderSideEffects": "Toast reads only. Canonical normalized cache and dashboard-source artifact writes are real output effects and transfer as one unit. No SMS, account mutation, forecasting or public deployment.",
+      "CrossDomainDependencies": [
+        "A029 -> A029-B is a verified-output handoff (E3); A029-B stays 1.x through W4",
+        "A047 -> A026/A049 reads preserve the current source contract through W8; unavailable source remains explicit",
+        "Use approved source labels/checkpoints as bounded inputs; no control-table replication or second system of record"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A029",
+        "A047"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029-B",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A047",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "Frozen closed-date replay: exact totals, IDs, labor intervals, timezone and source hashes; exclude partial/open day",
+        "Unchanged batch is a no-op; crash before/after governed commit produces one batch/checkpoint and no duplicate artifact",
+        "Independent SQL and canonical artifact read-back; run unchanged 1.x A029-B against the output and verify its accepted feature baseline; do not replace A029-B yet",
+        "A047 consumes the same actuals, with freshness/unknown states and no duplicate provider fetch",
+        "Drain both 1.x execution paths and prove stale old-owner attempts rejected; restore checkpoint/output and reverse ownership in rehearsal"
+      ],
+      "RollbackUnit": "A029 + A047 acquisition ownership, checkpoint and exact output versions together. Stop/drain 2.x before restoring 1.x; reconcile committed import watermark first. A029-B never changes owner in this wave.",
+      "Risk": "Low provider-effect risk; medium data/compatibility risk. No live-transfer acceptance yet.",
+      "ExpectedComplexity": "Medium",
+      "ReadyToBuildNow": "YES for bounded synthetic adapter build using existing logic. NO for live cutover until G1-G7 and consumer compatibility pass.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/28/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/47/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029-B",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 2,
+      "CapabilityDomain": "Canonical artifact publication",
+      "Included1xWorkers": [
+        "A032"
+      ],
+      "DispositionOfEach": {
+        "A032": {
+          "disposition": "KEEP",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/32"
+        }
+      },
+      "OnlineAda2xComponents": "None.",
+      "ResidentAda2xComponents": "Existing Drive-read/Vercel publication capability behind SQL work and result adapters.",
+      "ExistingCapabilitiesReused": [
+        "Existing A032 hash-based publication and alias/read-back behavior",
+        "Resident HTTP, artifact/hash, claim/fence and idempotency foundation"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Publication target, release, attempt and artifact identity mapping",
+        "Scoped Drive/Vercel credentials and provider outcome reconciliation",
+        "Read existing 1.x A044/A052 canonical outputs without acquiring their production ownership; later accept 2.x outputs under the same contract"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "provider.result.record; governed publication-command creation/attempt mapping requires adaptation"
+      ],
+      "ProviderSideEffects": "Public deployment and alias changes. Same hash must not redeploy.",
+      "CrossDomainDependencies": [
+        "A044 and A052 remain 1.x producers until W9/W8; publication consumes verified immutable versions",
+        "A004 depends on canonical A026 build freshness, not A032 delivery success (E4)"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A032"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029-B",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "Same hash no-op; exact Drive source bytes and public alias/read-back match",
+        "Deploy timeout/unknown result reconciles before retry; failed deployment preserves previous release",
+        "One publisher across both architectures; both current publication targets and rollback rehearsed"
+      ],
+      "RollbackUnit": "Entire publisher and its targets. Drain deployments, reconcile actual aliases, then return sole publication authority to A032; artifact producers keep their current owners.",
+      "Risk": "Medium: externally visible releases, but narrow deterministic ownership.",
+      "ExpectedComplexity": "Medium",
+      "ReadyToBuildNow": "YES for synthetic/read-only adapter work; G1-G7 and release rollback block transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/32/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A047"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029-B",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 3,
+      "CapabilityDomain": "Social content planning",
+      "Included1xWorkers": [
+        "A033"
+      ],
+      "DispositionOfEach": {
+        "A033": {
+          "disposition": "KEEP",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/33"
+        }
+      },
+      "OnlineAda2xComponents": "Content planning from bounded calendar/event/state packages; produce versioned plans, scoped tasks and drafts.",
+      "ResidentAda2xComponents": "Artifact persistence only if required by the existing plan contract. Publication is a separately approved downstream action.",
+      "ExistingCapabilitiesReused": [
+        "Existing A033 planning policy",
+        "Phase 2 semantic proposal and deterministic commit contracts; work packages"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Deploy and attest Online Ada 2.x",
+        "Content plan/draft schema and object scopes",
+        "Read-only authoritative calendar/business inputs; explicit ownership of plan-created Tasks and drafts"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "task.evidence.attach"
+      ],
+      "ProviderSideEffects": "Plans/tasks/drafts are business mutations. No automatic social post or notification transport.",
+      "CrossDomainDependencies": [
+        "Calendar/events remain externally or 1.x owned inputs",
+        "Shared Task identifiers must have one write owner under G2; unresolved task-scope overlap blocks transfer"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A033"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029-B",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "One plan chain per occurrence; immutable inputs and evidence",
+        "Duplicate proposal/restart cannot create duplicate tasks or publish",
+        "Replacement semantic executor can resume from package; draft/publication approval separation proven"
+      ],
+      "RollbackUnit": "Plan version and all Tasks/drafts created by that occurrence; preserve committed evidence and reconcile versions before returning A033 authority.",
+      "Risk": "Low transport risk; medium semantic and shared-record risk.",
+      "ExpectedComplexity": "Medium",
+      "ReadyToBuildNow": "YES for schemas/shadow build; Online runtime and shared Task ownership are outstanding.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/33/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A047"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029-B",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 4,
+      "CapabilityDomain": "Staffing features, forecasts, near-term analysis and feedback",
+      "Included1xWorkers": [
+        "A029-B",
+        "A019",
+        "A020",
+        "A021"
+      ],
+      "DispositionOfEach": {
+        "A029-B": {
+          "disposition": "ABSORB INTO DATABASE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/29"
+        },
+        "A019": {
+          "disposition": "KEEP/IMPROVE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/18"
+        },
+        "A020": {
+          "disposition": "KEEP/IMPROVE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/19"
+        },
+        "A021": {
+          "disposition": "KEEP/IMPROVE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/20"
+        }
+      },
+      "OnlineAda2xComponents": "Distinct forecast, deep-dive and actual-feedback stages, retaining their independent schedules and evidence.",
+      "ResidentAda2xComponents": "Existing staffing artifact/output adapters; deterministic SQL feature refresh after verified actuals.",
+      "ExistingCapabilitiesReused": [
+        "W1 actuals and existing staffing calculation/renderer rules",
+        "Phase 2 dependency release, packages and immutable stage results"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "A029-B SQL feature calculations and affected-window refresh",
+        "Forecast snapshots, qualitative observations and performance reconciliation",
+        "Semantic staffing adapters and governed document outputs"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "fact.record",
+        "work dependency release; staffing feature projections still to implement"
+      ],
+      "ProviderSideEffects": "Forecast/feedback records and planning artifacts; no Toast provider writes. Any delivery request stays with the single transport owner until W13.",
+      "CrossDomainDependencies": [
+        "W1 actuals; A020/A021 preferred A029-B inputs are soft, not hard prerequisites (E3)",
+        "A021 uses the latest valid forecast; feedback must not overwrite its pre-horizon version",
+        "Staffing qualitative labels/observations require authoritative input mapping"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A029-B",
+        "A019",
+        "A020",
+        "A021"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029-B",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "Match accepted 2,587-feature baseline or governed approved sample; unchanged inputs no-op",
+        "Preserve missing-summary fallback and pending reconciliation rather than inventing a hard block",
+        "Full forecast-to-actual-to-feedback cycle; frozen forecasts, source counts and no hindsight overwrite",
+        "Pause all four 1.x feature/forecast/feedback paths as one transfer unit"
+      ],
+      "RollbackUnit": "Feature source-set/version plus forecast, deep-dive and feedback stages together; retain immutable prior forecasts and exact output pointers.",
+      "Risk": "Medium: operational staffing decisions, longitudinal acceptance required.",
+      "ExpectedComplexity": "High",
+      "ReadyToBuildNow": "YES after W1 contract is stable for build; full forecast cycle blocks transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/29/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/18/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/19/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/20/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A047"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 5,
+      "CapabilityDomain": "Mail and Drive intake, classification and filing",
+      "Included1xWorkers": [
+        "A001",
+        "A002",
+        "A007",
+        "A035"
+      ],
+      "DispositionOfEach": {
+        "A001": {
+          "disposition": "MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/0"
+        },
+        "A002": {
+          "disposition": "MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/1"
+        },
+        "A007": {
+          "disposition": "MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/6"
+        },
+        "A035": {
+          "disposition": "KEEP/MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/35"
+        }
+      },
+      "OnlineAda2xComponents": "Independent Gmail mailroom and deep-review stages; Drive classification/correlation and duplicate review.",
+      "ResidentAda2xComponents": "Gmail history/delta, Drive identity/change and approved filing adapters; provider reconciliation.",
+      "ExistingCapabilitiesReused": [
+        "Existing Gmail/Drive business rules and identity resolution",
+        "Receipt/proposal/commit foundations and reusable provider HTTP primitive"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Real provider receipt/checkpoint and mutation outcome mappings",
+        "Contact-context/artifact ownership, expected provider versions and duplicate-case scopes",
+        "A003 assertions and provider-quality sampling replacement; no loss of verification"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "provider.result.record; real filing operation mappings pending"
+      ],
+      "ProviderSideEffects": "Labels/read/archive, canonical artifact registration, rename/move; destructive consolidation remains explicitly approved. Gmail draft sending stays with delivery authority.",
+      "CrossDomainDependencies": [
+        "A003 audits A001/A002 with ordering barriers (E1); retain it through this transfer and retire only after replacement verification",
+        "A001 independence from A035 is preserved: a shared cutover window does not introduce a runtime prerequisite",
+        "Shared contact context and filing objects justify the conservative joint window; split only after object-scope non-overlap is proved"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A001",
+        "A002",
+        "A007",
+        "A035"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A003",
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "One disposition per message version/Drive ID; unreadable item and stale version isolated",
+        "Provider success/DB failure reconciles actual IDs; no blind repeat",
+        "Seed checkpoint/label mismatch and detect with independent provider sampling",
+        "Approved moves only; all four legacy writers drained, A003 ordering safety preserved"
+      ],
+      "RollbackUnit": "All overlapping Gmail/Drive filing writers, checkpoints and object ownership together; reconcile irreversible provider moves instead of replaying old commands.",
+      "Risk": "High: many shared objects and provider mutations.",
+      "ExpectedComplexity": "High",
+      "ReadyToBuildNow": "YES for scoped adapters/shadow; ownership, semantic runtime and provider reconciliation block transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/0/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/1/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/6/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/35/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A047"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 6,
+      "CapabilityDomain": "Task owner review receipt, interpretation and commit/ACK",
+      "Included1xWorkers": [
+        "A023",
+        "A053",
+        "A054"
+      ],
+      "DispositionOfEach": {
+        "A023": {
+          "disposition": "MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/22"
+        },
+        "A053": {
+          "disposition": "KEEP SEMANTIC STAGE / GENERALIZE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/53"
+        },
+        "A054": {
+          "disposition": "KEEP DETERMINISTIC STAGE / SIMPLIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/54"
+        }
+      },
+      "OnlineAda2xComponents": "Interpret immutable review package and submit versioned proposals; no direct task mutation.",
+      "ResidentAda2xComponents": "Existing review queue authentication/receipt packaging and deterministic commit/ACK adapters.",
+      "ExistingCapabilitiesReused": [
+        "Existing three-stage review chain",
+        "Phase 2 synthetic semantic-to-commit slice and proposal reuse"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Real queue transaction identity, attachment/hash and recipient scope",
+        "Authoritative Task version mapping and bounded commit schema",
+        "ACK-after-commit and provider unknown-outcome reconciliation"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "task.evidence.attach",
+        "provider.result.record"
+      ],
+      "ProviderSideEffects": "Real Task changes and irreversible queue ACK. Outbound obligation creation is separate from transport.",
+      "CrossDomainDependencies": [
+        "Exact A023 -> A053 -> A054 handoffs (E2)",
+        "The old A023 -> A028 hard dependency is INACTIVE; completion must not wait for SMS",
+        "Shared Tasks across unmigrated domains require G2; a second writable Task copy is forbidden"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A023",
+        "A053",
+        "A054"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "Duplicate receipt produces one package; exact source hashes/versions",
+        "Stale proposal sibling isolation; restart reuses committed interpretation",
+        "Independent committed Task/evidence read-back before ACK; provider success reconciliation and no loss on crash"
+      ],
+      "RollbackUnit": "All three stages and the receipt/ACK watermark as one unit. Already ACKed transactions are reconciled, never reintroduced into the queue.",
+      "Risk": "High: business writes and irreversible ACK.",
+      "ExpectedComplexity": "High",
+      "ReadyToBuildNow": "YES for synthetic adapter build; real task authority and ACK acceptance block transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/22/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/53/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/54/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A047"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 7,
+      "CapabilityDomain": "Governed documentation and review",
+      "Included1xWorkers": [
+        "A006"
+      ],
+      "DispositionOfEach": {
+        "A006": {
+          "disposition": "KEEP BUSINESS / MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/5"
+        }
+      },
+      "OnlineAda2xComponents": "Existing document drafting, revision and review interpretation.",
+      "ResidentAda2xComponents": "Docs/Drive versioned mutation and approval evidence; transport remains owned by the delivery domain.",
+      "ExistingCapabilitiesReused": [
+        "Existing controlled-document workflow",
+        "Artifact/version, approval and proposal contracts"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Document/source version mapping, approval correlation and restart-safe distribution intent",
+        "Semantic documentation adapter; transport handoff to current sole delivery owner"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "task.evidence.attach; document mutation adapter pending"
+      ],
+      "ProviderSideEffects": "Controlled Docs/Drive versions and approved distribution obligations.",
+      "CrossDomainDependencies": [
+        "W5 canonical filing/identity; approval and Task ownership G2",
+        "A010 remains email transport until W13; no direct send by the new documentation executor"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A006"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "Expected version and approval required; stale revision fails",
+        "Restart cannot redistribute; artifact and delivery evidence independently reconciled"
+      ],
+      "RollbackUnit": "Documentation occurrence, version and approval/distribution intent; retain published versions and reverse ownership only after pending effects reconcile.",
+      "Risk": "High: controlled documents and recipient distribution.",
+      "ExpectedComplexity": "Medium-high",
+      "ReadyToBuildNow": "YES for build after intake identity and delivery handoff contracts are stable.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/5/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A047"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 8,
+      "CapabilityDomain": "Life and Business dashboard sources, assembly and canonical materialization",
+      "Included1xWorkers": [
+        "A026",
+        "A045",
+        "A046",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052"
+      ],
+      "DispositionOfEach": {
+        "A026": {
+          "disposition": "KEEP BUSINESS / SIMPLIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/25"
+        },
+        "A045": {
+          "disposition": "CONSOLIDATE/MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/45"
+        },
+        "A046": {
+          "disposition": "KEEP PROVIDER FUNCTION / MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/46"
+        },
+        "A048": {
+          "disposition": "KEEP BUSINESS / MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/48"
+        },
+        "A049": {
+          "disposition": "KEEP SEMANTIC / MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/49"
+        },
+        "A050": {
+          "disposition": "KEEP/MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/50"
+        },
+        "A051": {
+          "disposition": "ABSORB INTO DATABASE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/51"
+        },
+        "A052": {
+          "disposition": "KEEP",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/52"
+        }
+      },
+      "OnlineAda2xComponents": "Financial/cash exception interpretation, financial forecast and privacy-scoped personal synthesis; optional executive narrative only.",
+      "ResidentAda2xComponents": "Financial snapshot adapter, deterministic source projections, package assembly and unchanged canonical renderer/Drive materializer.",
+      "ExistingCapabilitiesReused": [
+        "W1 A047 Toast facts; existing independent producer semantics and A052 renderer",
+        "SQL package/fence/artifact foundations; W2 publisher"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Executive/cash/source-health projections and financial account field mapping",
+        "Forecast and privacy-scoped snapshots; immutable source versions",
+        "A026 package and A052 adapter including Live/Sample handling; read-only Task/Project snapshots while W12 remains 1.x"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "fact.record; executive/source-health/financial projections pending"
+      ],
+      "ProviderSideEffects": "Finance reads; sensitive forecast/snapshot and canonical Live/Sample Drive writes. No banking transaction. Public release belongs only to W2 publisher.",
+      "CrossDomainDependencies": [
+        "A045-A051 -> A026 -> A052; A047 already owns only source acquisition (E5)",
+        "A049 consumes finance/Toast/cash; A050 consumes financial B; A051 observes A-F",
+        "A004 still 1.x reads verified canonical build with explicit freshness through W10"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A026",
+        "A045",
+        "A046",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A045",
+        "A051"
+      ],
+      "AcceptanceTests": [
+        "41/41 bindings, privacy/sample isolation, structural twin and exact-byte independent read-back",
+        "Missing Toast or account is unknown/degraded and does not erase independent sections",
+        "Immutable forecast inputs and provider IDs; last verified artifact preserved on failure",
+        "One canonical materializer and source writer per scope"
+      ],
+      "RollbackUnit": "All listed sources, assembler and both canonical outputs together, preserving W1 acquisition and W2 publication ownership. Restore exact prior artifact/source pointers before resuming 1.x.",
+      "Risk": "High: financial interpretation, privacy and canonical artifacts.",
+      "ExpectedComplexity": "High",
+      "ReadyToBuildNow": "YES for shadow build after W1/W2; privacy, finance and renderer acceptance block transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/25/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/45/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/46/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/48/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/49/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/50/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/51/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/52/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A047"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 9,
+      "CapabilityDomain": "System status projection, package and canonical rendering",
+      "Included1xWorkers": [
+        "A022",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "DispositionOfEach": {
+        "A022": {
+          "disposition": "CONSOLIDATE/REDESIGN",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/21"
+        },
+        "A037": {
+          "disposition": "ABSORB INTO DATABASE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/37"
+        },
+        "A038": {
+          "disposition": "ABSORB INTO DATABASE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/38"
+        },
+        "A039": {
+          "disposition": "ABSORB INTO DATABASE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/39"
+        },
+        "A040": {
+          "disposition": "ABSORB INTO DATABASE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/40"
+        },
+        "A041": {
+          "disposition": "ABSORB INTO DATABASE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/41"
+        },
+        "A042": {
+          "disposition": "CONSOLIDATE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/42"
+        },
+        "A043": {
+          "disposition": "ABSORB/MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/43"
+        },
+        "A044": {
+          "disposition": "KEEP",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/44"
+        }
+      },
+      "OnlineAda2xComponents": "None for deterministic core status.",
+      "ResidentAda2xComponents": "Status snapshot/package and existing HTML/Drive materializer; threshold obligations handed to the current delivery owner.",
+      "ExistingCapabilitiesReused": [
+        "Implemented executor/work health views",
+        "Existing A044 template/materialization logic and W2 publisher"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Missing header, activity and rolling-24h projections",
+        "Explicitly labelled read-only 1.x health input during coexistence; SQL health alone cannot assert whole-system health",
+        "Deterministic package/version/notification policy and independent watchdog observation"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "v_node_health",
+        "v_ready_work",
+        "v_blocked_work",
+        "v_current_claims",
+        "v_recent_failures",
+        "v_dead_letters",
+        "v_work_aging",
+        "control_plane_health; remaining business status projections pending"
+      ],
+      "ProviderSideEffects": "Canonical status file and deduped health obligations; W2 owns publication, W13 later owns transport.",
+      "CrossDomainDependencies": [
+        "A037-A043 -> A022 -> A044 (E5)",
+        "1.x support and residual domains continue after this wave: preserve read-only visibility and label source/freshness",
+        "A042 alert delivery still relies on A010/A028 until W13"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A022",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A022",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043"
+      ],
+      "AcceptanceTests": [
+        "Exact ready/claim/retry/dead-letter and boundary/timezone counts",
+        "Rebuild projections from event ledger; stale heartbeat visible and independent alert delivery proven",
+        "Both architectures visible without double counting; no false healthy from missing input",
+        "Deterministic golden HTML, changed-byte detection and prior-file preservation"
+      ],
+      "RollbackUnit": "All status producers, package verification and materializer together; publisher authority remains W2, 1.x control/recovery is never stopped by this wave.",
+      "Risk": "Medium: false confidence/outage visibility and publication correctness.",
+      "ExpectedComplexity": "Medium-high",
+      "ReadyToBuildNow": "YES for missing projections and shadow rendering; mixed-state status and watchdog tests block transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/21/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/37/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/38/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/39/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/40/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/41/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/42/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/43/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/44/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A026"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 10,
+      "CapabilityDomain": "Executive briefing",
+      "Included1xWorkers": [
+        "A004"
+      ],
+      "DispositionOfEach": {
+        "A004": {
+          "disposition": "KEEP/IMPROVE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/3"
+        }
+      },
+      "OnlineAda2xComponents": "Versioned synthesis of bounded Task/Project/calendar/financial and verified dashboard inputs.",
+      "ResidentAda2xComponents": "Briefing artifact adapter; delivery requests to the sole transport owner.",
+      "ExistingCapabilitiesReused": [
+        "Existing briefing required sections/policy",
+        "W8 canonical dashboard and Phase 2 semantic package contracts"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Snapshot input contract and briefing schema",
+        "Scheduled semantic execution with deadline guarantees; governed delivery correlation"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "task.evidence.attach"
+      ],
+      "ProviderSideEffects": "Briefing artifact and approved delivery obligations.",
+      "CrossDomainDependencies": [
+        "W8 canonical build freshness; W2 publication lag must not block briefing (E4)",
+        "W12 Task operations still 1.x: bounded read-only inputs required",
+        "A010/A028 remain sole delivery executors through W13"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A004"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "AcceptanceTests": [
+        "Frozen inputs reproduce required sections; stale/unknown state disclosed",
+        "Canonical dashboard freshness gate is independent of public deployment",
+        "Both scheduled occurrences meet deadline without duplicate delivery"
+      ],
+      "RollbackUnit": "Briefing occurrence/input snapshot and delivery idempotency key; drain semantic output and pending obligations before reverse ownership.",
+      "Risk": "Medium: executive interpretation and delivery duplication.",
+      "ExpectedComplexity": "Medium",
+      "ReadyToBuildNow": "YES after W8 input contract; semantic scheduling and delivery evidence required.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/3/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A026"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 11,
+      "CapabilityDomain": "Incremental semantic continuity",
+      "Included1xWorkers": [
+        "A018"
+      ],
+      "DispositionOfEach": {
+        "A018": {
+          "disposition": "KEEP CAPABILITY / REPLACE MECHANICS",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/17"
+        }
+      },
+      "OnlineAda2xComponents": "Existing continuity compaction and contradiction/reference checks.",
+      "ResidentAda2xComponents": "Verified memory-head activation/export adapter; independent full backup remains 1.x.",
+      "ExistingCapabilitiesReused": [
+        "Memory version/head contracts and existing continuity policy",
+        "Existing package/evidence/commit foundations"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Semantic compaction and current-source reference mapping",
+        "Portable export; mutual exclusion with still-live A005 backup across the boundary"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "governed memory activation/export mapping to existing contracts; no new operation assumed implemented"
+      ],
+      "ProviderSideEffects": "Active continuity-head and verified export changes.",
+      "CrossDomainDependencies": [
+        "A005 <-> A018 mutual live-run ordering barriers (E6), not a DAG to topologically sort",
+        "A005/A012 remain for still-active 1.x data and rollback; a SQL memory head does not replace backups"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A018"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "AcceptanceTests": [
+        "Replacement AI bootstraps from committed head; contradictions/missing references rejected",
+        "Crash cannot expose two active heads; portable export restores independently",
+        "Backup/continuity exclusion holds in both directions while A005 remains 1.x"
+      ],
+      "RollbackUnit": "Continuity head and export pointer as one fenced unit; preserve immutable versions and verify replacement-AI bootstrap before reverse ownership.",
+      "Risk": "High: recovery knowledge and mixed backup boundary.",
+      "ExpectedComplexity": "Medium-high",
+      "ReadyToBuildNow": "YES for synthetic build; cross-boundary backup exclusion and bootstrap acceptance block transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/17/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 12,
+      "CapabilityDomain": "Task coverage, owner routing and request follow-up",
+      "Included1xWorkers": [
+        "A015",
+        "A016"
+      ],
+      "DispositionOfEach": {
+        "A015": {
+          "disposition": "KEEP BUSINESS / REDESIGN",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/14"
+        },
+        "A016": {
+          "disposition": "MODIFY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/15"
+        }
+      },
+      "OnlineAda2xComponents": "Semantic uncovered-task judgments and consolidated follow-up drafts/escalations.",
+      "ResidentAda2xComponents": "Deterministic coverage/deadline/response cancellation projections and proposal commit adapters.",
+      "ExistingCapabilitiesReused": [
+        "Existing communication/coverage policy",
+        "SQL Task/work and approval contracts; generic dispatcher foundation"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Coverage/SLA projections and legacy priority input mapping",
+        "Scoped Task authority reconciliation and task-origin routing",
+        "Occurrence creation, RUN NOW interface and consolidated recipient/delivery policies"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "selection",
+        "work dependency release; coverage projections and public schedule/RUN NOW adapters pending"
+      ],
+      "ProviderSideEffects": "Task changes and follow-up obligations. Actual channel effects stay with W13 transport.",
+      "CrossDomainDependencies": [
+        "Consumes Tasks/communications/deadlines across previous domains; all shared-record ownership conflicts must now be reconciled",
+        "A024 remains as cross-cutting 1.x finite-task support for residual workloads until T14; migration registry never becomes runtime routing"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A015",
+        "A016"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "AcceptanceTests": [
+        "100% scoped coverage and one route per recipient",
+        "Reply transaction cancels/satisfies deadline obligation; retries do not duplicate drafts",
+        "Multiple finite-task types and incompatible-capability isolation; preserve business priority semantics explicitly"
+      ],
+      "RollbackUnit": "Coverage/follow-up domain and its Task versions/obligations; do not restore stale Task state or restart already satisfied requests.",
+      "Risk": "High: broad Task and communication coupling.",
+      "ExpectedComplexity": "High",
+      "ReadyToBuildNow": "YES for bounded fixtures; wide Task ownership and scheduling gates block transfer.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/14/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/15/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    {
+      "Wave": 13,
+      "CapabilityDomain": "Inbound SMS, calendar reminders and shared notification delivery",
+      "Included1xWorkers": [
+        "A010",
+        "A027",
+        "A028",
+        "A031",
+        "A036"
+      ],
+      "DispositionOfEach": {
+        "A010": {
+          "disposition": "REPLACE WORKER",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/9"
+        },
+        "A027": {
+          "disposition": "CONSOLIDATE/REPLACE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/26"
+        },
+        "A028": {
+          "disposition": "KEEP TRANSPORT / REPLACE MECHANICS",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/27"
+        },
+        "A031": {
+          "disposition": "KEEP/IMPROVE",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/31"
+        },
+        "A036": {
+          "disposition": "ABSORB MOSTLY",
+          "reference": "contracts/migration/worker-dispositions.json#/workers/36"
+        }
+      },
+      "OnlineAda2xComponents": "Inbound SMS interpretation and only ambiguous calendar importance; channel policy remains explicit.",
+      "ResidentAda2xComponents": "Durable receipt/ACK, Calendar threshold/update/cancel and Gmail/Twilio delivery/result/reconciliation adapters.",
+      "ExistingCapabilitiesReused": [
+        "Existing SMS/Gmail/Calendar business/provider logic",
+        "Phase 2 synthetic outbox/result/ACK slice and W1-W12 governed producer contracts"
+      ],
+      "CapabilitiesStillToAdapt": [
+        "Production-safe real provider command/attempt lifecycle; synthetic helper is not a real send API",
+        "All producer obligations, pending/UNKNOWN deliveries, provider IDs and idempotency watermarks",
+        "Calendar DST/all-day/cancel policy; whole inbound/outbound receipt and response chain",
+        "Rebind remaining infrastructure alerts to the single 2.x transport owner before legacy delivery workers stop"
+      ],
+      "SQLNativeFunctionsUsed": [
+        "executor.register",
+        "executor.heartbeat",
+        "work.next",
+        "work.package",
+        "work.renew",
+        "work.complete",
+        "work.fail",
+        "work.defer",
+        "work.release",
+        "recovery.sweep",
+        "semantic.proposal.submit",
+        "proposal.commit",
+        "provider.result.record; real provider begin/claim/ACK command boundary adaptation required"
+      ],
+      "ProviderSideEffects": "SMS sends, Gmail draft/send, inbound ACK, real Task/Fact writes and calendar reminder obligations. Highest irreversible-effect risk.",
+      "CrossDomainDependencies": [
+        "A027 -> A031 -> A028 and A036 -> A028 verified handoffs (E7)",
+        "A010/A027/A028 share transport mechanics, not channel approval/provider evidence (appendix preservation rule)",
+        "All functional producer waves W1-W12 precede this transfer; residual T14 support alerts require explicit handoff acceptance"
+      ],
+      "1xFunctionalWorkersPausedAtTransfer": [
+        "A010",
+        "A027",
+        "A028",
+        "A031",
+        "A036"
+      ],
+      "1xInfrastructureThatMustRemain": [
+        "A005",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A024",
+        "A025",
+        "A027",
+        "A028",
+        "A036"
+      ],
+      "AcceptanceTests": [
+        "Exact inbound text preserved; durable receipt before queue ACK",
+        "Provider success/DB failure and UNKNOWN outcomes reconcile SID/message ID, never blind resend",
+        "Draft-first, recipients/thread/signature and approval tests; exactly one reminder per policy key with DST/all-day/update/cancel",
+        "Reconcile every pre-transfer pending/UNKNOWN obligation; late webhook handled once; prove no active legacy send path including infrastructure alerts"
+      ],
+      "RollbackUnit": "Entire inbound/calendar/email/SMS transport ownership and ledgers. Stop both old and new sending during ambiguity; reconcile actual provider outcomes before any reverse transfer.",
+      "Risk": "High: irreversible communications and provider ACK.",
+      "ExpectedComplexity": "High",
+      "ReadyToBuildNow": "YES for synthetic adapter work; last functional transfer, real transport authority and reconciliation unproven.",
+      "ReadyToTransferNow": false,
+      "DispositionAcceptanceReferences": [
+        "contracts/migration/worker-dispositions.json#/workers/9/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/26/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/27/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/31/acceptance_test",
+        "contracts/migration/worker-dispositions.json#/workers/36/acceptance_test"
+      ],
+      "RetainedLegacyEvidenceAfterFunctionalTransfer": [
+        "A015",
+        "A016"
+      ],
+      "InfrastructureRetentionTiming": "MUST_REMAIN_1X includes this wave through its transfer acceptance. Workers in the complete pause set then stop functional execution; future-wave/global infrastructure stays active. Retained legacy evidence does not authorize an old effect path.",
+      "1xInfrastructureStillExecutingAfterAcceptance": [
+        "A005",
+        "A008",
+        "A009",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A024",
+        "A025"
+      ],
+      "CommonTransferGates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    }
+  ],
+  "WorkerAssignment": {
+    "A029": 1,
+    "A047": 1,
+    "A032": 2,
+    "A033": 3,
+    "A029-B": 4,
+    "A019": 4,
+    "A020": 4,
+    "A021": 4,
+    "A001": 5,
+    "A002": 5,
+    "A007": 5,
+    "A035": 5,
+    "A023": 6,
+    "A053": 6,
+    "A054": 6,
+    "A006": 7,
+    "A026": 8,
+    "A045": 8,
+    "A046": 8,
+    "A048": 8,
+    "A049": 8,
+    "A050": 8,
+    "A051": 8,
+    "A052": 8,
+    "A022": 9,
+    "A037": 9,
+    "A038": 9,
+    "A039": 9,
+    "A040": 9,
+    "A041": 9,
+    "A042": 9,
+    "A043": 9,
+    "A044": 9,
+    "A004": 10,
+    "A018": 11,
+    "A015": 12,
+    "A016": 12,
+    "A010": 13,
+    "A027": 13,
+    "A028": 13,
+    "A031": 13,
+    "A036": 13,
+    "A005": 14,
+    "A008": 14,
+    "A009": 14,
+    "A011": 14,
+    "A012": 14,
+    "A013": 14,
+    "A014": 14,
+    "A024": 14,
+    "A025": 14,
+    "A003": 5,
+    "A017": null,
+    "A030": null,
+    "A034": null
+  },
+  "HistoricalOnly": [
+    {
+      "worker": "A017",
+      "source_disposition": "RETIRE",
+      "rule": "Retired/disabled at disposition review only; do not reactivate, newly disable or assert current state. Reconcile terminal state, obligations and consumers before final archival."
+    },
+    {
+      "worker": "A030",
+      "source_disposition": "RETIRE",
+      "rule": "Retired/disabled at disposition review only; do not reactivate, newly disable or assert current state. Reconcile terminal state, obligations and consumers before final archival."
+    },
+    {
+      "worker": "A034",
+      "source_disposition": "RETIRE",
+      "rule": "Retired/disabled at disposition review only; do not reactivate, newly disable or assert current state. Reconcile terminal state, obligations and consumers before final archival."
+    }
+  ],
+  "RetirementTail": [
+    {
+      "1xWorker": "A005",
+      "Final2xReplacement": "Portable backup operator, logical dump/PITR, export manifest and independently verified restore; not SQL alone",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Two successful clean-room restore cycles and approved RPO/RTO required; retain legacy backup while any 1.x recovery obligation remains."
+    },
+    {
+      "1xWorker": "A008",
+      "Final2xReplacement": "SQL constraints/fences and bounded recovery.sweep plus flow assertions and independent watchdog",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A009",
+      "Final2xReplacement": "SQL business/flow assertion views plus retained semantic/provider audit samples",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A011",
+      "Final2xReplacement": "Transactional Task completion, required evidence, events and provider exception reconciliation",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A012",
+      "Final2xReplacement": "Content-addressed backup/export manifest verification and restore linkage",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A013",
+      "Final2xReplacement": "Immutable event/audit replay and projection conformance",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A014",
+      "Final2xReplacement": "CI plus operational capability/operation conformance; tests remain, scheduled Sheets worker retires",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A024",
+      "Final2xReplacement": "Generic SQL dispatcher plus Online semantic executor and preserved finite-task business capabilities",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A025",
+      "Final2xReplacement": "selection/claim_work, claim uniqueness/fencing and lease/recovery sweep",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "CONSERVATIVE_ALL_1X_SUPPORT_SCOPE: full non-retired registry closure, including other support workers. Not a claim that every pair is an observed direct edge.",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "All W1-W13 domains accepted; zero remaining 1.x finite Tasks, ad-hoc work, claims, retries, provider outcomes or unclassified consumers. Residual support cohort drains together in T14; equivalent 2.x checks stay active. Preserve audit/retention and independently rehearse restore/rollback. Do not stop because SQL replacement tests pass."
+    },
+    {
+      "1xWorker": "A003",
+      "Final2xReplacement": "Ingestion invariants and flow assertions, provider sampling and semantic quality audit",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A007",
+        "A035"
+      ],
+      "ConsumerEvidenceClass": "A001/A002 explicit; A007/A035 conservative shared filing/quality scope",
+      "LastConsumerWave": 5,
+      "PlannedRetirementWindow": 5,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W5 entire filing unit accepted; seeded mismatch detected and current consumers/ordering barriers reconciled."
+    },
+    {
+      "1xWorker": "A029-B",
+      "Final2xReplacement": "SQL staffing feature projections/materializations",
+      "Remaining1xConsumers": [
+        "A019",
+        "A020",
+        "A021"
+      ],
+      "ConsumerEvidenceClass": "A020/A021 explicit preferred inputs; A019 lifecycle preservation closure",
+      "LastConsumerWave": 4,
+      "PlannedRetirementWindow": 4,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W4 transfers all feature/forecast/feedback stages, preserves fallback and proves feature parity. Keep A029-B in 1.x during W1-W3."
+    },
+    {
+      "1xWorker": "A036",
+      "Final2xReplacement": "Calendar threshold/recurrence policy plus transport and semantic exception adapter",
+      "Remaining1xConsumers": [
+        "A028"
+      ],
+      "ConsumerEvidenceClass": "Explicit verified handoff E7",
+      "LastConsumerWave": 13,
+      "PlannedRetirementWindow": 13,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W13 jointly transfers reminder obligations and transport after cancellation/DST/dedup acceptance."
+    },
+    {
+      "1xWorker": "A037",
+      "Final2xReplacement": "SQL status projection/snapshot/versioning and retained notification policy (not all implemented)",
+      "Remaining1xConsumers": [
+        "A022",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Appendix status chain; conservative package/verification closure",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 complete status unit accepted, including remaining 1.x health visibility; notification transport remains 1.x until W13."
+    },
+    {
+      "1xWorker": "A038",
+      "Final2xReplacement": "SQL status projection/snapshot/versioning and retained notification policy (not all implemented)",
+      "Remaining1xConsumers": [
+        "A022",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Appendix status chain; conservative package/verification closure",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 complete status unit accepted, including remaining 1.x health visibility; notification transport remains 1.x until W13."
+    },
+    {
+      "1xWorker": "A039",
+      "Final2xReplacement": "SQL status projection/snapshot/versioning and retained notification policy (not all implemented)",
+      "Remaining1xConsumers": [
+        "A022",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Appendix status chain; conservative package/verification closure",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 complete status unit accepted, including remaining 1.x health visibility; notification transport remains 1.x until W13."
+    },
+    {
+      "1xWorker": "A040",
+      "Final2xReplacement": "SQL status projection/snapshot/versioning and retained notification policy (not all implemented)",
+      "Remaining1xConsumers": [
+        "A022",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Appendix status chain; conservative package/verification closure",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 complete status unit accepted, including remaining 1.x health visibility; notification transport remains 1.x until W13."
+    },
+    {
+      "1xWorker": "A041",
+      "Final2xReplacement": "SQL status projection/snapshot/versioning and retained notification policy (not all implemented)",
+      "Remaining1xConsumers": [
+        "A022",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Appendix status chain; conservative package/verification closure",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 complete status unit accepted, including remaining 1.x health visibility; notification transport remains 1.x until W13."
+    },
+    {
+      "1xWorker": "A042",
+      "Final2xReplacement": "SQL status projection/snapshot/versioning and retained notification policy (not all implemented)",
+      "Remaining1xConsumers": [
+        "A022",
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Appendix status chain; conservative package/verification closure",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 complete status unit accepted, including remaining 1.x health visibility; notification transport remains 1.x until W13."
+    },
+    {
+      "1xWorker": "A043",
+      "Final2xReplacement": "SQL status projection/snapshot/versioning and retained notification policy (not all implemented)",
+      "Remaining1xConsumers": [
+        "A022",
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Appendix status chain; conservative package/verification closure",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 complete status unit accepted, including remaining 1.x health visibility; notification transport remains 1.x until W13."
+    },
+    {
+      "1xWorker": "A045",
+      "Final2xReplacement": "SQL executive/source-health projection and typed snapshot (still to adapt)",
+      "Remaining1xConsumers": [
+        "A026",
+        "A049",
+        "A050",
+        "A052"
+      ],
+      "ConsumerEvidenceClass": "A026 explicit, other dashboard consumers conservative package/source closure",
+      "LastConsumerWave": 8,
+      "PlannedRetirementWindow": 8,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W8 complete dashboard assembly/materialization unit accepted; no independent producer erased by missing input."
+    },
+    {
+      "1xWorker": "A051",
+      "Final2xReplacement": "SQL executive/source-health projection and typed snapshot (still to adapt)",
+      "Remaining1xConsumers": [
+        "A026",
+        "A049",
+        "A050",
+        "A052"
+      ],
+      "ConsumerEvidenceClass": "A026 explicit, other dashboard consumers conservative package/source closure",
+      "LastConsumerWave": 8,
+      "PlannedRetirementWindow": 8,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W8 complete dashboard assembly/materialization unit accepted; no independent producer erased by missing input."
+    },
+    {
+      "1xWorker": "A022",
+      "Final2xReplacement": "Deterministic SQL status snapshot/package with separate Resident renderer",
+      "Remaining1xConsumers": [
+        "A044"
+      ],
+      "ConsumerEvidenceClass": "Explicit status chain",
+      "LastConsumerWave": 9,
+      "PlannedRetirementWindow": 9,
+      "ConsumerRebinding": null,
+      "RetirementCondition": "W9 package and renderer accepted together."
+    },
+    {
+      "1xWorker": "A026",
+      "Final2xReplacement": "Typed dashboard snapshot/package plus optional semantic narrative",
+      "Remaining1xConsumers": [
+        "A004",
+        "A052"
+      ],
+      "ConsumerEvidenceClass": "Explicit canonical build/materialization and briefing freshness",
+      "LastConsumerWave": 10,
+      "PlannedRetirementWindow": 10,
+      "ConsumerRebinding": "W8 stops legacy functional assembly only after A004 reads the unchanged canonical artifact interface; keep rollback package through W10. Final removal no earlier than last legacy consumer W10.",
+      "RetirementCondition": "Do not retire legacy assembly until A052 and still-1.x A004 independently accept the exact canonical build produced by W8. E4 freshness behavior and prior artifact preservation are mandatory."
+    },
+    {
+      "1xWorker": "A047",
+      "Final2xReplacement": "A029-owned acquisition plus deterministic POS dashboard projection",
+      "Remaining1xConsumers": [
+        "A026",
+        "A049"
+      ],
+      "ConsumerEvidenceClass": "Explicit dashboard source and forecast inputs",
+      "LastConsumerWave": 8,
+      "PlannedRetirementWindow": 8,
+      "ConsumerRebinding": "No 1.x consumer may retain a dependency on executing the old A047 fetch. If it does, W1 transfer is blocked. All consumers read the single-owner verified output.",
+      "RetirementCondition": "W1 may pause the duplicate acquisition only after the exact canonical source interface is independently accepted by both remaining legacy consumers. Retain adapter contract, evidence and rollback support through W8."
+    },
+    {
+      "1xWorker": "A015",
+      "Final2xReplacement": "SQL coverage/deadline predicates plus retained semantic routing/follow-up business stages",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "Conservative cross-cutting Task/communication scope; only deterministic predicates are SQL-replaced, not all business judgment",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": "W12 accepted ownership and governed request handoff must remove every executable dependency on old coverage/follow-up paths before those paths pause.",
+      "RetirementCondition": "W12 functional transfer requires residual consumers to use the sole new coverage/follow-up owner and satisfied requests to remain satisfied. Legacy coverage/reconciliation evidence and rollback support remain through T14; no competing task mutation or notification creation."
+    },
+    {
+      "1xWorker": "A016",
+      "Final2xReplacement": "SQL coverage/deadline predicates plus retained semantic routing/follow-up business stages",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A029-B",
+        "A031",
+        "A032",
+        "A033",
+        "A035",
+        "A036",
+        "A037",
+        "A038",
+        "A039",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044",
+        "A045",
+        "A046",
+        "A047",
+        "A048",
+        "A049",
+        "A050",
+        "A051",
+        "A052",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "Conservative cross-cutting Task/communication scope; only deterministic predicates are SQL-replaced, not all business judgment",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": "W12 accepted ownership and governed request handoff must remove every executable dependency on old coverage/follow-up paths before those paths pause.",
+      "RetirementCondition": "W12 functional transfer requires residual consumers to use the sole new coverage/follow-up owner and satisfied requests to remain satisfied. Legacy coverage/reconciliation evidence and rollback support remain through T14; no competing task mutation or notification creation."
+    },
+    {
+      "1xWorker": "A010",
+      "Final2xReplacement": "Shared SQL delivery/outbox state plus channel-specific Resident adapters and provider reconciliation",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A028",
+        "A029",
+        "A031",
+        "A033",
+        "A035",
+        "A036",
+        "A042",
+        "A046",
+        "A048",
+        "A049",
+        "A050",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "Conservative all possible business/support notification producers, plus explicit A027/A031/A028/A036 chain",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": "Provider-send authority transfers as the complete W13 unit. Legacy delivery ledger/readback and rollback support remain through T14, with all legacy send paths disabled. A live consumer of old queue mechanics blocks transfer unless rebound and accepted first.",
+      "RetirementCondition": "W13 functional transfer requires reconciliation of every old obligation and verified rebinding of T14 support alerts to sole 2.x transport; no retained infrastructure may invoke legacy sends. Final legacy queue/mechanics removal waits for T14 consumer drain."
+    },
+    {
+      "1xWorker": "A027",
+      "Final2xReplacement": "Shared SQL delivery/outbox state plus channel-specific Resident adapters and provider reconciliation",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A028",
+        "A029",
+        "A031",
+        "A033",
+        "A035",
+        "A036",
+        "A042",
+        "A046",
+        "A048",
+        "A049",
+        "A050",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "Conservative all possible business/support notification producers, plus explicit A027/A031/A028/A036 chain",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": "Provider-send authority transfers as the complete W13 unit. Legacy delivery ledger/readback and rollback support remain through T14, with all legacy send paths disabled. A live consumer of old queue mechanics blocks transfer unless rebound and accepted first.",
+      "RetirementCondition": "W13 functional transfer requires reconciliation of every old obligation and verified rebinding of T14 support alerts to sole 2.x transport; no retained infrastructure may invoke legacy sends. Final legacy queue/mechanics removal waits for T14 consumer drain."
+    },
+    {
+      "1xWorker": "A028",
+      "Final2xReplacement": "Shared SQL delivery/outbox state plus channel-specific Resident adapters and provider reconciliation",
+      "Remaining1xConsumers": [
+        "A001",
+        "A002",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009",
+        "A010",
+        "A011",
+        "A012",
+        "A013",
+        "A014",
+        "A015",
+        "A016",
+        "A018",
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A029",
+        "A031",
+        "A033",
+        "A035",
+        "A036",
+        "A042",
+        "A046",
+        "A048",
+        "A049",
+        "A050",
+        "A053",
+        "A054"
+      ],
+      "ConsumerEvidenceClass": "Conservative all possible business/support notification producers, plus explicit A027/A031/A028/A036 chain",
+      "LastConsumerWave": 14,
+      "PlannedRetirementWindow": 14,
+      "ConsumerRebinding": "Provider-send authority transfers as the complete W13 unit. Legacy delivery ledger/readback and rollback support remain through T14, with all legacy send paths disabled. A live consumer of old queue mechanics blocks transfer unless rebound and accepted first.",
+      "RetirementCondition": "W13 functional transfer requires reconciliation of every old obligation and verified rebinding of T14 support alerts to sole 2.x transport; no retained infrastructure may invoke legacy sends. Final legacy queue/mechanics removal waits for T14 consumer drain."
+    }
+  ],
+  "RetirementCalculation": {
+    "rule": "LastConsumerWave = max(WorkerAssignment[c] for every enumerated Remaining1xConsumer). Global support includes other support, so its conservative maximum is T14, not the earlier last functional W13.",
+    "support_cohort": "A005/A008/A009/A011/A012/A013/A014/A024/A025 drain together at T14 after all functional waves; mutual observation does not create an infinite wait. Equivalent 2.x operational support runs first. Historical backup/audit retention can extend beyond T14.",
+    "retire_vs_pause": "Functional authority pause, retained read-only legacy evidence/rollback support, and final code/queue retirement are separate events. A026 and transport retain support to W10/T14 even after sole functional ownership moves. No old send or assembler path runs concurrently.",
+    "uncertainty": "The maximum is a planning lower bound for retirement, not permission to stop. All 52 non-retired-at-review workers are conservatively accounted for; current status, external consumers, finite Tasks and manual commands must be checked at G7."
+  },
+  "AlternatingLaunchers": {
+    "Supported": "ARCHITECTURALLY_COMPATIBLE_NOT_IMPLEMENTED_OR_ACCEPTED",
+    "pattern": "1.x at t=0,8,16 minutes; 2.x at t=4,12,20 minutes: four-minute total opportunity, eight-minute opportunity for each architecture. This is a proposed pattern, not a freshly verified schedule.",
+    "evidence": "ADR-009 capability routing and Phase 2 executor policies/claims do not require one global launcher or four-minute per-surface cadence; no live 2.x semantic launcher exists in Resident acceptance.",
+    "required_changes": [
+      "Deploy separate scoped Online2x entry point and identity; use narrow SQL packages",
+      "Add domain/object ownership admission to both launchers and every downstream effect path, including A024 and Resident; cadence alone provides no ownership fence",
+      "Review/change actual launcher schedule and preserve instance/capacity/claim fences and retry semantics; long runs may overlap only across independently owned work",
+      "Provide due-occurrence/recovery drivers and safe restart/missed-launch handling",
+      "Measure end-to-end semantic queue age against target SLAs; eight-minute opportunities cannot guarantee <1m semantic latency or <5m briefing latency; use existing event/wakeup design or separately approved cadence where required",
+      "Prove ownership rejection, stale-owner rejection, unknown resource denial, launch loss/restart and no duplicate effects"
+    ],
+    "rollback": "Restore verified launcher schedule independently of domain ownership. Never re-enable migrated domains merely because 1.x launch frequency increases."
+  },
+  "ReadyToBeginWave1": "YES for a subsequent authorized synthetic/shadow implementation assignment. NO for live transfer. This assignment implements nothing.",
+  "Validation": {
+    "registry_worker_count": 55,
+    "unique_worker_assignment_count": 55,
+    "functional_wave_worker_count": 42,
+    "support_only_worker_count": 10,
+    "historical_count": 3,
+    "last_consumer_maxima_checked": true,
+    "per_wave_retention_checked": true,
+    "production_readiness_claimed": false,
+    "offline_check": {
+      "command": "python -B scripts/check.py",
+      "verified_at": "2026-09-30T01:31:18.585394+00:00",
+      "passed": 61,
+      "failures": 0,
+      "errors": 0,
+      "historical_integration_placeholders_skipped": 26,
+      "database_tests_executed": false,
+      "provider_calls_executed": false
+    }
+  }
+}
