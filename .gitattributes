@@ -3,3 +3,6 @@
 *.sql text eol=lf
 *.md text eol=lf
 docs/baseline/*.md -text
+
+# Preserve the exact migration 26 bytes already verified in the production ledger.
+db/migrations/000026_staffing_bounded_read.sql -text
