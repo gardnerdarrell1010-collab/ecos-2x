@@ -1,8 +1,8 @@
-# GitGuardian database-assignment alert — 2026-09-30
+# GitGuardian database-assignment alert â€” 2026-09-30
 
-Status: OPEN — exact GitGuardian detector match awaiting confirmation. The
-available source evidence supports a false positive; it is not yet a confirmed
-GitGuardian incident disposition. Normal Wave 1 work remains stopped.
+Status: FALSE_POSITIVE / RESOLVED_BY_EVIDENCE. Investigation closed by explicit
+owner decision on 2026-09-30. Credential rotation and Git-history rewriting are
+not required. GitGuardian dashboard status was not modified by Codex.
 
 Alert timestamp: 2026-09-30 05:50:39 UTC.
 Alert commit: `22102337fa676a8ce357d4d6ea1bfabe975468ce`.
@@ -56,22 +56,24 @@ placeholders skipped). Existing disposable PostgreSQL Phase 1 and Phase 2,
 domain-authority, Wave 1 batch, authority-effect and concurrency checks passed.
 This executed no live Wave 1 work. Capability and authority source remains intact.
 
-## Disposition and owner action
+## Final disposition
 
-No credential rotation, secret-store update, source replacement or history
-rewrite was performed because no genuine exposed credential has been identified.
-No unrelated credentials were rotated. No installer or Administrator preflight
-was run, and no runtime was enrolled. The pre-incident source HEAD is
-`c5998349f6644a0a35543403e09dea8347503179`.
+The owner accepts the runtime password reference/expression as a false positive
+based on the completed investigation and provider evidence. Do not reopen absent
+new contradictory evidence. No credential rotation, history rewrite, or secret
+source change is required or performed.
 
-GitGuardian authenticated incident tooling was unavailable. The alert email
-provides no detector-match details and its dashboard link requires authentication.
-Owner action: provide the GitGuardian incident link/ID or matched variable name
-and line range ONLY, never the value. Confirm the match against the source
-classification above. Do not close the incident until that confirmation; if it
-matches, record a false-positive disposition in GitGuardian. If it identifies a
-different value, continue investigation and rotate/revoke if genuine.
+Fresh advisor verification returned seven INFO rls_enabled_no_policy findings
+and no warning/error findings. All seven tables have RLS enabled, no policies,
+and no anon/authenticated table privileges. Migrations 21-23 access these internal
+tables through accepted governed server-side boundaries. Classification:
+EXPECTED_DENY_BY_DEFAULT / NO_REMEDIATION_REQUIRED. No policies were added.
 
-History was not rewritten. The earlier preflight's pinned HEAD must not be used
-unchanged after this evidence commit changes HEAD; any later preflight remains
-separate owner-authorized work after incident disposition.
+The affected tables are ecos.toast_batch, ecos.toast_checkpoint,
+ecos.toast_closed_date, ecos_meta.domain_authority,
+ecos_meta.domain_authority_event, ecos_meta.object_domain and
+ecos_meta.principal_domain. Advisor reference:
+https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
+
+The old HEAD-pinned Administrator preflight is not reusable unchanged. A fresh
+read-only preflight follows successful CI at the final clean Wave 1 HEAD.
