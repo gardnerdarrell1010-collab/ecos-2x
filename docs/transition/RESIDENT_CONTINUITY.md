@@ -33,3 +33,11 @@ stop a runtime, change 1.x, create credentials, perform authority transfers or a
 migrations. Its immediate check verifies the existing healthy Resident is preserved.
 Actual reboot acceptance remains a separate gate; task definition readback is not
 proof of a completed machine restart. No UAC handoff is invoked.
+
+Migration 28 admits only registration and heartbeat for an enabled renewal
+enrollment after its generation attestation expires. The domain/epoch check stays
+active; the approved runtime hash is checked during renewal. All business work
+continues to require an unexpired ecos.2x.execute attestation. Authenticated
+rollback acceptance through ecos.operate proves expired work rejection, renewal,
+subsequent eligibility, wrong-hash ineligibility and revoked-enrollment rejection.
+Run `python scripts/resident2x_reentry_acceptance.py` explicitly.
