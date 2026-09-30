@@ -17,7 +17,8 @@ class ResidentTests(unittest.TestCase):
         self.addCleanup(self.directory.cleanup)
         self.config = {"authority": "PRE_CUTOVER_NON_AUTHORITATIVE", "provider_effects_enabled": False,
             "state_directory": self.directory.name, "instance_id": "instance", "principal_id": "principal",
-            "correlation_id": "correlation", "identity": "RESIDENT_ADA_2X_HOME01", "capabilities": {}}
+            "correlation_id": "correlation", "identity": "RESIDENT_ADA_2X_HOME01", "control_plane": "POSTGRESQL",
+            "work_sources": ["POSTGRESQL"], "capabilities": {"ecos.2x.execute": 1}}
         self.runtime = Resident(self.config, Mock(), {})
         self.runtime.client = Mock()
         self.runtime.client.operate.return_value = {"status": "committed"}

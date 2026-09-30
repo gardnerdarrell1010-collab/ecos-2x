@@ -121,7 +121,8 @@ def enroll(connect, database, state, http_port, password, hosted=False):
         "executor_id": executor, "correlation_id": correlation, "authority": "DOMAIN_SCOPED_PRODUCTION", "domain": "synthetic.acceptance", "execution_mode": "synthetic",
         "provider_effects_enabled": False, "state_directory": str(state), "database_password_file": str(state / "database.secret"),
         "database": {**database, "user": role + (".loonpojawpfagzobxoko" if hosted else "")},
-        "capabilities": {"local.process.execute": 1, "local.filesystem.read": 1, "http.authenticated.request": 1,
+        "control_plane": "POSTGRESQL", "work_sources": ["POSTGRESQL"],
+        "capabilities": {"ecos.2x.execute": 1, "local.process.execute": 1, "local.filesystem.read": 1, "http.authenticated.request": 1,
                          "secure.reference.resolve": 1, "db.governed_operations": 1},
         "heartbeat_seconds": 2, "lease_seconds": 30, "poll_seconds": 1,
         "shared_capability": {"root": str(SHARED), "sha256": {str(p): hashlib.sha256((SHARED / p).read_bytes()).hexdigest()

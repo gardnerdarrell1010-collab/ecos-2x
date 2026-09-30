@@ -16,7 +16,9 @@ class Wave1BoundaryTests(unittest.TestCase):
 
     def test_domain_mode_configuration_required(self):
         with tempfile.TemporaryDirectory() as directory:
-            config={'authority':'DOMAIN_SCOPED_PRODUCTION','domain':'toast.acquisition','execution_mode':'production',
+            config={'identity':'RESIDENT_ADA_2X_HOME01','control_plane':'POSTGRESQL',
+                'work_sources':['POSTGRESQL'],'capabilities':{'ecos.2x.execute':1},
+                'authority':'DOMAIN_SCOPED_PRODUCTION','domain':'toast.acquisition','execution_mode':'production',
                 'state_directory':directory,'instance_id':'synthetic-instance','provider_effects_enabled':True}
             # Local configuration is valid; SQL authorization is tested independently.
             Resident(config,Mock(),{})

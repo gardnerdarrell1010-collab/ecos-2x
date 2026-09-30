@@ -22,7 +22,8 @@ def enroll(connect,database,state,dates,crash=None):
         'correlation_id':correlation,'authority':'DOMAIN_SCOPED_PRODUCTION','domain':'toast.acquisition','execution_mode':'shadow',
         'provider_effects_enabled':False,'state_directory':str(state),'database_password_file':str(state/'database.secret'),
         'database':dict(database,user=role+'.loonpojawpfagzobxoko'),
-        'capabilities':{'local.process.execute':1,'toast.api.read':1,'secure.reference.resolve':1,'db.governed_operations':1},
+        'control_plane':'POSTGRESQL','work_sources':['POSTGRESQL'],
+        'capabilities':{'ecos.2x.execute':1,'local.process.execute':1,'toast.api.read':1,'secure.reference.resolve':1,'db.governed_operations':1},
         'heartbeat_seconds':3,'lease_seconds':30,'poll_seconds':1,
         'wave1':{'shared_root':str(SHARED),'credential_reference':r'D:\ECOS\Credentials\ecos-resident-ada.json'}}
     if crash:config['wave1']['acceptance_crash']=crash

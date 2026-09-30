@@ -20,6 +20,7 @@ from uuid import uuid4
 
 from ecos.core.contracts import content_hash
 from scripts.phase2_executor_client import GovernedClient
+from runtime.executor_profiles import validate_profile
 
 VERSION = "2.0.1-domain-authority.1"
 
@@ -74,6 +75,7 @@ class OperationRejected(RuntimeError):
 
 class Resident:
     def __init__(self, config, connect, handlers):
+        self.profile = validate_profile(config, expected_identity="RESIDENT_ADA_2X_HOME01")
         if config.get("authority") == "PRE_CUTOVER_NON_AUTHORITATIVE":
             # Backward-compatible synthetic configuration; never production authority.
             if config.get("provider_effects_enabled") is not False:
@@ -145,6 +147,8 @@ class Resident:
             "reported_running": int(running), "load_basis_points": 100 if running else 0}, client=client)
         save(self.root / "heartbeat.json", {"pid": os.getpid(), "identity": self.config["identity"],
              "instance_id": self.config["instance_id"], "at": now(), "running": running,
+             "generation": self.profile["generation"], "control_plane": self.profile["control_plane"],
+             "display_name": self.profile["display_name"], "domain": self.config.get("domain"),
              "authority": self.config["authority"], "response": response})
 
     @contextmanager
