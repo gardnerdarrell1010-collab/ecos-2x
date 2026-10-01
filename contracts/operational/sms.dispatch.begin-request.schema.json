@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/sms.dispatch.begin-request.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "delivery_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "expected_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "account_scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "request": {
+          "type": "object",
+          "properties": {
+            "to": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            "from": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1600
+            }
+          },
+          "required": [
+            "to",
+            "from",
+            "body"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "fence",
+        "delivery_id",
+        "expected_version",
+        "account_scope",
+        "request"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

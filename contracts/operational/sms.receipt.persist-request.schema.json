@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/sms.receipt.persist-request.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "receipt": {
+          "$ref": "https://contracts.ecos.invalid/v1/provider_receipt.schema.json"
+        },
+        "communication": {
+          "$ref": "https://contracts.ecos.invalid/v1/communication.schema.json"
+        },
+        "queue_item": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        }
+      },
+      "required": [
+        "fence",
+        "receipt",
+        "communication",
+        "queue_item"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

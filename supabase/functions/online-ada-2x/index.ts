@@ -1,4 +1,5 @@
 import { registerGmailTools } from './gmail_tools.ts';
+import { registerCoreTools } from './core_tools.ts';
 import { createMcpHandler, McpServer } from 'npm:@modelcontextprotocol/server@2.2.0';
 import { createRemoteJWKSet, jwtVerify } from 'npm:jose@6.2.12';
 import postgres from 'npm:postgres@3.4.9';
@@ -90,7 +91,7 @@ Deno.serve(async (req: Request) => {
     });
     server.registerTool('ecos_read_record', {
       description:'Read an explicitly assigned ECOS record. PostgreSQL enforces object and domain grants; this does not enumerate or grant access.',
-      inputSchema:z.object({kind:z.enum(['communication','communication_processing','provider_receipt','task','project','party','relationship','notification','delivery','work_occurrence']),id:z.string().uuid()}),
+      inputSchema:z.object({kind:z.enum(['communication','communication_processing','provider_receipt','task','task_schedule','task_dependency','task_assignment','project','party','relationship','notification','delivery','work_occurrence','fact','artifact','export_package','backup_record']),id:z.string().uuid()}),
       annotations:{readOnlyHint:true,openWorldHint:false},
     },async ({kind,id}) => {
       try {
@@ -99,6 +100,7 @@ Deno.serve(async (req: Request) => {
       } catch { return {isError:true,content:[{type:'text',text:'record_not_authorized_or_unavailable'}]}; }
     });
     registerGmailTools(server,database,identity);
+    registerCoreTools(server,database,identity);
     return server;
   });
   return handler.fetch(boundedHttpRequest);

@@ -4,6 +4,8 @@ export const OPERATIONS = Object.freeze([
   'work.claim', 'work.renew', 'work.complete', 'work.fail', 'work.defer',
   'work.release', 'semantic.proposal.submit', 'fact.record',
   'task.evidence.attach', 'provider.result.record', 'sms.continuation.complete',
+  'runtime.scope.read', 'runtime.evidence.read', 'notification.enqueue', 'core.review.commit',
+  'calendar.evidence.record',
 ]);
 
 export function boundRequest(operation, request, identity) {

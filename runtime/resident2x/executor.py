@@ -362,6 +362,9 @@ def main():
     elif config.get("domain") == "gmail.operations":
         from runtime.resident2x.gmail import handler
         handlers = {"gmail_draft": handler(config)}
+        if config.get("operational_sms"):
+            from runtime.resident2x.operational_sms import make_handlers as sms_handlers
+            handlers.update(sms_handlers(config))
     else:
         handlers = make_handlers(config)
     runtime = Resident(config, connection_factory(config), handlers)

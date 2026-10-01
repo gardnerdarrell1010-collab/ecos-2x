@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/notification.enqueue-request.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "notification": {
+          "$ref": "https://contracts.ecos.invalid/v1/notification.schema.json"
+        },
+        "delivery": {
+          "$ref": "https://contracts.ecos.invalid/v1/delivery.schema.json"
+        },
+        "source_references": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "items": {
+            "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+          }
+        }
+      },
+      "required": [
+        "fence",
+        "notification",
+        "delivery",
+        "source_references"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

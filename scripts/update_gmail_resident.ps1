@@ -1,6 +1,8 @@
 [CmdletBinding()]
 param([Parameter(Mandatory=$true)][string]$ExpectedHead,
-      [Parameter(Mandatory=$true)][string]$ReleaseDirectory)
+      [Parameter(Mandatory=$true)][string]$ReleaseDirectory,
+      [string]$ConfigurationCandidate,
+      [string]$ConfigurationSHA256)
 $ErrorActionPreference = 'Stop'
 $result = [ordered]@{Status='FAILED'; Administrator=$false; ReleaseVerified=$false; TaskUpdated=$false; GmailHealthy=$false; ToastModified=$false; ProviderWritesPerformed=$false}
 try {
@@ -23,6 +25,24 @@ try {
     $result.ReleaseVerified = $true
     $state = 'D:\ECOS\Node\runtime\resident2x\state\gmail-home01'
     $config = Join-Path $state 'config.json'
+    if ($ConfigurationCandidate) {
+        $candidate = [IO.Path]::GetFullPath($ConfigurationCandidate)
+        if (-not $candidate.StartsWith($state+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Configuration outside existing profile' }
+        if ((Get-FileHash -LiteralPath $candidate -Algorithm SHA256).Hash.ToLowerInvariant() -ne $ConfigurationSHA256) { throw 'Configuration hash mismatch' }
+        $before = Get-Content -LiteralPath $config -Raw | ConvertFrom-Json
+        $after = Get-Content -LiteralPath $candidate -Raw | ConvertFrom-Json
+        $allowed = @('capabilities','shared_capability','operational_sms')
+        foreach ($property in $before.PSObject.Properties) {
+            if ($property.Name -notin $allowed -and (($property.Value | ConvertTo-Json -Depth 100 -Compress) -ne ($after.($property.Name) | ConvertTo-Json -Depth 100 -Compress))) { throw 'Existing profile changed' }
+        }
+        foreach ($property in $after.PSObject.Properties) {
+            if ($property.Name -notin $allowed -and $property.Name -notin $before.PSObject.Properties.Name) { throw 'Unexpected configuration field' }
+        }
+        $expectedCapabilities = @('db.governed_operations','ecos.2x.execute','http.authenticated.request','provider.gmail','provider.twilio')
+        if (@(Compare-Object ($after.capabilities.PSObject.Properties.Name | Sort-Object) ($expectedCapabilities | Sort-Object)).Count -ne 0) { throw 'Capability scope mismatch' }
+        if (@($after.capabilities.PSObject.Properties | Where-Object {$_.Value -ne 1}).Count -ne 0) { throw 'Capability version mismatch' }
+        if (-not $after.operational_sms -or -not $after.shared_capability) { throw 'Operational binding absent' }
+    }
     $python = Join-Path $repo '.venv\Scripts\python.exe'
     $helper = Join-Path $release 'scripts\prepare_gmail_runtime_resume.py'
     & $python -B $helper --config $config --check-only | Out-Null
@@ -32,6 +52,7 @@ try {
     if (@($task.Actions).Count -ne 1 -or $task.Actions.Execute -ne $python -or $task.Actions.Arguments -notlike ('*"'+$config+'"*')) { throw 'Task identity mismatch' }
     $receipt = Join-Path $state ('gmail-update-'+[guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $receipt | Out-Null
+    Copy-Item -LiteralPath $config -Destination (Join-Path $receipt 'config-before.json')
     Export-ScheduledTask -TaskName $name -TaskPath '\' | Set-Content -LiteralPath (Join-Path $receipt 'task-before.xml') -Encoding UTF8
     Disable-ScheduledTask -TaskName $name -TaskPath '\' | Out-Null
     Stop-ScheduledTask -TaskName $name -TaskPath '\'
@@ -45,6 +66,11 @@ try {
     if (Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'python.exe' -and $_.CommandLine -like ('*'+$config+'*') }) { throw 'Gmail process still running' }
     & $python -B $helper --config $config | Out-Null
     if ($LASTEXITCODE -ne 0) { throw 'Local claim archive failed; task left disabled' }
+    if ($ConfigurationCandidate) {
+        Copy-Item -LiteralPath $candidate -Destination $config
+        if ((Get-FileHash -LiteralPath $config -Algorithm SHA256).Hash.ToLowerInvariant() -ne $ConfigurationSHA256) { throw 'Installed configuration readback mismatch' }
+        $result.ConfigurationVerified = $true
+    }
     $arguments = '-B "'+(Join-Path $release 'scripts\resident2x_watchdog.py')+'" --config "'+$config+'"'
     $action = New-ScheduledTaskAction -Execute $python -Argument $arguments -WorkingDirectory $release
     Set-ScheduledTask -TaskName $name -TaskPath '\' -Action $action | Out-Null

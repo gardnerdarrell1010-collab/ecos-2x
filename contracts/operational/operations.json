@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "operations": [
+    {
+      "name": "runtime.evidence.read",
+      "request_schema": "https://contracts.ecos.invalid/v1/runtime.evidence.read-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "continuity.snapshot",
+      "request_schema": "https://contracts.ecos.invalid/v1/continuity.snapshot-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "continuity.checkpoint.commit",
+      "request_schema": "https://contracts.ecos.invalid/v1/continuity.checkpoint.commit-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "core.review.commit",
+      "request_schema": "https://contracts.ecos.invalid/v1/core.review.commit-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "runtime.scope.read",
+      "request_schema": "https://contracts.ecos.invalid/v1/runtime.scope.read-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "notification.enqueue",
+      "request_schema": "https://contracts.ecos.invalid/v1/notification.enqueue-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "sms.receipt.persist",
+      "request_schema": "https://contracts.ecos.invalid/v1/sms.receipt.persist-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "sms.dispatch.begin",
+      "request_schema": "https://contracts.ecos.invalid/v1/sms.dispatch.begin-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "sms.dispatch.readback",
+      "request_schema": "https://contracts.ecos.invalid/v1/sms.dispatch.readback-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    },
+    {
+      "name": "calendar.evidence.record",
+      "request_schema": "https://contracts.ecos.invalid/v1/calendar.evidence.record-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "executor",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    }
+  ]
+}

@@ -86,5 +86,9 @@ if __name__ == '__main__':
     from runtime.resident2x.connection import connection_factory
     parser=argparse.ArgumentParser();parser.add_argument('--config',type=Path,required=True);parser.add_argument('--max-cycles',type=int,default=0)
     args=parser.parse_args();config=json.loads(args.config.read_text())
-    runtime=Resident(config,connection_factory(config),{'gmail_draft':handler(config)})
+    handlers={'gmail_draft':handler(config)}
+    if config.get('operational_sms'):
+        from runtime.resident2x.operational_sms import make_handlers
+        handlers.update(make_handlers(config))
+    runtime=Resident(config,connection_factory(config),handlers)
     runtime.run(args.max_cycles)

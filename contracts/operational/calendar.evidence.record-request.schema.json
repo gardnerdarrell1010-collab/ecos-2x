@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/calendar.evidence.record-request.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "account_scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "calendar_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "event": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "fence",
+        "account_scope",
+        "calendar_id",
+        "observed_at",
+        "event"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.ecos.invalid/v1/continuity.checkpoint.commit-request.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "context": {
+      "$ref": "https://contracts.ecos.invalid/v1/request_context.schema.json"
+    },
+    "arguments": {
+      "type": "object",
+      "properties": {
+        "fence": {
+          "$ref": "https://contracts.ecos.invalid/v1/fence.schema.json"
+        },
+        "package_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "boundary": {
+          "type": "object",
+          "properties": {
+            "source_references": {
+              "type": "array",
+              "minItems": 0,
+              "maxItems": 10000,
+              "items": {
+                "$ref": "https://contracts.ecos.invalid/v1/source_reference.schema.json"
+              }
+            },
+            "source_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "previous_package_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "record_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          },
+          "required": [
+            "source_references",
+            "source_hash",
+            "previous_package_id",
+            "observed_at",
+            "record_count"
+          ],
+          "additionalProperties": false
+        },
+        "ciphertext": {
+          "type": "string",
+          "minLength": 24,
+          "maxLength": 16000000
+        },
+        "ciphertext_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "verified_plaintext_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "iv": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 16
+        }
+      },
+      "required": [
+        "fence",
+        "package_id",
+        "boundary",
+        "ciphertext",
+        "ciphertext_sha256",
+        "verified_plaintext_sha256",
+        "iv"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "context",
+    "arguments"
+  ],
+  "additionalProperties": false
+}
