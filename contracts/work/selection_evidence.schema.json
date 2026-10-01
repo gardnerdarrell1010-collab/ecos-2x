@@ -5,7 +5,10 @@
   "type": "object",
   "properties": {
     "policy_version": {
-      "const": "lexicographic-v1"
+      "enum": [
+        "lexicographic-v1",
+        "task-loop-owner-locked-v1"
+      ]
     },
     "evaluated_at": {
       "type": "string",
@@ -83,6 +86,17 @@
     "occurrence_id": {
       "type": "string",
       "format": "uuid"
+    },
+    "dispatch_score": {
+      "type": "string",
+      "pattern": "^[0-9]{1,2}[.][0-9]{3}$"
+    },
+    "effective_ready_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "task_loop_id": {
+      "type": "string"
     }
   },
   "required": [

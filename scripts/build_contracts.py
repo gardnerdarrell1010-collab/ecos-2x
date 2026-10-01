@@ -164,6 +164,10 @@ def build():
         "immediate_ready": BOOL, "sla_breach_seconds": NAT, "deadline_pressure_seconds": NAT,
         "business_impact": {"type": "integer", "minimum": 0, "maximum": 100},
         "recurrence_relative_age_basis_points": NAT, "created_at": TIME, "occurrence_id": UUID})
+    OUTPUTS["contracts/work/selection_evidence.schema.json"]["properties"].update({
+        "policy_version": {"enum": ["lexicographic-v1", "task-loop-owner-locked-v1"]},
+        "dispatch_score": {"type": "string", "pattern": "^[0-9]{1,2}[.][0-9]{3}$"},
+        "effective_ready_at": TIME, "task_loop_id": {"type": "string"}})
     entity("work", "execution_run", {"fence": fence, "state": state("execution_run"),
         "selection_evidence": selection, "correlation_id": UUID, "ended_at": nullable(TIME)})
     entity("work", "stage_result", {"occurrence_id": UUID, "stage_definition_id": UUID,

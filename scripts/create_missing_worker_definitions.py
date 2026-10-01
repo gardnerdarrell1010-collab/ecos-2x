@@ -23,8 +23,6 @@ CAPABILITIES={
  'html.render':['local.render'], 'local_filesystem':['local.filesystem.read','local.filesystem.write'],
  'spreadsheet.xlsx.read':['spreadsheet.xlsx.read'], 'local.process.execute':['local.process.execute'],
  'secure.reference.resolve':['secure.reference.resolve'], 'http.authenticated.request':['http.authenticated.request']}
-NEW_CAPABILITIES={'local.filesystem.write':'Write local artifacts; required by preserved file-materialization contracts. No executor attestation granted.',
- 'spreadsheet.xlsx.read':'Read XLSX evidence; required by preserved staffing-feedback contract. No executor attestation granted.'}
 
 
 def prepare(db, receipt):
@@ -51,9 +49,9 @@ def prepare(db, receipt):
     # disabled migration definitions. Preserve unresolved legacy retry values in evidence.
     policy=db.execute("select id from ecos.retry_policy where max_attempts=1 and initial_delay_seconds=1 and max_delay_seconds=1 and backoff_multiplier=1 and jitter_basis_points=0 and retryable_error_classes='[]'::jsonb order by id limit 1").fetchone()[0]
     needed={c for x in proposed for c in x['caps']}
-    for cap,description in NEW_CAPABILITIES.items():
-        if cap in needed:
-            db.execute('insert into ecos.capability(name,version,description) values(%s,1,%s) on conflict(name,version) do nothing',(cap,description))
+    existing_caps={r[0] for r in db.execute('select name from ecos.capability where version=1')}
+    if needed-existing_caps:
+        raise ValueError('required_capability_not_in_approved_catalog')
     schema_id='https://contracts.ecos.invalid/v1/worker-configuration-input.schema.json'
     schema={'$schema':'https://json-schema.org/draft/2020-12/schema','$id':schema_id,'type':'object','properties':{'source_worker_id':{'type':'string'},'source_reference':{'type':'string'}},'required':['source_worker_id','source_reference'],'additionalProperties':True}
     db.execute('insert into ecos_meta.contract_schema values(%s,%s) on conflict(schema_id) do nothing',(schema_id,Jsonb(schema)))
