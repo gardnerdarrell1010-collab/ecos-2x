@@ -10,8 +10,17 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.dont_write_bytecode = True
 sys.path[:0] = [str(ROOT), str(ROOT / 'src')]
-from runtime.executor_profiles import validate_profile
 from runtime.resident2x.executor import singleton
+
+
+def validate_startup_config(config):
+    """Check deployment identity; the child loads and validates SQL capabilities."""
+    if config.get('identity') != 'RESIDENT_ADA_2X_HOME01':
+        raise ValueError('autonomous_executor_identity_mismatch')
+    if config.get('control_plane') != 'POSTGRESQL' or config.get('work_sources') != ['POSTGRESQL']:
+        raise ValueError('autonomous_control_plane_mismatch')
+    if config.get('capability_source') != 'POSTGRESQL':
+        raise ValueError('authoritative_capability_source_required')
 
 
 def main():
@@ -19,7 +28,7 @@ def main():
     parser.add_argument('--config', type=Path, required=True)
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
-    validate_profile(config, expected_identity='RESIDENT_ADA_2X_HOME01')
+    validate_startup_config(config)
     manifest = json.loads((ROOT / 'installed-manifest.json').read_text())
     for name, expected in manifest['files'].items():
         path = (ROOT / name).resolve()
