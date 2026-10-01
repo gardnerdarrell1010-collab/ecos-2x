@@ -13,9 +13,15 @@ from runtime.resident2x.executor import Resident, save, singleton
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=Path, required=True)
 parser.add_argument('--check-only', action='store_true')
+parser.add_argument('--require-operational', action='store_true')
 args = parser.parse_args()
 config = json.loads(args.config.read_text())
 runtime = Resident(config, connection_factory(config), {})
+if args.require_operational:
+    context = runtime.refresh_bootstrap()
+    if not context['enabled'] or context['availability'] != 'available':
+        print('ResidentDeploymentPreflight=executor_not_operational')
+        raise SystemExit(2)
 active = runtime.state['active']
 if active is not None:
     occurrence = active['data']['work_package']['occurrence']['id']

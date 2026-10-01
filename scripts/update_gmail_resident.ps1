@@ -6,6 +6,7 @@ param([Parameter(Mandatory=$true)][string]$ExpectedHead,
       [string]$ConfigurationSHA256,
       [switch]$KeepStopped)
 $ErrorActionPreference = 'Stop'
+$receipt = $null
 $result = [ordered]@{Status='FAILED'; Administrator=$false; ReleaseVerified=$false; TaskUpdated=$false; GmailHealthy=$false; ToastModified=$false; ProviderWritesPerformed=$false}
 try {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -47,7 +48,10 @@ try {
     }
     $python = Join-Path $repo '.venv\Scripts\python.exe'
     $helper = Join-Path $release 'scripts\prepare_gmail_runtime_resume.py'
-    & $python -B $helper --config $config --check-only | Out-Null
+    $preflightArgs = @('--config', $config, '--check-only')
+    if (-not $KeepStopped) { $preflightArgs += '--require-operational' }
+    & $python -B $helper @preflightArgs | Out-Null
+    if ($LASTEXITCODE -eq 2) { $result.FailureCode = 'executor_not_operational'; throw 'PostgreSQL executor disabled or unavailable; task unchanged' }
     if ($LASTEXITCODE -ne 0) { throw 'SQL recovery preflight failed' }
     $matches = @(Get-ScheduledTask -TaskPath '\' | Where-Object { $_.Actions.Arguments -like ('*"'+$config+'"*') })
     if ($matches.Count -ne 1) { throw 'Unique existing Resident task required' }
@@ -107,6 +111,10 @@ try {
     $result | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $receipt 'verification.json') -Encoding UTF8
 } catch { $result.ErrorType = $_.Exception.GetType().Name }
 finally {
+    if ($receipt -and (Test-Path -LiteralPath $receipt)) {
+        $result.Receipt = $receipt
+        $result | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $receipt 'verification.json') -Encoding UTF8
+    }
     Write-Output '========== PASTE BACK ONLY THIS SECTION =========='
     $result.GetEnumerator() | ForEach-Object { Write-Output ($_.Key+': '+$_.Value) }
     Write-Output '========== END SECTION =========='
