@@ -76,3 +76,19 @@ append-only versions, exact replay, current-version work.package retrieval, and 
 of the separate operation. Zero provider/business effects. Production remains off.
 The earlier migration-41 lossless proof of the complete 15,936-byte legacy instruction
 is historical evidence only; its script explicitly tests that historical migration boundary.
+
+
+## Shared producer persistence component
+
+Migration 44 adds immutable `ecos.producer_snapshot` storage tied to the existing
+occurrence, execution run and stage. The internal `persist_producer_snapshot` function
+checks the existing claim fence, configured producer identity, exact fragment hash,
+source references and timestamps. An occurrence can produce one snapshot; identical
+replay returns that snapshot, and conflicting replay fails. Payloads remain below
+40,000 characters. No runtime operation or executor grant is added.
+
+Two disposable functional passes verified fenced persistence, exact replay, immutable
+history, independent readback and existing work completion. Live schema/hash readback
+passed with zero producer rows and all execution still disabled. This is a storage
+component, not acceptance of any producer function: dataset generation, renderer
+contracts, governed invocation and executor linkage still require implementation.
