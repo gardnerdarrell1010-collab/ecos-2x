@@ -4,6 +4,16 @@ import {boundRequest, authorizedClaims, databaseLoginAllowed} from './online_tra
 const identity = {principal:'p',instance:'i',subject:'s',client:'c'};
 const request = {schema_version:'1.0.0',context:{principal_id:'p',executor_instance_id:'i'},arguments:{}};
 
+test('requested existing operations preserve identity, request and fencing',()=>{
+  for (const operation of ['work.next','work.claim','work.package','work.complete',
+    'runtime.scope.read','runtime.evidence.read','continuity.snapshot',
+    'continuity.checkpoint.commit','calendar.evidence.record']) {
+    const value={...request,arguments:{fence:{claim_id:'fixture',claim_version:2}}};
+    assert.deepEqual(boundRequest(operation,value,identity),value);
+    assert.throws(()=>boundRequest(operation,{...value,context:{...value.context,executor_instance_id:'other'}},identity),/identity_mismatch/);
+  }
+});
+
 test('existing Online identity can forward SMS completion without expanding identity or SQL access',()=>{
   const value={...request,arguments:{fence:{claim_id:'claim',claim_version:7},proposal_id:'proposal'}};
   assert.deepEqual(boundRequest('sms.continuation.complete',value,identity),value);

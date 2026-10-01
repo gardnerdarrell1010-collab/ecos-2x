@@ -6,6 +6,7 @@ export const OPERATIONS = Object.freeze([
   'task.evidence.attach', 'provider.result.record', 'sms.continuation.complete',
   'runtime.scope.read', 'runtime.evidence.read', 'notification.enqueue', 'core.review.commit',
   'calendar.evidence.record',
+  'continuity.snapshot', 'continuity.checkpoint.commit',
 ]);
 
 export function boundRequest(operation, request, identity) {
