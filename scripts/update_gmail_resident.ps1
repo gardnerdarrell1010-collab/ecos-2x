@@ -2,7 +2,8 @@
 param([Parameter(Mandatory=$true)][string]$ExpectedHead,
       [Parameter(Mandatory=$true)][string]$ReleaseDirectory,
       [string]$ConfigurationCandidate,
-      [string]$ConfigurationSHA256)
+      [string]$ConfigurationSHA256,
+      [switch]$KeepStopped)
 $ErrorActionPreference = 'Stop'
 $result = [ordered]@{Status='FAILED'; Administrator=$false; ReleaseVerified=$false; TaskUpdated=$false; GmailHealthy=$false; ToastModified=$false; ProviderWritesPerformed=$false}
 try {
@@ -74,6 +75,19 @@ try {
     $arguments = '-B "'+(Join-Path $release 'scripts\resident2x_watchdog.py')+'" --config "'+$config+'"'
     $action = New-ScheduledTaskAction -Execute $python -Argument $arguments -WorkingDirectory $release
     Set-ScheduledTask -TaskName $name -TaskPath '\' -Action $action | Out-Null
+    if ($KeepStopped) {
+        $readback = Get-ScheduledTask -TaskName $name -TaskPath '\'
+        if ($readback.Actions.Arguments -ne $arguments -or $readback.Settings.Enabled) { throw 'Stopped installation readback mismatch' }
+        if (Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'python.exe' -and $_.CommandLine -like ('*'+$config+'*') }) { throw 'Resident unexpectedly running' }
+        $result.TaskUpdated = $true
+        $result.RuntimeInstalled = $true
+        $result.RuntimeStarted = $false
+        $result.TaskEnabled = $false
+        $result.Status = 'PASS'
+        $result.Receipt = $receipt
+        $result | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $receipt 'verification.json') -Encoding UTF8
+        return
+    }
     Enable-ScheduledTask -TaskName $name -TaskPath '\' | Out-Null
     $readback = Get-ScheduledTask -TaskName $name -TaskPath '\'
     if ($readback.Actions.Arguments -ne $arguments -or -not $readback.Settings.Enabled) { throw 'Task readback mismatch' }
