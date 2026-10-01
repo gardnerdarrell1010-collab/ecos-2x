@@ -68,6 +68,10 @@ def singleton(path):
                 fcntl.flock(lock, fcntl.LOCK_UN)
 
 
+class WorkPackageChanged(ValueError):
+    """Fresh authoritative input changed before handler invocation."""
+
+
 class OperationRejected(RuntimeError):
     def __init__(self, operation, code):
         self.operation, self.code = operation, code
@@ -263,7 +267,7 @@ class Resident:
             if fresh != package:
                 # A lease renewal changes claim expiry, not the package fence or source inputs.
                 if any(fresh[k] != package[k] for k in ("input", "stage", "source_references", "context_version", "fence")):
-                    raise ValueError("work_package_changed")
+                    raise WorkPackageChanged("work_package_changed")
             stage = package["stage"]["stage_key"]
             handler = self.handlers.get(stage)
             if handler is None or package["stage"]["kind"] != self.stage_kind:
@@ -351,6 +355,10 @@ class Resident:
                         self.execute(self.state["active"])
                     except InterruptedError:
                         self.finish_control("work.release", self.state["active"]["data"]["work_package"]["fence"], "graceful_shutdown")
+                    except WorkPackageChanged:
+                        # No handler has run: release for a fresh authoritative package.
+                        # A concurrent configuration refresh is not a business failure.
+                        self.finish_control("work.release", self.state["active"]["data"]["work_package"]["fence"], "work_package_changed")
                     except OperationRejected as exc:
                         # Preserve intent for diagnosis/recovery. Never retry external effects after a lost fence.
                         save(self.root / "failure.json", {"at": now(), "operation": exc.operation, "code": exc.code})
