@@ -391,17 +391,17 @@ class Resident:
                             self.stopping.wait(max(5, self.config.get("poll_seconds", 2)))
                             continue
                         if exc.code == "expired_fence" and exc.operation in ("work.renew", "work.package", "work.complete"):
-                            self.invoke("recovery.sweep", {"limit": 10})
-                            current = self.read("work_occurrence", self.state["active"]["data"]["claim"]["occurrence_id"])
-                            if current["record"]["state"] not in (
-                                    "pending", "retry_wait", "ready", "succeeded",
-                                    "failed", "dead_lettered", "cancelled"):
-                                raise
-                            # Recovery can leave pending work or a terminal occurrence.
-                            # Both invalidate this expired local claim. Preserve evidence,
-                            # then fall through to clear it and poll work.next normally.
+                            # expired_fence is the governed proof that this local fence
+                            # cannot execute. Do not require access to an old occurrence
+                            # before resuming discovery of unrelated compatible work.
                             save(self.root / ("recovered-claim-" + self.state["active"]["data"]["work_package"]["fence"]["claim_id"] + ".json"),
-                                 {"active": self.state["active"], "readback": current})
+                                 {"active": self.state["active"], "operation": exc.operation,
+                                  "code": exc.code, "at": now()})
+                            try:
+                                self.invoke("recovery.sweep", {"limit": 10})
+                            except OperationRejected as recovery_error:
+                                save(self.root / "recovery-failure.json", {"at": now(),
+                                    "operation": recovery_error.operation, "code": recovery_error.code})
                         else:
                             raise
                     except psycopg.OperationalError:

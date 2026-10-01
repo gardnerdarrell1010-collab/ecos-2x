@@ -28,7 +28,7 @@ class PackageRefreshTest(unittest.TestCase):
                 r.refresh_bootstrap = Mock()
                 r.invoke = Mock(side_effect=[{'data':{'authority':'fixture'}},
                     {'data':{'pending_wakeups':9}},None])
-                r.read = Mock(return_value={'record':{'state':recovered}})
+                r.read = Mock(side_effect=AssertionError('Old occurrence read must not gate polling'))
                 r.heartbeat = Mock()
                 r.execute = Mock(side_effect=OperationRejected('work.renew','expired_fence'))
                 r._run_connected(max_cycles=2)
@@ -36,6 +36,7 @@ class PackageRefreshTest(unittest.TestCase):
                                  ['executor.register','recovery.sweep','work.next'])
                 self.assertIsNone(r.state['active'])
                 self.assertTrue((r.root/'recovered-claim-old-claim.json').exists())
+                r.read.assert_not_called()
 
     def test_both_profiles_poll_after_null_and_successful_completion(self):
         for instance in ('home01', 'gmail'):
