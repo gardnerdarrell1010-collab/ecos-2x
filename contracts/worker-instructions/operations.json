@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "operations": [
+    {
+      "name": "work.instruction.publish",
+      "request_schema": "https://contracts.ecos.invalid/v1/work.instruction.publish-request.schema.json",
+      "response_schema": "https://contracts.ecos.invalid/v1/phase2_result.schema.json",
+      "required_role": "operations_api",
+      "semantic_proposable": false,
+      "idempotency_scope": "principal_id + operation + idempotency_key",
+      "atomicity": "single transaction"
+    }
+  ]
+}
