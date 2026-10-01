@@ -92,3 +92,26 @@ history, independent readback and existing work completion. Live schema/hash rea
 passed with zero producer rows and all execution still disabled. This is a storage
 component, not acceptance of any producer function: dataset generation, renderer
 contracts, governed invocation and executor linkage still require implementation.
+
+
+## Capability-routing correction
+
+Migration 45 removes the migration-only four-stage allowlist for work without an
+explicit object-domain binding. Such work uses the existing Phase 2 SQL selector and
+object-grant check for every stage name. Explicit domain-bound records retain their
+approved domain checks. Existing capability matching, executor surface, claim fencing,
+operation grants and execution-disabled gates remain intact. No domain is created.
+
+A022's preserved stage requirements map to existing canonical lookup values:
+`db.governed_operations`, `provider.drive`, `local.filesystem.read`,
+`local.filesystem.write`, and `local.process.execute`. Its disabled canonical stage
+and complete instruction version were independently read back. SQL capability lookup
+identifies the existing Google-enabled Resident profile after its missing capabilities
+were attested from existing client/adapter/credential evidence. The stage stores no
+executor identity. The conversion target remains SQL_NATIVE. The previous assertion
+that this requires A022-specific authority was incorrect and is superseded.
+
+Two isolated SQL passes verified rejection before capability attestation, selection
+after attestation, arbitrary stage-name routing, package/completion, and preservation
+of explicit domain checks. Production remains off. This establishes capability routing;
+A022's SQL assembly and Resident execution handler are not thereby implemented or accepted.
