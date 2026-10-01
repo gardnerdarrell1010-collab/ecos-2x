@@ -16,6 +16,7 @@ from pathlib import Path
 import signal
 import threading
 import time
+import traceback
 import psycopg
 from uuid import uuid4
 
@@ -371,7 +372,16 @@ class Resident:
                         self.finish_control("work.release", self.state["active"]["data"]["work_package"]["fence"], "work_package_changed")
                     except OperationRejected as exc:
                         # Preserve intent for diagnosis/recovery. Never retry external effects after a lost fence.
-                        save(self.root / "failure.json", {"at": now(), "operation": exc.operation, "code": exc.code})
+                        save(self.root / "failure.json", {"at": now(), "operation": exc.operation, "code": exc.code,
+                            "stack": [{"file": Path(f.filename).name, "line": f.lineno, "function": f.name}
+                                      for f in traceback.extract_tb(exc.__traceback__)]})
+                        if exc.code == "forbidden" and exc.operation in ("work.renew", "work.package"):
+                            # Keep ownership/effect evidence unchanged. A rejected guard
+                            # cannot authorize provider work or a fabricated failure.
+                            # Retry the guarded path after a heartbeat, not process exit.
+                            count += 1
+                            self.stopping.wait(max(5, self.config.get("poll_seconds", 2)))
+                            continue
                         if exc.code == "expired_fence" and exc.operation in ("work.renew", "work.package", "work.complete"):
                             self.invoke("recovery.sweep", {"limit": 10})
                             current = self.read("work_occurrence", self.state["active"]["data"]["claim"]["occurrence_id"])
