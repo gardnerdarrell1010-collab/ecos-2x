@@ -3,7 +3,7 @@ export const OPERATIONS = Object.freeze([
   'executor.register', 'executor.heartbeat', 'work.next', 'work.package',
   'work.claim', 'work.renew', 'work.complete', 'work.fail', 'work.defer',
   'work.release', 'semantic.proposal.submit', 'fact.record',
-  'task.evidence.attach', 'provider.result.record',
+  'task.evidence.attach', 'provider.result.record', 'sms.continuation.complete',
 ]);
 
 export function boundRequest(operation, request, identity) {

@@ -88,6 +88,16 @@ Deno.serve(async (req: Request) => {
         return {isError:true,content:[{type:'text',text:'operation_outcome_unknown_preserve_idempotency_key'}]};
       }
     });
+    server.registerTool('ecos_read_record', {
+      description:'Read an explicitly assigned ECOS record. PostgreSQL enforces object and domain grants; this does not enumerate or grant access.',
+      inputSchema:z.object({kind:z.enum(['communication','communication_processing','provider_receipt','task','project','party','relationship','notification','delivery','work_occurrence']),id:z.string().uuid()}),
+      annotations:{readOnlyHint:true,openWorldHint:false},
+    },async ({kind,id}) => {
+      try {
+        const rows=await database`select ecos.read_record(${kind},${id}::uuid) as response`;
+        return {content:[{type:'text',text:JSON.stringify(rows[0].response)}]};
+      } catch { return {isError:true,content:[{type:'text',text:'record_not_authorized_or_unavailable'}]}; }
+    });
     registerGmailTools(server,database,identity);
     return server;
   });

@@ -3,6 +3,13 @@ import assert from 'node:assert/strict';
 import {boundRequest, authorizedClaims, databaseLoginAllowed} from './online_transport_core.mjs';
 const identity = {principal:'p',instance:'i',subject:'s',client:'c'};
 const request = {schema_version:'1.0.0',context:{principal_id:'p',executor_instance_id:'i'},arguments:{}};
+
+test('existing Online identity can forward SMS completion without expanding identity or SQL access',()=>{
+  const value={...request,arguments:{fence:{claim_id:'claim',claim_version:7},proposal_id:'proposal'}};
+  assert.deepEqual(boundRequest('sms.continuation.complete',value,identity),value);
+  assert.throws(()=>boundRequest('sms.continuation.enqueue',value,identity),/operation_not_allowed/);
+  assert.throws(()=>boundRequest('sms.continuation.complete',{...value,context:{...value.context,principal_id:'other'}},identity),/identity_mismatch/);
+});
 test('retains exact governed request and fence without mutating caller',()=>{
   const value = {...request,arguments:{fence:{claim_id:'claim',claim_version:7}}};
   assert.deepEqual(boundRequest('work.complete',value,identity),value);
