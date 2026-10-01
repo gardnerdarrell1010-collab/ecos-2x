@@ -341,8 +341,18 @@ class Resident:
                 while not self.stopping.is_set() and (not max_cycles or count < max_cycles):
                     self.heartbeat(self.client, bool(self.state["active"]))
                     if self.state["active"] is None:
-                        claimed = self.invoke("work.next", {"executor_instance_id": self.config["instance_id"],
-                            "lease_seconds": self.config.get("lease_seconds", 120)}, key="next:" + str(self.state["cycle"]))
+                        try:
+                            claimed = self.invoke("work.next", {"executor_instance_id": self.config["instance_id"],
+                                "lease_seconds": self.config.get("lease_seconds", 120)}, key="next:" + str(self.state["cycle"]))
+                        except OperationRejected as exc:
+                            # Keep the exact pending request for reconciliation. A dispatch
+                            # rejection must not terminate presence or invent completion.
+                            save(self.root / "failure.json", {"at": now(),
+                                "operation": exc.operation, "code": exc.code,
+                                "cycle": self.state["cycle"], "phase": "dispatch"})
+                            count += 1
+                            self.stopping.wait(max(5, self.config.get("poll_seconds", 2)))
+                            continue
                         if claimed["status"] == "NO_ELIGIBLE_WORK":
                             self.state["cycle"] += 1
                             save(self.state_path, self.state)
