@@ -190,6 +190,41 @@
     "operational_authority": {
       "const": "POSTGRESQL_ECOS_2X"
     },
+    "command_registry": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "command_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "command": {
+            "type": "string"
+          },
+          "business_outcome": {
+            "type": "string"
+          },
+          "ai_interpretation": {
+            "type": "string"
+          },
+          "record_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "command_id",
+          "command",
+          "business_outcome",
+          "ai_interpretation",
+          "record_version"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": false
+    },
     "executor_context": {
       "type": "object",
       "properties": {

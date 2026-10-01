@@ -296,6 +296,9 @@ def build():
     # Additive runtime bootstrap fields; historical packages remain readable.
     OUTPUTS["contracts/memory/bootstrap_package.schema.json"]["properties"].update({
         "operational_authority": {"const": "POSTGRESQL_ECOS_2X"},
+        "command_registry": arr(obj({"command_id": UUID, "command": {"type": "string"},
+            "business_outcome": {"type": "string"}, "ai_interpretation": {"type": "string"},
+            "record_version": POS})),
         "executor_context": obj({
             "identity": TEXT, "executor_id": UUID, "executor_name": TEXT,
             "executor_instance_id": UUID, "principal_id": UUID, "surface": TEXT,

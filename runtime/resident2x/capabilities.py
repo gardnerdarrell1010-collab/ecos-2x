@@ -15,6 +15,25 @@ import urllib.request
 from ecos.core.contracts import content_hash
 
 
+def configured_handlers(config):
+    """Load installed provider adapters, without using a domain to route work.
+
+    Adapter configuration supplies transport prerequisites, never executor grants.
+    Selection and the execution gate still use PostgreSQL capability attestations.
+    """
+    handlers = make_handlers(config)
+    if config.get('wave1'):
+        from runtime.resident2x.toast_wave1 import handler
+        handlers['toast_acquire'] = handler(config)
+    if config.get('gmail_credential_file'):
+        from runtime.resident2x.gmail import handler
+        handlers['gmail_draft'] = handler(config)
+    if config.get('operational_sms'):
+        from runtime.resident2x.operational_sms import make_handlers as sms_handlers
+        handlers.update(sms_handlers(config))
+    return handlers
+
+
 def shared_http(config):
     shared = config["shared_capability"]
     root = Path(shared["root"]).resolve()

@@ -1,4 +1,4 @@
-"""SQL-native Resident. Production authority is scoped by domain in PostgreSQL.
+"""SQL-native Resident using PostgreSQL capability matching and governed claims.
 
 Enrollment supplies a dedicated login and scoped, attested capabilities. PostgreSQL
 owns selection, fences, leases and retries. The local journal only preserves exact
@@ -90,9 +90,8 @@ class Resident:
             if config.get("provider_effects_enabled") is not False:
                 raise ValueError("synthetic_effects_forbidden")
         elif (config.get("authority") != "DOMAIN_SCOPED_PRODUCTION"
-              or config.get("execution_mode") not in ("synthetic", "shadow", "production")
-              or not config.get("domain")):
-            raise ValueError("domain_authority_configuration_required")
+              or config.get("execution_mode") not in ("synthetic", "shadow", "production")):
+            raise ValueError("runtime_configuration_required")
         self.config, self.connect, self.handlers = config, connect, handlers
         self.root = Path(config["state_directory"]).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
@@ -384,20 +383,10 @@ def main():
     parser.add_argument("--max-cycles", type=int, default=0)
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
-    from runtime.resident2x.capabilities import make_handlers
+    from runtime.resident2x.capabilities import configured_handlers
     from runtime.resident2x.connection import connection_factory
-    if config.get("domain") == "toast.acquisition":
-        from runtime.resident2x.toast_wave1 import handler
-        handlers = {"toast_acquire": handler(config)}
-    elif config.get("domain") == "gmail.operations":
-        from runtime.resident2x.gmail import handler
-        handlers = {"gmail_draft": handler(config)}
-        if config.get("operational_sms"):
-            from runtime.resident2x.operational_sms import make_handlers as sms_handlers
-            handlers.update(sms_handlers(config))
-    else:
-        handlers = make_handlers(config)
-    runtime = Resident(config, connection_factory(config), handlers)
+    runtime = Resident(config, connection_factory(config), {})
+    runtime.handlers = configured_handlers(runtime.config)
     signal.signal(signal.SIGINT, lambda *_: runtime.stopping.set())
     signal.signal(signal.SIGTERM, lambda *_: runtime.stopping.set())
     try:
