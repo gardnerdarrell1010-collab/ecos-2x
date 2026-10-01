@@ -1,4 +1,4 @@
-"""One preserved instruction round trip on a private disposable database; no execution."""
+"""Historical migration-41 proof only; NOT current definition-management acceptance."""
 import sys,json,os,tempfile,secrets,socket,subprocess,hashlib
 from pathlib import Path
 from datetime import datetime,timezone
@@ -31,7 +31,7 @@ try:
   db.autocommit=True
   for role in ('anon','authenticated','service_role'):
    db.execute('create role '+role+' nologin')
-  db.execute(render(inventory(r/'db/migrations')).replace('\\set ON_ERROR_STOP on\n',''),prepare=False)
+  db.execute(render(inventory(r/'db/migrations')[:41]).replace('\\set ON_ERROR_STOP on\n',''),prepare=False)
  f=Fixture(target);f.seed()
  from resident2x_acceptance import hosted_admin
  from phase2_executor_client import GovernedClient

@@ -55,5 +55,7 @@
     "context",
     "arguments"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "deprecated": true,
+  "description": "Historical migration 41 request only. Removed from the governed operation catalog by migration 42."
 }

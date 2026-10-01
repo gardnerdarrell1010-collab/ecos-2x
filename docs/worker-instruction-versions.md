@@ -1,45 +1,59 @@
-# Complete worker instructions in work.package
+# Worker instruction configuration
 
-Migration 41 adds one generic, append-only `ecos.work_instruction_version` store.
-Each version references an existing work definition and stage. `work.instruction.publish`
-requires the existing operations_api role, a principal operation grant, and exact object
-grants for both definition and stage. Executors gain no publication authority. A stage
-row lock serializes publication; expected_version prevents lost updates. SHA-256 is
-verified against the exact UTF-8 instruction text. Prior versions cannot be changed or deleted.
+Migration 42 removes `work.instruction.publish` from the active operation catalog,
+revokes its grants, and removes its dispatcher implementation. The historical request
+schema is deprecated. Immutable instruction versions, claim pins, operation receipts,
+and automatic `work.package.functional_instructions` retrieval are preserved.
 
-The request is defined in contracts/worker-instructions. Set expected_version to zero
-for initial publication, otherwise to the last published version. source_reference must
-identify the preserved authoritative source. No trimming, newline conversion, summarizing,
-or prompt transformation is performed by storage. Ada must preserve complete instructions;
-any later authorized migration transformation requires its own source/equivalence evidence.
+Worker instructions are configuration data. Use the same authenticated administrative
+connection and configuration lock as existing definition/stage migration scripts.
+No new runtime operation, connector, permission, executor, domain, or approval is needed.
+Administrative writes record the actual database role plus a configuration correlation ID;
+historical principal attribution is preserved. No executor identity is fabricated.
 
-Every work.package (including the package inside work.next) now includes
-functional_instructions: the entire version record, or null when not yet migrated.
-The first package pins the current version to its existing claim, including absence.
-Later publication cannot change that active claim's package; a later claim can obtain
-the new version. No selector, executor, domain, schedule, or scoring behavior changes.
-The original 32 KiB context bound remains; instructions have a separate 256 KiB UTF-8
-storage bound (65,536 characters in the request). Package measurements include full text.
-Existing Online JSON serialization and Resident package/client handling preserve the field.
-Neither executor is granted arbitrary text execution or new handler behavior.
+## Deterministic bulk path for Ada migration tooling
 
-## Bounded evidence
+Create a private JSON mapping array with one item per approved existing stage:
+`source_worker_id`, `work_definition_id`, `stage_definition_id`.
+Use exact preserved Task Loop worker IDs and existing PostgreSQL UUIDs; do not infer mappings.
 
-One complete preserved Instructions field, chosen as the longest current TASK-AUTO
-source, passed byte-for-byte work.next/work.package retrieval on a private disposable
-PostgreSQL database: 15,936 UTF-8 bytes, zero transformations. The existing Resident
-GovernedClient retrieved the same version. Append-only versioning, claim pinning, and
-executor publication rejection passed in this one bounded check. No worker/provider
-execution occurred. Source text was never placed in Git.
+Prepare without writes:
 
-Migration 41 was applied and independently read back on the authoritative database.
-All executors and definitions remain disabled, with zero live claims. No operational
-worker definitions have been bulk migrated; Ada owns the remaining definition migration.
-The dedicated Online OAuth transport is not available as a callable tool in this Codex
-session, and no existing Online OAuth access/refresh credential was found in its enrollment
-directory. Actual authenticated Online HTTP package consumption is therefore unverified;
-static pass-through compatibility is not represented as hosted acceptance. No browser used.
+```powershell
+& C:\ECOS\ecos-2x\.venv\Scripts\python.exe C:\ECOS\ecos-2x\scripts\configure_worker_instructions.py --mapping C:\path\mapping.json --plan C:\path\instruction-plan.json
+```
 
-The required repository check reported 98 passing tests, 26 skipped, and two unrelated
-existing specimen errors (backup ciphertext minimum length and approval expires_at).
-The bounded new SQL acceptance passed. Do not reopen accepted runtime parity or provider tests.
+Apply the exact saved plan through existing migration authority:
+
+```powershell
+& C:\ECOS\ecos-2x\.venv\Scripts\python.exe C:\ECOS\ecos-2x\scripts\configure_worker_instructions.py --plan C:\path\instruction-plan.json --apply
+```
+
+The plan pins source batch/locator, full instruction SHA-256, definition/stage record
+versions, current instruction version, and capability-requirement hash. Apply resolves
+text from preserved PostgreSQL source, checks every item before writing, and commits
+the entire batch atomically. It increments each definition configuration record version
+once, each affected stage record version once, and appends one immutable instruction
+version per stage. It changes no routing, capabilities, schedules, or enabled flags.
+An exact plan replay produces no duplicate version; drift fails closed. Independent
+readback checks complete text, versions, linkage, attribution, capabilities, and all-off state.
+A committed write with failed readback must be reconciled by replaying that same plan.
+
+For existing creation/configuration scripts, `plan(db, mapping)` and
+`configure(db, document)` can run in the same transaction immediately after their normal
+work_definition/work_stage_definition/stage_capability_requirement writes. Run
+`readback(db, document)` through a separate connection after commit. No separate publish step.
+The CLI attaches instructions to existing definitions; it does not invent missing definitions.
+
+The bulk path preserves exact source text, including whitespace and Unicode. It performs
+no prompt transformations. Missing/ambiguous mappings or absent complete source text fail
+closed. Keep plans and source evidence private. Ada owns population selection and migration;
+this repair does not migrate the remaining 52 definitions or enable production.
+
+## Verification
+
+Bounded disposable PostgreSQL acceptance passed configuration plus independent readback,
+append-only versions, exact replay, current-version work.package retrieval, and removal
+of the separate operation. Zero provider/business effects. Production remains off.
+The earlier migration-41 lossless proof of the complete 15,936-byte legacy instruction
+is historical evidence only; its script explicitly tests that historical migration boundary.
