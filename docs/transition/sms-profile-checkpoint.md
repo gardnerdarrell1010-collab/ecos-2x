@@ -1,5 +1,15 @@
 # SMS Online profile checkpoint
 
+**Superseded: ABORTED / NOT ACCEPTED / NON-PRODUCTION.** The owner subsequently
+directed containment of this separate identity and use of the existing Online and
+Resident identities under the authoritative Batch 13 plan. Its executor and login
+binding are disabled, capability renewal is disabled, and synthetic work was
+reconciled without acceptance. Historical implementation and evidence are retained;
+the enrollment scripts below are not instructions to reactivate it. No production
+SMS effects or processing of the 19 held continuations were accepted or performed.
+
+The following is the historical pre-abort checkpoint:
+
 Owner authorized ONLINE_ADA_2X_SMS in sms.operations using the existing Online enrollment and hosted OAuth adapter pattern. A dedicated non-administrator SQL role, executor instance, production domain binding, public OAuth client and online-ada-2x-sms Edge Function are enrolled/deployed. Gmail source, configuration and domain remain unchanged.
 
 Exactly three capabilities: ecos.2x.execute, semantic.interpret, db.governed_operations. The existing 24-hour capability lease / 12-hour renewal policy is bound to the SMS deployment evidence hash. No instance capacity increase.
