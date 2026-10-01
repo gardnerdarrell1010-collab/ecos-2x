@@ -15,11 +15,6 @@ parser.add_argument('--config', type=Path, required=True)
 parser.add_argument('--check-only', action='store_true')
 args = parser.parse_args()
 config = json.loads(args.config.read_text())
-assert config['domain'] == 'gmail.operations'
-expected = {'ecos.2x.execute', 'provider.gmail', 'db.governed_operations'}
-if config.get('operational_sms'):
-    expected |= {'http.authenticated.request', 'provider.twilio'}
-assert set(config['capabilities']) == expected
 runtime = Resident(config, connection_factory(config), {})
 active = runtime.state['active']
 if active is not None:

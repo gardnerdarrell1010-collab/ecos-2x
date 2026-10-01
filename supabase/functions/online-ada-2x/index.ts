@@ -65,10 +65,20 @@ Deno.serve(async (req: Request) => {
   const handler = createMcpHandler(() => {
     const server = new McpServer({name:'ecos-online-ada-2x',version:'0.1.0'});
     server.registerTool('ecos_identity', {
-      description:'Return the enrolled Online executor context. Contains no credentials.',
+      description:'Load the authoritative PostgreSQL bootstrap, executor identity, capability validity and enabled state before work. Contains no credentials.',
       inputSchema:z.object({}),annotations:{readOnlyHint:true,openWorldHint:false},
-    },()=>({content:[{type:'text',text:JSON.stringify({identity:'ONLINE_ADA_2X',
-      principal_id:identity.principal,executor_instance_id:identity.instance})}]}));
+    },async ()=>{
+      try {
+        const rows=await database`select ecos.bootstrap_package() as response`;
+        const bootstrap=rows[0].response;
+        const context=bootstrap.executor_context;
+        if (context?.principal_id!==identity.principal || context?.executor_instance_id!==identity.instance
+            || context?.identity!=='ONLINE_ADA_2X' || bootstrap.operational_authority!=='POSTGRESQL_ECOS_2X') {
+          throw new Error('bootstrap_identity_mismatch');
+        }
+        return {content:[{type:'text',text:JSON.stringify(bootstrap)}]};
+      } catch { return {isError:true,content:[{type:'text',text:'authoritative_bootstrap_unavailable'}]}; }
+    });
     server.registerTool('ecos_operate', {
       description:'Invoke an accepted ECOS operation as ONLINE_ADA_2X. PostgreSQL enforces authorization, capabilities, authority, claim fencing and idempotency. No SQL access.',
       inputSchema:z.object({operation:z.enum(OPERATIONS as [string,...string[]]),request:z.record(z.string(),z.unknown())}),

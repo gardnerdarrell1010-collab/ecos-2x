@@ -2,6 +2,7 @@
 param([Parameter(Mandatory=$true)][string]$ExpectedHead,
       [Parameter(Mandatory=$true)][string]$ReleaseDirectory,
       [string]$ConfigurationCandidate,
+      [string]$ConfigPath = 'D:\ECOS\Node\runtime\resident2x\state\gmail-home01\config.json',
       [string]$ConfigurationSHA256,
       [switch]$KeepStopped)
 $ErrorActionPreference = 'Stop'
@@ -10,12 +11,13 @@ try {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     if (-not ([Security.Principal.WindowsPrincipal]::new($identity)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { throw 'Administrator required' }
     $result.Administrator = $true
+    $result.ToastModified = ([IO.Path]::GetFullPath($ConfigPath) -ne 'D:\ECOS\Node\runtime\resident2x\state\gmail-home01\config.json')
     $repo = 'C:\ECOS\ecos-2x'
     $git = 'C:\Program Files\Git\cmd\git.exe'
     if ((& $git -C $repo rev-parse HEAD).Trim() -ne $ExpectedHead -or $LASTEXITCODE -ne 0) { throw 'HEAD mismatch' }
     if ((& $git -C $repo status --porcelain) -or $LASTEXITCODE -ne 0) { throw 'Working tree dirty' }
     $release = [IO.Path]::GetFullPath($ReleaseDirectory)
-    if (-not $release.StartsWith('D:\ECOS\Node\runtime\resident2x\releases\gmail-', [StringComparison]::OrdinalIgnoreCase)) { throw 'Release outside Gmail directory' }
+    if (-not $release.StartsWith('D:\ECOS\Node\runtime\resident2x\releases\', [StringComparison]::OrdinalIgnoreCase)) { throw 'Release outside Gmail directory' }
     $manifest = Get-Content -LiteralPath (Join-Path $release 'installed-manifest.json') -Raw | ConvertFrom-Json
     if ($manifest.head -ne $ExpectedHead) { throw 'Manifest HEAD mismatch' }
     foreach ($f in $manifest.files.PSObject.Properties) {
@@ -24,32 +26,33 @@ try {
         if ((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() -ne $f.Value) { throw 'Release hash mismatch' }
     }
     $result.ReleaseVerified = $true
-    $state = 'D:\ECOS\Node\runtime\resident2x\state\gmail-home01'
-    $config = Join-Path $state 'config.json'
+    $config = [IO.Path]::GetFullPath($ConfigPath)
+    if (-not $config.StartsWith('D:\ECOS\Node\runtime\resident2x\state\',[StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $config)) { throw 'Existing Resident configuration required' }
+    $state = Split-Path -Parent $config
     if ($ConfigurationCandidate) {
         $candidate = [IO.Path]::GetFullPath($ConfigurationCandidate)
         if (-not $candidate.StartsWith($state+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Configuration outside existing profile' }
         if ((Get-FileHash -LiteralPath $candidate -Algorithm SHA256).Hash.ToLowerInvariant() -ne $ConfigurationSHA256) { throw 'Configuration hash mismatch' }
         $before = Get-Content -LiteralPath $config -Raw | ConvertFrom-Json
         $after = Get-Content -LiteralPath $candidate -Raw | ConvertFrom-Json
-        $allowed = @('capabilities','shared_capability','operational_sms')
+        $allowed = @('capabilities','capability_source','shared_capability','operational_sms')
         foreach ($property in $before.PSObject.Properties) {
             if ($property.Name -notin $allowed -and (($property.Value | ConvertTo-Json -Depth 100 -Compress) -ne ($after.($property.Name) | ConvertTo-Json -Depth 100 -Compress))) { throw 'Existing profile changed' }
         }
         foreach ($property in $after.PSObject.Properties) {
             if ($property.Name -notin $allowed -and $property.Name -notin $before.PSObject.Properties.Name) { throw 'Unexpected configuration field' }
         }
-        $expectedCapabilities = @('db.governed_operations','ecos.2x.execute','http.authenticated.request','provider.gmail','provider.twilio')
-        if (@(Compare-Object ($after.capabilities.PSObject.Properties.Name | Sort-Object) ($expectedCapabilities | Sort-Object)).Count -ne 0) { throw 'Capability scope mismatch' }
-        if (@($after.capabilities.PSObject.Properties | Where-Object {$_.Value -ne 1}).Count -ne 0) { throw 'Capability version mismatch' }
-        if (-not $after.operational_sms -or -not $after.shared_capability) { throw 'Operational binding absent' }
+        if ($after.capability_source -ne 'POSTGRESQL' -or $after.PSObject.Properties.Name -contains 'capabilities') { throw 'Capabilities must be loaded from PostgreSQL bootstrap' }
+
     }
     $python = Join-Path $repo '.venv\Scripts\python.exe'
     $helper = Join-Path $release 'scripts\prepare_gmail_runtime_resume.py'
     & $python -B $helper --config $config --check-only | Out-Null
     if ($LASTEXITCODE -ne 0) { throw 'SQL recovery preflight failed' }
-    $name = 'ECOS HOME01 Resident Ada 2.x Gmail'
-    $task = Get-ScheduledTask -TaskName $name -TaskPath '\'
+    $matches = @(Get-ScheduledTask -TaskPath '\' | Where-Object { $_.Actions.Arguments -like ('*"'+$config+'"*') })
+    if ($matches.Count -ne 1) { throw 'Unique existing Resident task required' }
+    $task = $matches[0]
+    $name = $task.TaskName
     if (@($task.Actions).Count -ne 1 -or $task.Actions.Execute -ne $python -or $task.Actions.Arguments -notlike ('*"'+$config+'"*')) { throw 'Task identity mismatch' }
     $receipt = Join-Path $state ('gmail-update-'+[guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $receipt | Out-Null
@@ -60,7 +63,7 @@ try {
     $processes = @(Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'python.exe' -and $_.CommandLine -like ('*'+$config+'*') })
     $processes | Select-Object ProcessId,CreationDate,CommandLine | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $receipt 'processes-before.json') -Encoding UTF8
     foreach ($process in $processes) {
-        if ($process.CommandLine -notlike '*\resident2x\releases\gmail-*' -or ($process.CommandLine -notlike '*resident2x.py*' -and $process.CommandLine -notlike '*resident2x_watchdog.py*')) { throw 'Unexpected Gmail process; task left disabled' }
+        if ($process.CommandLine -notlike '*\resident2x\releases\*' -or ($process.CommandLine -notlike '*resident2x.py*' -and $process.CommandLine -notlike '*resident2x_watchdog.py*')) { throw 'Unexpected Gmail process; task left disabled' }
     }
     foreach ($process in $processes) { Stop-Process -Id $process.ProcessId -Force -ErrorAction SilentlyContinue }
     Start-Sleep -Seconds 2

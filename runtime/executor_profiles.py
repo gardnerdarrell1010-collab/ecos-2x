@@ -15,7 +15,7 @@ PROFILES = {
 GENERATION_CAPABILITY = 'ecos.2x.execute'
 
 
-def validate_profile(config, *, expected_identity=None):
+def validate_profile(config, *, expected_identity=None, allow_renewal=False):
     identity = config.get('identity')
     if identity not in PROFILES or (expected_identity is not None and identity != expected_identity):
         raise ValueError('autonomous_executor_identity_mismatch')
@@ -28,7 +28,7 @@ def validate_profile(config, *, expected_identity=None):
         for name, version in capabilities.items()
     ):
         raise ValueError('invalid_capability_profile')
-    if (GENERATION_CAPABILITY in capabilities) != (generation == '2X'):
+    if not allow_renewal and (GENERATION_CAPABILITY in capabilities) != (generation == '2X'):
         raise ValueError('generation_capability_mismatch')
     return {'identity': identity, 'generation': generation,
             'control_plane': source, 'display_name': label}

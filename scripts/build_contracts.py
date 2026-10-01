@@ -289,6 +289,16 @@ def build():
             "type":"object","required":["$schema","$id"],"properties":{"$schema":{"const":DRAFT},"$id":TEXT}}}),1),
         "relevant_work": arr(ref("work_occurrence")), "content_hash": HASH})
 
+    # Additive runtime bootstrap fields; historical packages remain readable.
+    OUTPUTS["contracts/memory/bootstrap_package.schema.json"]["properties"].update({
+        "operational_authority": {"const": "POSTGRESQL_ECOS_2X"},
+        "executor_context": obj({
+            "identity": TEXT, "executor_id": UUID, "executor_name": TEXT,
+            "executor_instance_id": UUID, "principal_id": UUID, "surface": TEXT,
+            "enabled": BOOL, "availability": TEXT, "observed_at": TIME,
+            "capabilities": arr(obj({"name": TOKEN, "version": POS,
+                "expires_at": TIME, "valid": BOOL}))})})
+
     file_entry = obj({"path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[\\\\:]).+$"},
         "size_bytes": NAT, "sha256": HASH, "record_count": nullable(NAT),
         "role": enum("schema", "data", "contracts", "memory", "provider_inventory", "restore_instructions", "verification_queries", "migration", "configuration")})

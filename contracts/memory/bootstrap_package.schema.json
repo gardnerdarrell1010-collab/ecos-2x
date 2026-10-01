@@ -186,6 +186,98 @@
     "content_hash": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
+    },
+    "operational_authority": {
+      "const": "POSTGRESQL_ECOS_2X"
+    },
+    "executor_context": {
+      "type": "object",
+      "properties": {
+        "identity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "executor_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "executor_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "executor_instance_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "principal_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "surface": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "availability": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "valid": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "name",
+              "version",
+              "expires_at",
+              "valid"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "uniqueItems": false
+        }
+      },
+      "required": [
+        "identity",
+        "executor_id",
+        "executor_name",
+        "executor_instance_id",
+        "principal_id",
+        "surface",
+        "enabled",
+        "availability",
+        "observed_at",
+        "capabilities"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

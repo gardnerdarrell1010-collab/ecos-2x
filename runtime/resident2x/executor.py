@@ -81,7 +81,10 @@ class Resident:
     host_name = "HOME-01"
 
     def __init__(self, config, connect, handlers):
-        self.profile = validate_profile(config, expected_identity=self.expected_identity)
+        config = dict(config)
+        self.config, self.connect = config, connect
+        self.refresh_bootstrap()
+        self.profile = validate_profile(config, expected_identity=self.expected_identity, allow_renewal=True)
         if config.get("authority") == "PRE_CUTOVER_NON_AUTHORITATIVE":
             # Backward-compatible synthetic configuration; never production authority.
             if config.get("provider_effects_enabled") is not False:
@@ -103,6 +106,30 @@ class Resident:
             "instance_id": config["instance_id"], "cycle": 0, "active": None}
         if self.state["instance_id"] != config["instance_id"]:
             raise ValueError("state_instance_mismatch")
+
+    def refresh_bootstrap(self, *, require_enabled=False, require_execution=False):
+        with self.connect() as db:
+            package = db.execute("select ecos.bootstrap_package()").fetchone()[0]
+        if content_hash(package) != package.get("content_hash"):
+            raise ValueError("bootstrap_hash_mismatch")
+        if package.get("operational_authority") != "POSTGRESQL_ECOS_2X":
+            raise ValueError("bootstrap_authority_mismatch")
+        context = package["executor_context"]
+        if (context["identity"] != self.expected_identity
+                or context["executor_instance_id"] != self.config["instance_id"]
+                or context["principal_id"] != self.config["principal_id"]):
+            raise ValueError("bootstrap_executor_identity_mismatch")
+        capabilities = {}
+        for item in context["capabilities"]:
+            if item["valid"]:
+                capabilities[item["name"]] = max(capabilities.get(item["name"], 0), item["version"])
+        self.config["capabilities"] = capabilities
+        self.bootstrap = package
+        if require_enabled and (not context["enabled"] or context["availability"] != "available"):
+            raise ValueError("executor_not_operational")
+        if require_execution and capabilities.get("ecos.2x.execute", 0) < 1:
+            raise ValueError("execution_capability_not_valid")
+        return context
 
     def request(self, arguments, key):
         return {"schema_version": "1.0.0", "context": {
@@ -243,6 +270,7 @@ class Resident:
             if handler is None or package["stage"]["kind"] != self.stage_kind:
                 self.finish_control("work.fail", fence, "unsupported_capability")
                 return {"occurrence_id": occurrence, "disposition": "unsupported_capability"}
+            self.refresh_bootstrap(require_enabled=True, require_execution=True)
             declared = {v["name"]: v["minimum_version"] for v in package["capability_requirements"]}
             if not declared or any(self.config["capabilities"].get(k, 0) < v for k, v in declared.items()):
                 raise ValueError("capability_mismatch")
@@ -294,6 +322,7 @@ class Resident:
                 self.stopping.wait(delay)
 
     def _run_connected(self, max_cycles=0):
+        self.refresh_bootstrap(require_enabled=True)
         with singleton(self.root / "resident2x.lock"):
             save(self.root / "process.json", {"pid": os.getpid(), "identity": self.config["identity"],
                  "instance_id": self.config["instance_id"], "runtime": str(Path(__file__).resolve()),
@@ -304,6 +333,7 @@ class Resident:
                     "evidence_hash": self.evidence_hash})
                 if registered["data"]["authority"] != self.config["authority"]:
                     raise ValueError("authority_mismatch")
+                self.refresh_bootstrap(require_enabled=True, require_execution=True)
                 count = 0
                 while not self.stopping.is_set() and (not max_cycles or count < max_cycles):
                     self.heartbeat(self.client, bool(self.state["active"]))

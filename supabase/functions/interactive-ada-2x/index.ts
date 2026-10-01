@@ -65,8 +65,18 @@ Deno.serve(async (req: Request) => {
     server.registerTool('ecos_identity', {
       description:'Return the enrolled Interactive executor context. Contains no credentials.',
       inputSchema:z.object({}),annotations:{readOnlyHint:true,openWorldHint:false},
-    },()=>({content:[{type:'text',text:JSON.stringify({identity:'INTERACTIVE_ADA',
-      principal_id:identity.principal,executor_instance_id:identity.instance})}]}));
+    },async ()=>{
+      try {
+        const rows=await database`select ecos.bootstrap_package() as response`;
+        const bootstrap=rows[0].response;
+        const context=bootstrap.executor_context;
+        if (context?.principal_id!==identity.principal || context?.executor_instance_id!==identity.instance
+            || context?.identity!=='INTERACTIVE_ADA' || bootstrap.operational_authority!=='POSTGRESQL_ECOS_2X') {
+          throw new Error('bootstrap_identity_mismatch');
+        }
+        return {content:[{type:'text',text:JSON.stringify(bootstrap)}]};
+      } catch { return {isError:true,content:[{type:'text',text:'authoritative_bootstrap_unavailable'}]}; }
+    });
     server.registerTool('ecos_read_record', {
       description:'Read an explicitly authorized ECOS record as INTERACTIVE_ADA. No SQL access.',
       inputSchema:z.object({kind:z.enum(['task','memory_record','memory_version','memory_scope']),entity_id:z.string().uuid()}),
