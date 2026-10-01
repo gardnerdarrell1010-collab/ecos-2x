@@ -157,6 +157,8 @@ class Resident:
             else:
                 save(path, {"operation": operation, "request": request})
         result = client.operate(operation, request)
+        if result is None and operation == "work.next":
+            return None
         if "code" in result:
             raise OperationRejected(operation, result["code"])
         if path:
@@ -315,6 +317,12 @@ class Resident:
         while not self.stopping.is_set():
             try:
                 return self._run_connected(max_cycles)
+            except OperationRejected as exc:
+                save(self.root / "failure.json", {"at": now(), "operation": exc.operation,
+                    "code": exc.code, "phase": "connected_loop",
+                    "active_claim_preserved": bool(self.state["active"])})
+                self.client.close()
+                self.stopping.wait(max(5, self.config.get("poll_seconds", 2)))
             except psycopg.OperationalError:
                 failures += 1
                 self.client.close()
@@ -354,7 +362,7 @@ class Resident:
                             count += 1
                             self.stopping.wait(max(5, self.config.get("poll_seconds", 2)))
                             continue
-                        if claimed["status"] == "NO_ELIGIBLE_WORK":
+                        if claimed is None or claimed.get("status") == "NO_ELIGIBLE_WORK":
                             self.state["cycle"] += 1
                             save(self.state_path, self.state)
                             count += 1
