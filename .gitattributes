@@ -9,3 +9,6 @@ db/migrations/000026_staffing_bounded_read.sql -text
 
 # Preserve the exact applied Gmail migration bytes.
 db/migrations/000034_gmail_reconciled_readback.sql -text
+
+# Preserve exact applied migration bytes, including existing function bodies.
+db/migrations/000036_multiple_principal_domains.sql -text
