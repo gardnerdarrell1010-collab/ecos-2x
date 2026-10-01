@@ -1,6 +1,7 @@
 """Plan/apply exact worker instructions through the existing administrative configuration path.
 
-No runtime operation, connector grant, activation, source transformation, or provider call.
+No runtime operation, connector grant, activation, or provider call.
+The optional fixed PostgreSQL access binding retains the complete source body unchanged.
 The caller supplies the approved source-worker -> existing definition/stage mapping.
 """
 import argparse
@@ -14,6 +15,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT/'src'), str(ROOT/'scripts')]
 from repair_task_loop_population import read_sources
 from resident2x_acceptance import hosted_admin
+
+
+POSTGRESQL_ACCESS_BINDING = """ECOS 2.x OPERATIONAL STORAGE BINDING
+For ECOS operational system-of-record access only, references below to ECOS Master Database, native Sheets reads/writes, or ECOS sheet rows resolve to the corresponding existing PostgreSQL 2.x contracts and governed operations. Preserve the ECOS command names, business fields, derived-value meaning, workflows, identities, approvals, and agent behavior. Task Loop definitions/stages/instructions use work_definition/work_stage_definition/work_instruction_version; execution, claims and Run Control use work_occurrence/work_claim/execution_run and governed work operations; Tasks/Projects use task/project and their governed operations; communications, notifications, deliveries, artifacts and memory use their existing typed contracts. Preserve legacy business IDs through existing provenance/crosswalks. Never treat archived raw migration rows as current operational state. Where a corresponding typed record or governed operation is absent, report that exact runtime gap and do not invent a write path. External provider documents/files and their readback obligations are unchanged. No legacy responsibility is removed or declared SQL-absorbed by this binding. Do not perform operational ECOS Sheets access.
+
+COMPLETE PRESERVED FUNCTIONAL INSTRUCTIONS FOLLOW (UNCHANGED):
+"""
 
 
 def digest(text):
@@ -37,7 +45,7 @@ def state(db, definition, stage):
             'capabilities_sha256':digest(json.dumps(caps, separators=(',', ':')))}
 
 
-def plan(db, mapping):
+def plan(db, mapping, postgresql_access=False):
     off(db)
     sources = read_sources(db)
     items, seen = [], set()
@@ -54,6 +62,8 @@ def plan(db, mapping):
             raise ValueError('complete_instruction_text_required')
         items.append({**item, 'source_batch_id':batch, 'source_locator':locator,
                       'instruction_sha256':digest(text),
+                      'instruction_transform':'postgresql_access_binding_v1' if postgresql_access else 'none',
+                      'stored_sha256':digest(POSTGRESQL_ACCESS_BINDING+text if postgresql_access else text),
                       'expected':state(db,item['work_definition_id'],stage)})
     return {'schema_version':1, 'configuration_id':str(uuid4()), 'items':items}
 
@@ -69,7 +79,13 @@ def source_text(db, item):
     text = source['Instructions']
     if source['Task Loop ID'] != item['source_worker_id'] or digest(text) != item['instruction_sha256']:
         raise ValueError('source_drift')
-    return text
+    mode=item.get('instruction_transform','none')
+    if mode not in ('none','postgresql_access_binding_v1'):
+        raise ValueError('unapproved_instruction_transform')
+    stored=POSTGRESQL_ACCESS_BINDING+text if mode=='postgresql_access_binding_v1' else text
+    if digest(stored)!=item.get('stored_sha256',item['instruction_sha256']):
+        raise ValueError('transformed_instruction_drift')
+    return stored
 
 
 def configure(db, document):
@@ -123,7 +139,7 @@ def readback(db, document):
         row = db.execute('''select work_definition_id,instruction_version,instruction_text,content_sha256,
             configured_by_role from ecos.work_instruction_version where stage_definition_id=%s and correlation_id=%s''',
             (item['stage_definition_id'],document['configuration_id'])).fetchone()
-        if not row or str(row[0]) != item['work_definition_id'] or row[1] != item['expected']['instruction_version']+1 or row[2] != source_text(db,item) or row[3] != item['instruction_sha256'] or not row[4]:
+        if not row or str(row[0]) != item['work_definition_id'] or row[1] != item['expected']['instruction_version']+1 or row[2] != source_text(db,item) or row[3] != item.get('stored_sha256',item['instruction_sha256']) or not row[4]:
             raise ValueError('instruction_readback_failed')
         expected = {**item['expected'],'definition_version':item['expected']['definition_version']+1,
                     'stage_version':item['expected']['stage_version']+1,'instruction_version':row[1]}
@@ -137,13 +153,14 @@ def main():
     parser.add_argument('--mapping',type=Path)
     parser.add_argument('--plan',required=True,type=Path)
     parser.add_argument('--apply',action='store_true')
+    parser.add_argument('--postgresql-access',action='store_true',help='Preserve source verbatim and prepend only the fixed ECOS PostgreSQL operational access binding')
     args = parser.parse_args()
     connect,_ = hosted_admin()
     if not args.apply:
         if args.mapping is None:
             parser.error('--mapping is required to prepare a plan')
         with connect() as db:
-            document=plan(db,json.loads(args.mapping.read_text(encoding='utf-8')))
+            document=plan(db,json.loads(args.mapping.read_text(encoding='utf-8')),args.postgresql_access)
         with args.plan.open('x',encoding='utf-8',newline='\n') as out:
             json.dump(document,out,indent=2)
         print(json.dumps({'planned':len(document['items']),'writes':0}))

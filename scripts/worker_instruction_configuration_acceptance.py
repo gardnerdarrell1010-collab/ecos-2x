@@ -32,7 +32,7 @@ try:
   for role in ('anon','authenticated','service_role'):
    db.execute('create role '+role+' nologin')
   db.execute(render(inventory(r/'db/migrations')).replace('\\set ON_ERROR_STOP on\n',''),prepare=False)
- from configure_worker_instructions import plan,configure,readback
+ from configure_worker_instructions import plan,configure,readback,POSTGRESQL_ACCESS_BINDING
  f=Fixture(target);f.seed()
  def admin(q,a=()):
   with target.connect() as db:
@@ -50,7 +50,7 @@ try:
   if version==2:
    text+='Version 2 complete content.\n'
    seed_source(text)
-  with target.connect() as db:document=plan(db,mapping)
+  with target.connect() as db:document=plan(db,mapping,postgresql_access=(version==2))
   with target.connect() as db:assert configure(db,document)['configured']==1
   with target.connect() as db:assert readback(db,document)['verified']==1
   with target.connect() as db:assert configure(db,document)['replayed']==1
@@ -69,7 +69,7 @@ try:
  op('executor.register',{'host':'SYNTHETIC','runtime':'config-acceptance','software_version':'42','evidence_hash':'a'*64})
  claimed=op('work.next',{'executor_instance_id':f.inst,'lease_seconds':120})
  instruction=claimed['data']['work_package']['functional_instructions']
- assert instruction['instruction_version']==2 and instruction['instruction_text'].encode()==text.encode()
+ assert instruction['instruction_version']==2 and instruction['instruction_text'].encode()==(POSTGRESQL_ACCESS_BINDING+text).encode()
  fence=f.result_arguments(claimed['data'])['fence']
  assert op('work.package',{'fence':fence})['data']['functional_instructions']==instruction
  op('work.release',{'fence':fence,'reason':'configuration_readback_only'})

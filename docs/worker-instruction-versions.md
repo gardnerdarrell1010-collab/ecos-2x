@@ -45,10 +45,29 @@ work_definition/work_stage_definition/stage_capability_requirement writes. Run
 `readback(db, document)` through a separate connection after commit. No separate publish step.
 The CLI attaches instructions to existing definitions; it does not invent missing definitions.
 
-The bulk path preserves exact source text, including whitespace and Unicode. It performs
-no prompt transformations. Missing/ambiguous mappings or absent complete source text fail
-closed. Keep plans and source evidence private. Ada owns population selection and migration;
-this repair does not migrate the remaining 52 definitions or enable production.
+The bulk path preserves exact source text, including whitespace and Unicode. By default
+it stores that text unchanged. The optional `--postgresql-access` planning flag prepends
+one fixed operational-storage binding while retaining the full original body byte-for-byte.
+The plan pins both the original and stored SHA-256. This binding changes only ECOS
+operational access; it removes no responsibility and claims no SQL equivalence.
+Missing/ambiguous mappings or absent complete source text fail closed. Keep plans and
+source evidence private. No path enables production.
+
+The owner-authorized missing-definition configuration is implemented in
+`scripts/create_missing_worker_definitions.py`. It creates only the bounded 25 missing
+canonical definitions from preserved source and current approved conversion targets,
+with instructions in the same transaction. Definitions remain disabled. Capability
+requirements do not grant executor attestations or provider authority. Missing handlers,
+source retry defaults, and SQL equivalence remain explicit runtime gaps; configuration
+readback is not functional acceptance.
+
+Current bounded readback established 37 distinct instruction-linked definitions (12
+previous and 25 newly configured), with 62 immutable instruction rows. The new 25
+current versions also passed exact `work.package` retrieval in isolated fixtures.
+No production launcher or provider was run. The 15 SQL-native functions remain
+incomplete; migration 43 supplies only the A041 execution-activity projection component.
+A008/A022 retain SQL_NATIVE as primary targets; owner-authorized delegation is limited
+to their retained semantic/provider steps and is not yet implemented or accepted.
 
 ## Verification
 
