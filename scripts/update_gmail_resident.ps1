@@ -4,7 +4,8 @@ param([Parameter(Mandatory=$true)][string]$ExpectedHead,
       [string]$ConfigurationCandidate,
       [string]$ConfigPath = 'D:\ECOS\Node\runtime\resident2x\state\gmail-home01\config.json',
       [string]$ConfigurationSHA256,
-      [switch]$KeepStopped)
+      [switch]$KeepStopped,
+      [switch]$Home01IdentityCorrection)
 $ErrorActionPreference = 'Stop'
 $receipt = $null
 $result = [ordered]@{Status='FAILED'; Administrator=$false; ReleaseVerified=$false; TaskUpdated=$false; GmailHealthy=$false; ToastModified=$false; ProviderWritesPerformed=$false}
@@ -37,6 +38,10 @@ try {
         $before = Get-Content -LiteralPath $config -Raw | ConvertFrom-Json
         $after = Get-Content -LiteralPath $candidate -Raw | ConvertFrom-Json
         $allowed = @('capabilities','capability_source','shared_capability','operational_sms')
+        if ($Home01IdentityCorrection) {
+            if ($config -ne 'D:\ECOS\Node\runtime\resident2x\state\home01-20260930T071253Z\config.json') { throw 'Home01 profile required' }
+            $allowed = @('instance_id','executor_id','principal_id','database','database_password_file')
+        }
         foreach ($property in $before.PSObject.Properties) {
             if ($property.Name -notin $allowed -and (($property.Value | ConvertTo-Json -Depth 100 -Compress) -ne ($after.($property.Name) | ConvertTo-Json -Depth 100 -Compress))) { throw 'Existing profile changed' }
         }
@@ -50,7 +55,10 @@ try {
     $helper = Join-Path $release 'scripts\prepare_gmail_runtime_resume.py'
     $preflightArgs = @('--config', $config, '--check-only')
     if (-not $KeepStopped) { $preflightArgs += '--require-operational' }
-    & $python -B $helper @preflightArgs | Out-Null
+    if ($Home01IdentityCorrection) {
+        if (-not $ConfigurationCandidate) { throw 'Canonical candidate required' }
+        & $python -B (Join-Path $release 'scripts\home01_identity_preflight.py') --config $config --candidate $candidate | Out-Null
+    } else { & $python -B $helper @preflightArgs | Out-Null }
     if ($LASTEXITCODE -eq 2) { $result.FailureCode = 'executor_not_operational'; throw 'PostgreSQL executor disabled or unavailable; task unchanged' }
     if ($LASTEXITCODE -ne 0) { throw 'SQL recovery preflight failed' }
     $matches = @(Get-ScheduledTask -TaskPath '\' | Where-Object { $_.Actions.Arguments -like ('*"'+$config+'"*') })
@@ -72,8 +80,18 @@ try {
     foreach ($process in $processes) { Stop-Process -Id $process.ProcessId -Force -ErrorAction SilentlyContinue }
     Start-Sleep -Seconds 2
     if (Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'python.exe' -and $_.CommandLine -like ('*'+$config+'*') }) { throw 'Gmail process still running' }
-    & $python -B $helper --config $config | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw 'Local claim archive failed; task left disabled' }
+    if ($Home01IdentityCorrection) {
+        & $python -B (Join-Path $release 'scripts\home01_identity_preflight.py') --config $config --candidate $candidate | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw 'Canonical identity recheck failed' }
+        $stateFile = Join-Path $state 'state.json'
+        Copy-Item -LiteralPath $stateFile -Destination (Join-Path $receipt 'state-before.json')
+        $journal = Get-Content -LiteralPath $stateFile -Raw | ConvertFrom-Json
+        $journal.instance_id = $after.instance_id
+        $journal | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $stateFile -Encoding ascii
+    } else {
+        & $python -B $helper --config $config | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw 'Local claim archive failed; task left disabled' }
+    }
     if ($ConfigurationCandidate) {
         Copy-Item -LiteralPath $candidate -Destination $config
         if ((Get-FileHash -LiteralPath $config -Algorithm SHA256).Hash.ToLowerInvariant() -ne $ConfigurationSHA256) { throw 'Installed configuration readback mismatch' }
