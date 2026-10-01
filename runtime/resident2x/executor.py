@@ -393,8 +393,15 @@ class Resident:
                         if exc.code == "expired_fence" and exc.operation in ("work.renew", "work.package", "work.complete"):
                             self.invoke("recovery.sweep", {"limit": 10})
                             current = self.read("work_occurrence", self.state["active"]["data"]["claim"]["occurrence_id"])
-                            if current["record"]["state"] not in ("retry_wait", "ready", "succeeded"):
+                            if current["record"]["state"] not in (
+                                    "pending", "retry_wait", "ready", "succeeded",
+                                    "failed", "dead_lettered", "cancelled"):
                                 raise
+                            # Recovery can leave pending work or a terminal occurrence.
+                            # Both invalidate this expired local claim. Preserve evidence,
+                            # then fall through to clear it and poll work.next normally.
+                            save(self.root / ("recovered-claim-" + self.state["active"]["data"]["work_package"]["fence"]["claim_id"] + ".json"),
+                                 {"active": self.state["active"], "readback": current})
                         else:
                             raise
                     except psycopg.OperationalError:

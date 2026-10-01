@@ -11,6 +11,32 @@ from runtime.resident2x.executor import Resident, WorkPackageChanged, OperationR
 
 
 class PackageRefreshTest(unittest.TestCase):
+    def test_recovered_claim_with_pending_wakeups_returns_to_next(self):
+        for recovered in ('pending','ready','retry_wait','succeeded','failed','dead_lettered','cancelled'):
+            with self.subTest(recovered=recovered), tempfile.TemporaryDirectory() as folder:
+                r = object.__new__(Resident)
+                r.root = Path(folder)
+                r.state_path = r.root / 'state.json'
+                r.config = {'identity':'RESIDENT_ADA_2X_HOME01','instance_id':'fixture','authority':'fixture'}
+                r.session = 'fixture'
+                r.evidence_hash = '0' * 64
+                r.client = Mock()
+                r.stopping = Mock()
+                r.stopping.is_set.return_value = False
+                active = {'data':{'claim':{'occurrence_id':'old'},'work_package':{'fence':{'claim_id':'old-claim'}}}}
+                r.state = {'cycle':0,'active':active}
+                r.refresh_bootstrap = Mock()
+                r.invoke = Mock(side_effect=[{'data':{'authority':'fixture'}},
+                    {'data':{'pending_wakeups':9}},None])
+                r.read = Mock(return_value={'record':{'state':recovered}})
+                r.heartbeat = Mock()
+                r.execute = Mock(side_effect=OperationRejected('work.renew','expired_fence'))
+                r._run_connected(max_cycles=2)
+                self.assertEqual([c.args[0] for c in r.invoke.call_args_list],
+                                 ['executor.register','recovery.sweep','work.next'])
+                self.assertIsNone(r.state['active'])
+                self.assertTrue((r.root/'recovered-claim-old-claim.json').exists())
+
     def test_both_profiles_poll_after_null_and_successful_completion(self):
         for instance in ('home01', 'gmail'):
             with self.subTest(instance=instance), tempfile.TemporaryDirectory() as folder:
